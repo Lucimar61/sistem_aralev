@@ -46,10 +46,10 @@
             try {
                 const response = await fetch("http://localhost:8080/status");
                 const data = await response.json();
-        
-                document.getElementById("api-status").style.backgroundColor = data.api ? "green" : "red";
-                document.getElementById("db-status").style.backgroundColor = data.db ? "green" : "red";
-        
+
+                document.getElementById("api-status").style.backgroundColor = data.api ? "#00FF00" : "red"; // Hex para verde
+                document.getElementById("db-status").style.backgroundColor = data.db ? "#00FF00" : "red"; // Hex para verde
+
                 console.log("Status atualizado:", data);
             } catch (error) {
                 console.error("Erro ao verificar o status:", error);
@@ -59,7 +59,7 @@
         }
         
         // Atualiza o status a cada 5 segundos
-        setInterval(checkServerStatus, 5000);
+        //setInterval(checkServerStatus, 5000);
         
         // Chama a função assim que a página carregar
         document.addEventListener("DOMContentLoaded", checkServerStatus);
