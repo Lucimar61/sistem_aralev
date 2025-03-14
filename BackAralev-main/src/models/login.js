@@ -30,6 +30,22 @@ function verifyJWT(req, res, next) {
     });
 }
 
+router.get("/verify-token", (req, res) => {
+    const token = req.headers["authorization"]?.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ message: "Token não fornecido" });
+    }
+
+    jwt.verify(token, SECRET, (err, decoded) => { // Alterado para usar SECRET
+        if (err) {
+            return res.status(403).json({ message: "Token inválido ou expirado" });
+        }
+        res.json({ message: "Token válido", user: decoded });
+    });
+});
+
+
 
 
 // Função para autenticar o usuário

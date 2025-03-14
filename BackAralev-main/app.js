@@ -4,6 +4,7 @@ const meuAPP = express();
 const { connectDB, pool } = require('./database');
 const { router: loginRouter, verifyJWT } = require('./src/models/login');
 const statusRouter = require('./src/models/status');  // Importa o router de status
+const path = require('path');
 
 require('dotenv').config();
 
@@ -14,6 +15,8 @@ meuAPP.use(express.json());
 meuAPP.use(express.urlencoded({ extended: true }));
 
 connectDB();
+
+meuAPP.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_aralev-master')));
 
 // Rota principal
 meuAPP.get("/", (req, res) => {
@@ -30,6 +33,14 @@ meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
     res.status(500).send("Erro ao buscar usuário");
   }
 });
+
+meuAPP.get("/inicio", verifyJWT, (req, res) => {
+  res.redirect("http://127.0.0.1:5500/sistema_aralev-master/inicio.html");
+});
+
+const { router: verifyTokenRouter } = require("./src/models/login");
+meuAPP.use(verifyTokenRouter);
+
 
 // Rota para descrição da tabela
 meuAPP.get("/desc", async (req, res) => {
