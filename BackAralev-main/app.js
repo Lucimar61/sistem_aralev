@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const meuAPP = express();
 const { connectDB, pool } = require('./database');
-const loginRouter = require('./src/models/login');  // Importa o router de login
+const { router: loginRouter, verifyJWT } = require('./src/models/login');
 const statusRouter = require('./src/models/status');  // Importa o router de status
 
 require('dotenv').config();
@@ -21,7 +21,7 @@ meuAPP.get("/", (req, res) => {
 });
 
 // Rota para buscar usuários
-meuAPP.get("/usuarios", async (req, res) => {
+meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM tb_usuario");
     res.json(rows);
@@ -43,11 +43,13 @@ meuAPP.get("/desc", async (req, res) => {
 });
 
 // Usando o router de login para a rota /login
-meuAPP.use('/login', loginRouter); // Agora usa o router para a autenticação
+meuAPP.use('/login', loginRouter); 
 
-// Usando o router de status para a rota /status
-meuAPP.use(statusRouter); // Agora usa o router de status
+
+meuAPP.use('/logout', loginRouter); 
+
+meuAPP.use(statusRouter); 
 
 meuAPP.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT} http://localhost:8080/`);
+  console.log(`Servidor rodando na porta ${PORT} http://localhost:${PORT}/`);
 });
