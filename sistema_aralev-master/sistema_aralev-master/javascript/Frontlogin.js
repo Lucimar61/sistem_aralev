@@ -1,3 +1,4 @@
+const API_URL = "http://localhost:8080";
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM completamente carregado.");
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             try {
-                const response = await fetch("http://localhost:8080/login", {
+                const response = await fetch(`${API_URL}/login`, {  // Corrigido para interpolação com crase
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ login: login, senha: senha })
@@ -50,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Função para verificar o status do servidor (não alterada)
 async function checkServerStatus() {
     try {
-        const response = await fetch("http://localhost:8080/status");
+        const response = await fetch(`${API_URL}/status`);  // Corrigido para interpolação com crase
         const data = await response.json();
 
         document.getElementById("api-status").style.backgroundColor = data.api ? "#00FF00" : "red"; // Hex para verde
