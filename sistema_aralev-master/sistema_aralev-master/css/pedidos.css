@@ -1,0 +1,30 @@
+
+.container_novo_produto {
+    display: flex;
+    align-items: flex-end;
+}
+
+.container_novo_produto img {
+    width: 55px;
+    height: 55px;
+}
+
+.add_produto {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.container-enviar-pedido {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+.container_frm_pedido form {
+    max-width: 1500px;
+    padding: 20px;
+}
+
