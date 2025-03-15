@@ -1,3 +1,5 @@
+import { API_URL } from './api.js';
+
 document.addEventListener("DOMContentLoaded", async function () {
     const token = localStorage.getItem("jwtToken"); // Certifique-se de que está pegando do localStorage
 
@@ -8,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     try {
-        const response = await fetch("http://localhost:8080/verify-token", {
+        const response = await fetch(`${API_URL}/verify-token`, {
             method: "GET",
             headers: { "Authorization": `Bearer ${token}` }
         });

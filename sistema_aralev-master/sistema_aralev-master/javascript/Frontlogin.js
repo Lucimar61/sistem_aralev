@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080";
+import { API_URL } from './api.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM completamente carregado.");
