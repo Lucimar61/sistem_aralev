@@ -1,8 +1,3 @@
-### Teste de Login
-POST http://localhost:8080/login
-Content-Type: application/json
-
-{
-    "login": "arroba",
-    "senha": "Unileste"
-}
+### Acessar a rota protegida de usuários
+GET http://localhost:8080/inicio
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQxOTc5ODkwLCJleHAiOjE3NDE5ODM0OTB9.sZT_kkWBxObVuIG7BoOAOET8bvwb7RG5itkTsyw9Dmo

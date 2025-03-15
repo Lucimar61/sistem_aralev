@@ -2,8 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const meuAPP = express();
 const { connectDB, pool } = require('./database');
-const loginRouter = require('./src/models/login');  // Importa o router de login
+const { router: loginRouter, verifyJWT } = require('./src/models/login');
 const statusRouter = require('./src/models/status');  // Importa o router de status
+const path = require('path');
 
 require('dotenv').config();
 
@@ -15,13 +16,15 @@ meuAPP.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
+meuAPP.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_aralev-master')));
+
 // Rota principal
 meuAPP.get("/", (req, res) => {
   res.send("Olá mundo");
 });
 
 // Rota para buscar usuários
-meuAPP.get("/usuarios", async (req, res) => {
+meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM tb_usuario");
     res.json(rows);
@@ -30,6 +33,14 @@ meuAPP.get("/usuarios", async (req, res) => {
     res.status(500).send("Erro ao buscar usuário");
   }
 });
+
+meuAPP.get("/inicio", verifyJWT, (req, res) => {
+  res.redirect("http://127.0.0.1:5500/sistema_aralev-master/inicio.html");
+});
+
+const { router: verifyTokenRouter } = require("./src/models/login");
+meuAPP.use(verifyTokenRouter);
+
 
 // Rota para descrição da tabela
 meuAPP.get("/desc", async (req, res) => {
@@ -43,11 +54,13 @@ meuAPP.get("/desc", async (req, res) => {
 });
 
 // Usando o router de login para a rota /login
-meuAPP.use('/login', loginRouter); // Agora usa o router para a autenticação
+meuAPP.use('/login', loginRouter); 
 
-// Usando o router de status para a rota /status
-meuAPP.use(statusRouter); // Agora usa o router de status
+
+meuAPP.use('/logout', loginRouter); 
+
+meuAPP.use(statusRouter); 
 
 meuAPP.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT} http://localhost:8080/`);
+  console.log(`Servidor rodando na porta ${PORT} http://localhost:${PORT}/`);
 });
