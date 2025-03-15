@@ -309,3 +309,4 @@ document.addEventListener("DOMContentLoaded", function() {
         formLogin.style.display = "block";
     });
 });
+

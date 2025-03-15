@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/cadUsuario.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ysabeau+Infant&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Cadastro de Usuário</title>
+</head>
+<body>
+
+    <!-- Sidebar será carregada aqui -->
+    <div id="sidebar-container"></div>
+    
+    <main>
+        <header>
+            <div class="cabecalho">
+                <div class="div-oculta"></div>
+                <img src="assets/Logo.png" alt="Logo">
+                <div class="container-modulos">
+                    <img src="assets/Modulos.png" alt="Modulos">
+                    <img src="assets/Notificações.png" alt="Notificações">
+                    <div class="perfil">
+                        <img src="assets/Perfil.png" alt="Foto de Perfil">
+                        <div class="perfil-descricao">
+                            <p>Admin</p>
+                            <p>Desenvolvedor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="secao-indicadores estoque-indicadores">
+            <div class="container-indicadores">
+                <div class="container-navegacao">
+                    <div class="navegacao">
+                        <p>Usuários <strong>></strong> Cadastro de usuários</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Seção do formulário de cadastro de usuários -->
+        <div class="secao-cadastro">
+            <div class="container_frm_cadastro">
+                <div class="frm_titulo">
+                    <i class="bi bi-person-add usuarioplus"></i>
+                    <h1>CADASTRO DE USUÁRIOS</h1>
+                </div>
+                <form action="#" method="post">
+                    <fieldset>
+                        <legend>Informações do Usuário</legend>
+                        <div class="linha"></div>
+                        <div class="info-usuarios">
+
+                            <label for="nome_usuario">Nome Completo</label>
+                            <div class="campo-cad tamanho-personalizado">
+                                <input type="text" id="nome_usuario" name="nome_usuario" placeholder="Digite o nome completo" required>
+                            </div>
+
+                            <label for="login_usuario">Login</label>
+                            <div class="campo-cad">
+                                <input type="text" id="login_usuario" name="login_usuario" placeholder="Digite o login" required>
+                            </div>
+                            <label for="senha_usuario">Senha</label>
+                            <div class="campo-cad">                                
+                                <div class="input-container">
+                                    <input type="password" id="senha_usuario" name="senha_usuario" placeholder="Digite a senha" required>
+                                    <i class="bi bi-eye-fill"></i>
+                                </div>
+                            </div>
+                            <label for="nivel_acesso">Nível de Acesso</label>
+                            <div class="campo-cad">
+                                <select name="nivel_acesso" id="nivel_acesso">
+                                    <option value="1">Vendedor</option>
+                                    <option value="2">Gerente</option>
+                                    <option value="3">Administrador</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="container-enviar-dados">
+                        <button id="cancelar" class="btn_cancelar" type="reset">Cancelar</button>
+                        <button class="btn_salvar" onclick="abrirPopUp()">Salvar</button>
+                    </div>
+                </form>
+                
+                
+                <!-- PopUp de confirmação do cadastro de usuários -->
+                <div id="popUp" class="popUp">
+                    <div class="popUp-container">
+                        <p>Você está prestes a cadastrar um usuário. <strong>Tem certeza que deseja cadastrar este usuário?</strong></p>
+                        <button id="close_popUp" class="btn_cancelar">Cancelar</button>
+                        <button id="open_popUp" class="btn_salvar" type="submit">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="javascript/script.js"></script>
+    <script src="javascript/cadUsuario.js"></script>
+    <!-- Insere a sidebar na página -->
+    <script>
+        fetch('sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.body.insertAdjacentHTML('afterbegin', html);
+                adicionarEventosSidebar();
+            });
+    </script>
+</body>
+</html>
