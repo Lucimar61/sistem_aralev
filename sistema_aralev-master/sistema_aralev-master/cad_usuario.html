@@ -6,15 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
+<<<<<<< Updated upstream
     <link rel="stylesheet" href="css/cadUsuario.css">
+=======
+>>>>>>> Stashed changes
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ysabeau+Infant&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+<<<<<<< Updated upstream
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Cadastro de Usuário</title>
+=======
+    <title>Perfil Administrador</title>
+>>>>>>> Stashed changes
 </head>
 <body>
 
@@ -43,6 +50,7 @@
             <div class="container-indicadores">
                 <div class="container-navegacao">
                     <div class="navegacao">
+<<<<<<< Updated upstream
                         <p>Usuários <strong>></strong> Cadastro de usuários</p>
                     </div>
                 </div>
@@ -107,14 +115,108 @@
     </main>
     <script src="javascript/script.js"></script>
     <script src="javascript/cadUsuario.js"></script>
+=======
+                        <img src="assets/Home1.png" alt="Home">
+                        <p>Estoque <strong>></strong> Cadastro de produtos</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- Seção do formulário de cadastro de produtos -->
+        <div class="secao-cadastro">
+            <div class="container_frm_cadastro">
+                <div class="container-cadastro">
+                    <div class="frm_titulo">
+                        <img src="assets/cad_produtos.png" alt="Caixa de produtos">
+                        <h1>Cadastro de usuários</h1>
+                    </div>
+                    <form id="form-cadastro">
+                        <fieldset>
+                            <legend>Informações do Usuário</legend>
+                            <div class="linha"></div>
+                            <div class="info-usuarios">
+                                <div class="campo-cad tamanho-personalizado">
+                                    <label>Nome do Usuário</label>
+                                    <input type="text" name="nome_usuario" placeholder="Digite o nome do usuário" required>
+                                </div>
+                                <div class="campo-cad">
+                                    <label>Login</label>
+                                    <input type="text" name="login" placeholder="nome.sobrenome" required>
+                                </div>
+                                <div class="campo-cad">
+                                    <label>Senha</label>
+                                    <input type="text" name="senha" placeholder="senha" required>
+                                </div>
+                                <div class="campo-cad">
+                                    <label>Nível de Acesso</label>
+                                    <select name="nivel_acesso">
+                                        <option value="administrador">Administrador</option>
+                                        <option value="supervisor">Supervisor</option>
+                                        <option value="vendedor">Vendedor</option>
+                                        <option value="operador">Operador</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </fieldset>
+                    
+                        <div class="container-enviar-dados">
+                            <button id="cancelar" class="btn_cancelar" type="reset">Cancelar</button>
+                            <button id="cadastrar" class="btn_salvar" type="button">Cadastrar</button>
+                        </div>
+                    </form>
+                    
+                    <!-- PopUp de confirmação do cadastro de pedidos -->
+                    <div id="popUp" class="popUp">
+                        <div class="popUp-container">
+                            <p>Você está prestes a cadastrar um produto. <strong>Tem certeza que deseja cadastrar esse produto.</strong></p>
+                            <button id="close_popUp" class="btn_cancelar" >Cancelar</button>
+                            <button id="open_popUp" class="btn_salvar" type="submit" method="post" >Salvar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-usuarios">
+                    <h1>Usuários Cadastrados</h1>
+                    <table>
+                        <thead>
+                            <th>
+                                <td>ID</td>
+                                <td>Nome</td>
+                                <td>Login</td>
+                                <td>Senha</td>
+                                <td>Nível Acesso</td>
+                            </th>
+                        </thead>
+                        <body id="tabela-usuarios">
+                            <!-- Os dados do banco de dados serão inseridos aqui -->
+                        </body>
+                    </table>
+                </div>          
+            </div>
+            
+
+        </div>
+    </main>
+    <script src="javascript/script.js"></script>
+    <script src="javascript/cad_usuario.js"></script>
+>>>>>>> Stashed changes
     <!-- Insere a sidebar na página -->
     <script>
         fetch('sidebar.html')
             .then(response => response.text())
             .then(html => {
                 document.body.insertAdjacentHTML('afterbegin', html);
+<<<<<<< Updated upstream
+=======
+
+                // Agora que a sidebar foi carregada, adicionamos os eventos
+>>>>>>> Stashed changes
                 adicionarEventosSidebar();
             });
     </script>
 </body>
+<<<<<<< Updated upstream
 </html>
+=======
+</html>
+>>>>>>> Stashed changes

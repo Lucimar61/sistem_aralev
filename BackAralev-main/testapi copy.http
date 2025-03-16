@@ -1,8 +1,10 @@
-### Teste de Login
-POST http://localhost:8080/login
+### Testando a rota /cad_usuario para cadastro de usuário
+POST http://localhost:8080/cad_usuario
 Content-Type: application/json
 
 {
-    "login": "ernane.moraes",
-    "senha": "Unileste"
+    "nome": "João Silva",
+    "login": "joao.silva",
+    "senha": "senha123",
+    "nivelAcesso": 1
 }

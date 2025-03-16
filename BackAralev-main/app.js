@@ -4,6 +4,7 @@ const meuAPP = express();
 const { connectDB, pool } = require('./database');
 const { router: loginRouter, verifyJWT } = require('./src/models/login');
 const statusRouter = require('./src/models/status');  // Importa o router de status
+const { registerUser } = require('./src/models/encrypt');
 const path = require('path');
 
 require('dotenv').config();
@@ -31,6 +32,24 @@ meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
   } catch (err) {
     console.error("Erro ao buscar usuário:", err);
     res.status(500).send("Erro ao buscar usuário");
+  }
+});
+
+meuAPP.post('/cad_usuario', async (req, res) => {
+  const { nome, login, senha, nivelAcesso } = req.body;
+
+  // Validação simples dos dados
+  if (!nome || !login || !senha || !nivelAcesso) {
+    return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+  }
+
+  try {
+    // Chama a função de cadastro do usuário
+    await registerUser(nome, login, senha, nivelAcesso);
+    res.status(200).json({ message: 'Usuário registrado com sucesso!' });
+  } catch (err) {
+    console.error('Erro ao registrar usuário:', err);
+    res.status(500).json({ message: 'Erro ao registrar usuário', error: err.message });
   }
 });
 
