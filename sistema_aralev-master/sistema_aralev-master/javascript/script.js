@@ -309,3 +309,52 @@ document.addEventListener("DOMContentLoaded", function() {
         formLogin.style.display = "block";
     });
 });
+
+// Desconecta o usuário e retorna para a tela de login
+document.getElementById("logout_btn").addEventListener("click", function () {
+    if (confirm("Tem certeza que deseja sair?")) {
+        localStorage.clear(); // Limpa dados do usuário (se necessário)
+        window.location.href = "index.html"; // Redireciona para a tela de login
+    }
+});
+
+// Adicionando Tooltips nos links de navegação
+document.addEventListener("DOMContentLoaded", function () {
+    const sideLinks = document.querySelectorAll(".side-link");
+
+    sideLinks.forEach(link => {
+        const tooltipText = link.querySelector(".item-description")?.innerText.trim();
+
+        if (tooltipText) {
+            let tooltip; // Variável para armazenar a tooltip
+
+            link.addEventListener("mouseenter", (e) => {
+                // Criar a tooltip apenas se ela não existir
+                if (!tooltip) {
+                    tooltip = document.createElement("div");
+                    tooltip.classList.add("tooltip");
+                    tooltip.innerText = tooltipText;
+                    document.body.appendChild(tooltip);
+                }
+
+                tooltip.style.display = "block";
+                tooltip.style.left = `${e.pageX + 10}px`;
+                tooltip.style.top = `${e.pageY}px`;
+            });
+
+            link.addEventListener("mousemove", (e) => {
+                if (tooltip) {
+                    tooltip.style.left = `${e.pageX + 10}px`;
+                    tooltip.style.top = `${e.pageY}px`;
+                }
+            });
+
+            link.addEventListener("mouseleave", () => {
+                if (tooltip) {
+                    tooltip.remove(); // Remove a tooltip do DOM
+                    tooltip = null; // Reseta a variável para evitar múltiplas criações
+                }
+            });
+        }
+    });
+});

@@ -19,7 +19,7 @@
     <div id="sidebar_content">
         <ul id="side-items">
             <li class="side-item">
-                <a href="inicio.html" class="side-link">
+                <a href="inicio.html" class="side-link" data-tooltip="Página Inicial">
                     <img src="assets/home_black.png" ></img>
                     <span class="item-description">
                         Página Principal
@@ -27,7 +27,7 @@
                 </a>
             </li>
             <li class="side-item">
-                <a href="pedido.html" class="side-link">
+                <a href="pedido.html" class="side-link" >
                     <img src="assets/vendas_black.png"></img>
                     <span class="item-description">
                         Vendas
@@ -36,14 +36,14 @@
                 <ul>
                     <li class="side-item">
                         <a href="pedido.html" class="side-link">
-                            <img src="assets/Pedidos.png" class="sub-img"></img>
+                            <img src="assets/Pedidos.png" class="sub-img" data-tooltip="Pedidos"></img>
                             <span class="item-description">
                                 Emissão de Pedidos
                             </span>
                         </a>
                     </li>
                     <li class="side-item">
-                        <a href="consultaPedidos.html" class="side-link">
+                        <a href="consultaPedidos.html" class="side-link" data-tooltip="Consulta de Pedidos">
                             <img src="assets/filtro.png" class="sub-img"></img>
                             <span class="item-description">
                                 Consulta de Pedidos
@@ -54,10 +54,18 @@
             </li>
 
             <li class="side-item">
-                <a href="cad_produto.html" class="side-link">
+                <a href="cad_produto.html" class="side-link" data-tooltip="Estoque">
                     <img src="assets/estoque.png"></img>
                     <span class="item-description">
                         Estoque
+                    </span>
+                </a>
+            </li>
+            <li class="side-item">
+                <a href="adm.html" class="side-link" data-tooltip="Administrador">
+                    <img src="assets/Adm.png"></img>
+                    <span class="item-description">
+                        Administrador
                     </span>
                 </a>
             </li>
@@ -72,6 +80,12 @@
             <span class="item-description">
                 Configurações
             </span>
+        </button>
+
+        <!-- Botão de Logout -->
+        <button id="logout_btn">
+            <img src="assets/Sair-50.png"></img>
+            <span class="item-description">Sair</span>
         </button>
     </div>
 </nav>
