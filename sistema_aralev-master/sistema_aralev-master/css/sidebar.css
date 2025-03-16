@@ -28,7 +28,7 @@
     flex-direction: column;
     justify-content: space-between;
     background-color: #fff;
-    height: 100vh;
+    min-height: 100vh;
     position: relative;
     transition: all .5s;
     min-width: 82px;
@@ -83,6 +83,20 @@
 
 .side-item ul {
     width: 100%;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 1000;
+    transition: opacity 0.2s ease-in-out;
 }
 
 /* Destacar a cor de fundo e do texto quando o link estiver ativo */
@@ -207,4 +221,34 @@
 .side-item a .sub-img {
     width: 35px;
     height: 35px;
+}
+
+#config {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento entre os botões */
+    align-items: center;
+    padding: 10px;
+}
+
+#logout_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #d9534f; /* Cor vermelha para destacar o logout */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+#logout_btn span {
+    font-size: 22px;
+}
+
+#logout_btn:hover {
+    background-color: #c9302c;
 }
