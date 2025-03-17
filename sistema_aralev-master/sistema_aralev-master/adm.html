@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/cadUsuarios.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -50,13 +51,13 @@
         </div>
         <!-- Seção do formulário de cadastro de produtos -->
         <div class="secao-cadastro">
-            <div class="container_frm_cadastro">
+            <div class="container_frm_cad_usuarios">
                 <div class="container-cadastro">
                     <div class="frm_titulo">
                         <img src="assets/cad_produtos.png" alt="Caixa de produtos">
                         <h1>Cadastro de usuários</h1>
                     </div>
-                        <form action="#" method="post">
+                        <form class="frm_cadUsuarios" action="#" method="post">
                             <fieldset>
                                 <legend>Informações do Usuário</legend>
                                 <div class="linha"></div>
@@ -86,11 +87,10 @@
                                
                             </fieldset>
                            
-                            <div class="container-enviar-dados">
-                                <button id="cancelar" class="btn_cancelar" type="reset">Cancelar</button>
+                            <div class="container-salvar-dados">
+                                <button id="remover" class="btn_remover" type="reset">Remover</button>
                                 <button class="btn_editar"  onclick="abrirPopUp()">Atualizar</button>
                                 <button class="btn_salvar"  onclick="abrirPopUp()">Cadastrar</button>
-                                
                             </div>
                         </form>
                     <!-- PopUp de confirmação do cadastro de pedidos -->
@@ -104,15 +104,15 @@
                 </div>
                 <div class="container-usuarios">
                     <h1>Usuários Cadastrados</h1>
-                    <table>
+                    <table class="table-cad-usuarios">
                         <thead>
-                            <th>
-                                <td>ID</td>
-                                <td>Nome</td>
-                                <td>Login</td>
-                                <td>Senha</td>
-                                <td>Nível Acesso</td>
-                            </th>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Login</th>
+                                <th>Senha</th>
+                                <th>Nível Acesso</th>
+                            </tr>
                         </thead>
                         <body id="tabela-usuarios">
                             <!-- Os dados do banco de dados serão inseridos aqui -->

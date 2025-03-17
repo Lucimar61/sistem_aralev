@@ -211,11 +211,12 @@ header,
 
 .container_frm_cadastro {
     display: flex;
-    gap: 40px;
+    justify-content: space-between;
+    align-items: flex-start;
     background-color: #fff;
     margin: 20px;
     border-radius: 15px;
-    height: 97%;
+    height: 96%;
 }
 
 .container_frm_pedido {
@@ -240,7 +241,6 @@ header,
 .frm_titulo {
     padding: 20px;
     max-width: 1024px;
-
 }
 
 .frm_titulo {
@@ -261,14 +261,14 @@ header,
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 20px;
     border: none;
     padding: 15px;
 }
 
 .container_frm_cadastro form fieldset legend,
 .container_frm_pedido form fieldset legend {
-    font-size: 24px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -328,11 +328,11 @@ header,
 
 .container-enviar-dados button,
 .container-enviar-pedido button {
-    padding: 15px;
-    width: 180px;
+    padding: 10px;
+    width: 150px;
     border: none;
     border-radius: 4px;
-    font-size: 28px;
+    font-size: 24px;
     cursor: pointer;
 }
 
@@ -342,14 +342,9 @@ header,
 }
 
 .btn_cancelar:hover,
-.btn_salvar:hover,
-.btn_emitir:hover,
-.btn_editar:hover {
+.btn_emitir:hover {
     background-color: #cccccc80;
     color: #000;
-}
-.cancelar img {
-    width: 35px;
 }
 
 #btn_cancelar button {
@@ -512,28 +507,8 @@ table {
     border: 1px solid black;
 }
 
-/* ======== Estilização da Tabela de Usuários ======== */
-.container-usuarios {
-    width: 50%;
-    margin: 20px auto;
-    padding: 10px;
-}
 
-.container-usuarios h1 {
-    text-align: center;
-    font-size: 38px;
-    margin-bottom: 20px;
-}
-
-/* Estilização da tabela */
-.container-usuarios table {
-    width: 90%;
-    border-collapse: collapse;
-    overflow: auto;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
+/*
 thead {
     background-color: #004080;
     color: white;
@@ -554,33 +529,33 @@ tbody tr:hover {
     background-color: rgba(0, 64, 128, 0.1);
 }
 
-/* Células da tabela */
+/* Células da tabela 
 td, th {
     padding: 10px;
     text-align: left;
 }
 
-/* Estiliza as células da tabela para manter o alinhamento */
+/* Estiliza as células da tabela para manter o alinhamento 
 td {
     color: #fff;
 }
 
-/* Linhas alternadas */
+/* Linhas alternadas 
 tbody tr:nth-child(odd) {
     background-color: #f9f9f9;
 }
-
-/* Responsividade */
+*/
+/* Responsividade 
 @media screen and (max-width: 768px) {
     .container-usuarios {
         width: 95%;
         overflow-x: auto;
     }
 
-    table {
-        width: 100%;
+    .container-usuarios table {
+        width: 90%;
         display: block;
-        overflow-x: auto;
+        overflow-x: scroll;
         white-space: nowrap;
     }
 
@@ -612,4 +587,4 @@ tbody tr:nth-child(odd) {
         font-weight: bold;
         text-transform: uppercase;
     }
-}
+}*/

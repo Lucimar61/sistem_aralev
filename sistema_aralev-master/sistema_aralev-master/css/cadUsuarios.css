@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+
+.container_frm_cad_usuarios {
+    flex: 1;
+    display: flex; /* Ativa o layout flexível */
+    justify-content: space-between; /* Espaço uniforme entre os containers */
+    align-items: flex-start; /* Alinha os elementos ao topo */
+    background-color: #fff;
+    margin: 10px;
+    border-radius: 10px;
+    height: 97%;
+    overflow: hidden;
+}
+
+/* ======== Estilização da Tabela de Usuários ======== */
+/* Define os containers "cadastro" e "usuarios" com 50% da largura */
+.container-cadastro {
+    width: 40%;;
+    padding: 10px;
+    box-sizing: border-box; /* Evita que padding afete o tamanho total */
+}
+
+.container-usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-x: auto; /* Habilita scroll horizontal se a tabela ultrapassar o container */
+}
+
+.frm_cadUsuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.frm_cadUsuarios input, select {
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.container-cadastro fieldset {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: none;
+    padding: 10px;
+}
+
+.container-salvar-dados {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+
+.container-salvar-dados button {
+    border: none;
+    border-radius: 4px;
+    width: 25%;
+}
+
+.btn_remover {
+    background-color: red;
+    color: #fff;
+}
+
+.btn_editar {
+    background-color: #857b7b;
+}
+
+.btn_editar:hover,
+.btn_salvar:hover,
+.btn_remover:hover {
+    background-color: #cccccc80;
+    color: #000;
+}
+
+/* ======== Estilização da Tabela de Usuários ======== */
+/* Define os containers "cadastro" e "usuarios" com 50% da largura */
+.table-cad-usuarios {
+    padding: 5px 0px;
+    border-collapse: collapse;
+    width: 100%; /* Garante que a tabela ocupe toda a largura disponível */
+    table-layout: fixed; /* Faz com que as colunas respeitem as larguras definidas */
+}
+
+.container-usuarios th,
+.container-usuarios td {
+    border: 1px solid #000;
+    font-size: 12px;
+    text-align: left; /* Alinha o texto à esquerda */
+}
+
+.container-usuarios th:nth-child(1), 
+.container-usuarios td:nth-child(1) {
+    width: 3%; /* Tamanho reduzido para a coluna do ID */
+    min-width: 50px; /* Garante que o conteúdo não quebre */
+    text-align: center; /* Centraliza o ID */
+}
+
+/* Ajusta as larguras das outras colunas */
+.container-usuarios th:nth-child(2),
+.container-usuarios td:nth-child(2),
+.container-usuarios th:nth-child(3),
+.container-usuarios td:nth-child(3),
+.container-usuarios th:nth-child(4),
+.container-usuarios td:nth-child(4),
+.container-usuarios th:nth-child(5),
+.container-usuarios td:nth-child(5) {
+    width: 5%; /* Largura reduzida para outras colunas */
+}
+
+
+
+
+/* Para evitar problemas de responsividade */
+@media (max-width: 768px) {
+
+    #sidebar {
+        width: 82px;
+    }
+
+    .container_frm_cad_usuarios {
+        flex-direction: column; /* Em telas pequenas, empilha os containers */
+    }
+
+    .frm_cadUsuarios {
+        flex-shrink: 1;
+        flex-direction: column;
+    }
+
+    .container-cadastro, .container-usuarios {
+        width: 100%; /* Em telas pequenas, ocupam toda a largura */
+    }
+}
