@@ -358,3 +358,48 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// Adicionar novo produto
+function adicionarProduto() {
+    // Obtém o container onde os produtos serão adicionados
+    const container = document.getElementById("produtos-container");
+
+    // Cria um novo bloco de produto
+    const novoProduto = document.createElement("div");
+    novoProduto.classList.add("produto");
+
+    // Define o conteúdo HTML dos novos campos
+    novoProduto.innerHTML = `
+        <div  class="campo-cad">
+        <label>Produto</label>
+        <select name="nome_produto[]" required>
+            <option value="telha">Telha</option>
+            <option value="tijolo">Tijolo</option>
+            <option value="ferragem">ferragem</option>
+        </select>
+        </div>
+        <div class="campo-cad">
+            <label>Subtotal</label>
+            <input type="number" name="quantidade_produto[]" placeholder="Ex.: 10 UN">
+        </div>
+        <div class="campo-cad">
+            <label>Desconto</label>
+            <input type="text" name="desconto[]" placeholder="Ex.: R$ 5.00,00">
+        </div>
+        <div class="campo-cad">
+            <label>Subtotal</label>
+            <input type="text" name="subtotal[]" placeholder="Ex.: R$ 10.00,00">
+        </div>
+
+        <button class="remover_produto" type="button" class="remover_produto" onclick="removerProduto(this)"><img src="assets/excluir.png"</button>
+    `;
+
+    // Adiciona o novo bloco ao container
+    container.appendChild(novoProduto);
+    
+}
+
+// Função para remover um produto
+function removerProduto(botao) {
+    botao.parentElement.remove(); // Remove o bloco do produto correspondente
+}

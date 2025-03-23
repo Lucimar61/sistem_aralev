@@ -16,27 +16,34 @@
 }
 
 #user_avatar {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
     background-color: #000;
     border-radius: 100%;
 }
 
 #sidebar {
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     background-color: #fff;
     min-height: 100vh;
     position: relative;
     transition: all .5s;
     min-width: 82px;
     z-index: 2;
+    overflow-y: auto; /* Permite scroll dentro do sidebar se necessário */
+}
+
+#config {
+    position: absolute;
+    border-top: 1 px solid var(--cor-hover);
+    width: 100%;
+    bottom: 0;
 }
 
 #open_btn {
-    width: 80px;
     margin: 20px auto;
     width: 60px;
     height: 60px;
@@ -76,7 +83,7 @@
 }
 
 .side-item {
-    padding: 14px;
+    padding: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -126,22 +133,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
-    gap: 14px;
+    width: 40px;
+    height: 40px;
+    gap: 10px;
 }
 
-#config {
-    border-top: 1 px solid var(--cor-hover);
-    padding-bottom: 12px;
-    width: 100%;
-}
+
 
 #config_btn {
     border: none;
     width: 100%;
-    padding: 12px;
-    font-size: 14px;
+    font-size: 12px;
+    color: #000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -157,15 +160,15 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size: 14px;
+    font-size: 12px;
     transition: width .6s;
     height: 0px;
-    text-align: center;
+    text-align: left;
 }
 
 /* Estilo da sidebar aberta */
 #sidebar.open-sidebar {
-    min-width: 15%;
+    min-width: 17%;
 }
 
 #sidebar.open-sidebar .item-description {
@@ -175,7 +178,7 @@
 
 #sidebar.open-sidebar .side-item a {
     justify-content: flex-start;
-    gap: 14px;
+    gap: 12px;
 }
 
 /* Esconde as subcategorias dentro de Vendas */
@@ -249,6 +252,12 @@
     font-size: 22px;
 }
 
+#logout_btn img,
+#config img {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+}
 #logout_btn:hover {
     background-color: #c9302c;
 }

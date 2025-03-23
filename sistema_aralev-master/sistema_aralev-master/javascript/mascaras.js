@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     feedback.style.color = "red";
     feedback.style.fontSize = "14px";
+    const campoCadCpf = cpfInput.closest('.campo-cad'); // Encontra o elemento mais próximo com a classe .campo-cad
+    feedback.classList.add("feedback"); // Adiciona a classe feedback
     cpfInput.parentElement.appendChild(feedback);
 
     // Função para validar o CPF
@@ -94,5 +96,8 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             feedback.textContent = ""; // Limpa o feedback enquanto o CPF não estiver completo
         }
+
+        // Diminuir o tamanho da fonte do feedback
+        feedback.style.fontSize = "10px";
     });
 });

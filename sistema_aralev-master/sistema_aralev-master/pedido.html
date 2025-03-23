@@ -108,29 +108,31 @@
                         <fieldset>
                             <legend>Produtos</legend>
                             <div class="linha"></div>
-                            <div class="info-produtos">
-                                <div  class="campo-cad tamanho-personalizado">
-                                    <label>Produto</label>
-                                    <select name="nome_produto">
-                                        <option value="telha">Telha</option>
-                                        <option value="tijolo">Tijolo</option>
-                                        <option value="ferragem">ferragem</option>
-                                    </select>
-                                </div>
-                                <div class="campo-cad">
-                                    <label>Subtotal</label>
-                                    <input type="number" name="quantidade_produto" placeholder="Ex.: 10 UN">
-                                </div>
-                                <div class="campo-cad">
-                                    <label>Desconto</label>
-                                    <input type="text" name="desconto" placeholder="Ex.: R$ 5.00,00">
-                                </div>
-                                <div class="campo-cad">
-                                    <label>Subtotal</label>
-                                    <input type="text" name="subtotal" placeholder="Ex.: R$ 10.00,00">
-                                </div>
-                                <div class="container_novo_produto">
-                                    <button class="add_produto"><img src="assets/add_produto.png" alt="Adicionar novo produto"></button>
+                            <div id="produtos-container">
+                                <div class="info-produtos">
+                                    <div  class="campo-cad">
+                                        <label>Produto</label>
+                                        <select name="nome_produto[]" required>
+                                            <option value="telha">Telha</option>
+                                            <option value="tijolo">Tijolo</option>
+                                            <option value="ferragem">ferragem</option>
+                                        </select>
+                                    </div>
+                                    <div class="campo-cad">
+                                        <label>Subtotal</label>
+                                        <input type="number" name="quantidade_produto[]" placeholder="Ex.: 10 UN">
+                                    </div>
+                                    <div class="campo-cad">
+                                        <label>Desconto</label>
+                                        <input type="text" name="desconto[]" placeholder="Ex.: R$ 5.00,00">
+                                    </div>
+                                    <div class="campo-cad">
+                                        <label>Subtotal</label>
+                                        <input type="text" name="subtotal[]" placeholder="Ex.: R$ 10.00,00">
+                                    </div>
+                                    <div class="container_novo_produto">
+                                        <button class="add_produto" onclick="adicionarProduto()"><img src="assets/add_produto.png" alt="Adicionar novo produto"></button>
+                                    </div>
                                 </div>
                             </div>
                         </fieldset>
@@ -138,7 +140,7 @@
                             <legend>Pagamento</legend>
                             <div class="linha"></div>
                             <div class="info-produtos">
-                                <div  class="campo-cad tamanho-personalizado">
+                                <div  class="campo-cad">
                                     <label>Forma de Pagamento</label>
                                     <select name="forma_pagamento">
                                         <option value="cartao_credito">Cartão de crédito</option>
@@ -172,6 +174,12 @@
             </div>
         </div>
     </main>
+    <!-- Carregar jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Carregar jQuery Mask Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="javascript/script.js"></script>
+    <script src="javascript/mascaras.js"></script>
 </body>
 </html>
