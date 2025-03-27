@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/pedidos.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/popUp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -166,10 +167,18 @@
                         <div class="container-enviar-pedido">
 
                             <button id="cancelar" class="btn_cancelar" type="reset">Cancelar</button>
-                            <button class="btn_emitir" type="button">Emitir</button>
+                            <button class="btn_emitir" type="button" onclick="abrirPopUp()">Emitir</button>
                         
                         </div>
                     </form>
+                    <!-- PopUp de confirmação do cadastro de pedidos -->
+                    <div id="popUp" class="popUp">
+                        <div class="popUp-container">
+                            <p>Você está prestes a emitir um pedido. <strong>Tem certeza que deseja cadastrar esse pedido?</strong></p>
+                            <button id="close_popUp" class="btn_cancelar" onclick="fecharPopUp()">Cancelar</button>
+                            <button id="open_popUp" class="btn_salvar" type="submit">Salvar</button> <!-- type="submit" correto -->
+                        </div>
+                    </div>
                 
             </div>
         </div>
