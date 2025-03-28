@@ -11,7 +11,7 @@
     justify-content: center;
     gap: 8px;
     margin-bottom: 20px;
-    padding: 20px;
+    
 }
 
 #user_avatar {
@@ -25,9 +25,7 @@
 
 /* Quando a sidebar estiver fechada, reduz o avatar */
 #sidebar:not(.open-sidebar) #user_avatar {
-    width: 50px;
-    height: 50px;
-   /* transform: scale(0.4); /* Usa escala ao invés de mudar width/height diretamente */
+   transform: scale(0.4); /* Usa escala ao invés de mudar width/height diretamente */
 }
 
 #sidebar {
@@ -92,6 +90,12 @@
     padding: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side-item a.active {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-branca);
+    font-weight: bold;
 }
 
 .side-item ul {

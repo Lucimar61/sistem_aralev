@@ -8,26 +8,21 @@ function adicionarEventosSidebar() {
 }
 
 // Função para definir o link ativo na sidebar
-function destacarPaginaAtual() {
-    // Obtém a URL da página
-    let paginaAtual = window.location.pathname.split("/").pop();
-    console.log(`Página Atual: ${paginaAtual}`); // Verifica se o valor está correto
-
-    // Seleciona todos os links da sidebar
-    let links = document.querySelectorAll(".side-item a");
+function destacarPaginaAtiva() {
+    const links = document.querySelectorAll(".side-item a"); // Seleciona todos os links da sidebar
+    const paginaAtual = window.location.pathname; // Obtém o caminho da URL atual
 
     links.forEach(link => {
-        let href = link.getAttribute("href").split("/").pop(); // Obtém o nome do arquivo do href
-        console.log(`Verificando link: ${href}`);
-        // Se o href do link contém o nome da página atual, adiciona a classe 'active'
-        if (link.getAttribute("href").split("/").pop() === paginaAtual) {
-            link.classList.add("active");
-            console.log(`✅ Classe active adicionada ao link: ${href}`);
+        if (link.href.includes(paginaAtual)) {
+            link.classList.add("active"); // Adiciona a classe 'active' no link correspondente
         } else {
-            link.classList.remove("active");
+            link.classList.remove("active"); // Remove de outros links, caso haja troca de página
         }
     });
 }
+
+// Chama a função ao carregar a página
+document.addEventListener("DOMContentLoaded", destacarPaginaAtiva);
 
 // Executa a função após carregar a sidebar
 document.addEventListener("DOMContentLoaded", destacarPaginaAtual);
