@@ -11,18 +11,13 @@
    --cor-azul-principal: #005DB5;
 }
 
-html, body {
-    height: 100%;
-    width: 100%;
+body {
     display: flex;
-    flex-direction: ;
-    overflow: hidden;
+    min-height: 100vh;
 }
 main {
     flex: 1;
     width: 100%;
-    min-height: 90vh;
-    overflow-y: auto;
 }
 
 /* Seção cabeçalho */

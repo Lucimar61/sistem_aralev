@@ -4,7 +4,6 @@
 }
 
 /* Seção Sidebar */
-
 #user {
     display: flex;
     flex-direction: column;
@@ -16,11 +15,19 @@
 }
 
 #user_avatar {
-    width: 50px;
-    height: 50px;
+    width: 100px; /* Mantém o tamanho normal */
+    height: 100px;
     object-fit: cover;
     background-color: #000;
     border-radius: 100%;
+    transition: transform 0.4s ease-in-out; /* Transição mais fluida */
+}
+
+/* Quando a sidebar estiver fechada, reduz o avatar */
+#sidebar:not(.open-sidebar) #user_avatar {
+    width: 50px;
+    height: 50px;
+   /* transform: scale(0.4); /* Usa escala ao invés de mudar width/height diretamente */
 }
 
 #sidebar {
@@ -54,12 +61,11 @@
     height: 60px;
     border: none;
     cursor: pointer;
-    background-color: #00498F;
+    background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 
 .open-sidebar #open_btn_icon {
     transform: rotate(90deg);
@@ -67,12 +73,6 @@
 #open_btn {
     transform: rotate(90deg);
     padding: 10px;
-}
-
-#user_infos {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 #user_infos span:last-child {
@@ -184,6 +184,13 @@
 #sidebar.open-sidebar .item-description {
     width: 150px;
     height: auto;
+    transition: opacity 0.4s ease-in-out, width 0.4s ease-in-out;
+}
+
+/* Quando a sidebar for aberta, os textos reaparecem gradualmente */
+#sidebar.open-sidebar .item-description {
+    opacity: 1;
+    width: 150px; /* Ajuste conforme necessário */
 }
 
 #sidebar.open-sidebar .side-item a {
