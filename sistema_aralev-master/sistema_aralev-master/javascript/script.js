@@ -7,19 +7,6 @@ function adicionarEventosSidebar() {
     });
 }
 
-// Função para definir o link ativo na sidebar
-function destacarPaginaAtiva() {
-    const links = document.querySelectorAll(".side-item a"); // Seleciona todos os links da sidebar
-    const paginaAtual = window.location.pathname; // Obtém o caminho da URL atual
-
-    links.forEach(link => {
-        if (link.href.includes(paginaAtual)) {
-            link.classList.add("active"); // Adiciona a classe 'active' no link correspondente
-        } else {
-            link.classList.remove("active"); // Remove de outros links, caso haja troca de página
-        }
-    });
-}
 
 // Chama a função ao carregar a página
 document.addEventListener("DOMContentLoaded", destacarPaginaAtiva);
@@ -428,3 +415,44 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector("form").submit();
     });
 });
+
+// Função para editar o acesso dos usuários
+function editarLinha(botao) {
+    let linha = botao.closest('tr');
+    let editando = linha.dataset.editando === "true";
+
+    if (!editando) {
+        linha.querySelectorAll('td[contenteditable]').forEach(td => td.contentEditable = "true");
+        botao.innerHTML = '<i class="fa fa-save"></i>';
+        linha.dataset.editando = "true";
+    } else {
+        linha.querySelectorAll('td[contenteditable]').forEach(td => td.contentEditable = "false");
+        botao.innerHTML = '<i class="fa fa-edit"></i>';
+        linha.dataset.editando = "false";
+        // Adicione aqui a lógica para salvar as alterações no banco de dados
+    }
+}
+
+// Função para excluir o acesso dos usuários
+function excluirLinha(botao) {
+    if (confirm("Tem certeza que deseja excluir este usuário?")) {
+        let linha = botao.closest('tr');
+        linha.remove();
+        // Adicione aqui a lógica para remover o usuário do banco de dados
+    }
+}
+
+// Exibindo a senha do usuário
+
+function toggleSenha(botao) {
+    let senhaTd = botao.closest('tr').querySelector('.senha');
+    if (senhaTd.textContent === "****") {
+        senhaTd.textContent = senhaTd.dataset.senha;
+        botao.innerHTML = '<i class="fa fa-eye-slash"></i>';
+        botao.setAttribute("data-tooltip", "Ocultar senha");
+    } else {
+        senhaTd.textContent = "****";
+        botao.innerHTML = '<i class="fa fa-eye"></i>';
+        botao.setAttribute("data-tooltip", "Mostrar senha");
+    }
+}

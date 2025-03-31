@@ -19,9 +19,14 @@
 
 .frm_cadUsuarios {
     display: flex;
-    width: 70%;
+    width: 100%;
     flex-direction: column;
     gap: 10px;
+}
+
+.frm_cadUsuarios .tamanho-personalizado,
+.frm_cadUsuarios .linha {
+    width: 40%;
 }
 
 .frm_cadUsuarios input, select {
@@ -31,7 +36,9 @@
 }
 
 .frm_cadUsuarios fieldset {
-    
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     border: none;
     padding: 15px;
     background-color: f9f9f9;
@@ -102,6 +109,7 @@
 .container-usuarios td {
     font-size: 12px;
     text-align: left; /* Alinha o texto à esquerda */
+    white-space: nowrap;
 }
 
 .table-cad-usuarios tbody tr:nth-of-type(odd) {
@@ -123,8 +131,32 @@
 .container-usuarios th:nth-child(4),
 .container-usuarios td:nth-child(4),
 .container-usuarios th:nth-child(5),
-.container-usuarios td:nth-child(5) {
+.container-usuarios td:nth-child(5),
+.container-usuarios th:nth-child(6),
+.container-usuarios td:nth-child(6) {
     width: 5%; /* Largura reduzida para outras colunas */
+}
+
+.editar,
+.excluir,
+.toggle-password {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px;
+}
+
+.editar i {
+    color: blue;
+}
+
+.excluir i {
+    color: red;
+}
+
+.toggle-password {
+    color: #000;
 }
 
 
