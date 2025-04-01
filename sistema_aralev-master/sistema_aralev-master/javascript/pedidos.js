@@ -10,15 +10,25 @@ function fecharPopup() {
 
 // Função para exportar a tabela
 function exportarTabela(formato) {
-    if (formato === 'csv') {
-        exportarParaCSV();
+    if (formato === 'xlsx') {
+        exportarParaXLSX();
     } else if (formato === 'pdf') {
         exportarParaPDF();
     }
     fecharPopup();
 }
 
+function exportarParaXLSX() {
+    var tabela = document.querySelector('table'); // Seleciona a tabela
+    var ws = XLSX.utils.table_to_sheet(tabela); // Converte a tabela em uma planilha
+    var wb = XLSX.utils.book_new(); // Cria um novo livro de trabalho
+    XLSX.utils.book_append_sheet(wb, ws, "Relatorio"); // Adiciona a planilha ao livro
+
+    XLSX.writeFile(wb, 'relatorio_pedidos.xlsx'); // Salva o arquivo
+}
+
 // Função para exportar a tabela como CSV
+/*
 function exportarParaCSV() {
     var tabela = document.querySelector('table'); // Seleciona a tabela
     var linhas = tabela.querySelectorAll('tr');
@@ -42,7 +52,7 @@ function exportarParaCSV() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
+} */
 
 // Função para exportar a tabela como PDF
 function exportarParaPDF() {

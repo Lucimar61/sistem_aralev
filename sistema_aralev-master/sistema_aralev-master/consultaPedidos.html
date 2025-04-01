@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Ysabeau+Infant&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <title>Buscar Pedidos</title>
 </head>
 <body>
@@ -179,7 +180,7 @@
                         </div>
                        <div class="export">
                             <p>Escolha o formato para exportar os dados:</p>
-                            <button onclick="exportarTabela('csv')">Exportar como CSV</button>
+                            <button onclick="exportarTabela('xlsx')">Exportar como XLSX</button>
                             <button onclick="exportarTabela('pdf')">Exportar como PDF</button>
                        </div>
                     </div>

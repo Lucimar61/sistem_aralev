@@ -9,7 +9,7 @@ function adicionarEventosSidebar() {
 
 
 // Chama a função ao carregar a página
-document.addEventListener("DOMContentLoaded", destacarPaginaAtiva);
+//document.addEventListener("DOMContentLoaded", destacarPaginaAtiva);
 
 // Executa a função após carregar a sidebar
 document.addEventListener("DOMContentLoaded", destacarPaginaAtual);
@@ -75,7 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
     selecionarTodos.addEventListener("change", function () {
         // recebe true se o usuário marcou "Selecionar Todos", ou false se desmarcou.
         const isChecked = this.checked;
-
         // Percorremos todos os checkboxes da tabela.
         // Para cada um, encontramos a linha correspondente (linha.closest("tr")).
         // Se a linha tiver dados (linhaHasData(linha)):
@@ -109,7 +108,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Se o número de checkboxes marcados for igual ao número de linhas na tabela (tbody tr), significa que todas as linhas preenchidas
         // estão selecionadas, então "Selecionar Todos" deve ficar marcado.
         // Caso contrário, ele fica desmarcado.
-        selecionarTodos.checked = checkboxesMarcados.length === document.querySelectorAll("tbody tr").length;
+        const linhasPreenchidas = Array.from(document.querySelectorAll("tbody tr")).filter(linhaHasData);
+        selecionarTodos.checked = checkboxesMarcados.length === linhasPreenchidas.length;
+        //selecionarTodos.checked = checkboxesMarcados.length === document.querySelectorAll("tbody tr").length;
     }
 });
 
@@ -144,136 +145,136 @@ document.addEventListener("DOMContentLoaded", function () {
             const celulas = linha.querySelectorAll("td"); // Pega todas as células da linha
             const checkbox = linha.querySelector(".checkbox"); // Verifica se há checkbox na linha
             
-            
             if (colunaIndex !== undefined && celulas[colunaIndex]) {
                 const textoCelula = celulas[colunaIndex].textContent.toLowerCase();
 
                 // Se o termo de busca estiver presente no texto da célula, exibe a linha
                 if (textoCelula.includes(termo)) {
                     linha.style.display = "";
-                    if (checkbox) checkbox.disable = false; // Garante que o checkbox não fique desabilitado
+                    if (checkbox) checkbox.disabled = false; // Garante que o checkbox não fique desabilitado
                 } else {
                     linha.style.display = "none";
-                    if (checkbox) checkbox.disable = true; // Desabilita apenas visualmente, se necessário
+                    if (checkbox) checkbox.disabled = true; // Desabilita apenas visualmente, se necessário
                 }
             }
         });
     });
 });
 
+//
 // Código JavaScript para inserir os dados na tabela
-document.addEventListener("DOMContentLoaded", function () {
-    const btnEmitir = document.querySelector(".btn_emitir");
-    const form = document.querySelector("form");
+// document.addEventListener("DOMContentLoaded", function () {
+//     const btnEmitir = document.querySelector(".btn_emitir");
+//     const form = document.querySelector("form");
 
-    btnEmitir.addEventListener("click", function (event) {
-        event.preventDefault(); // Evita recarregar a página
+//     btnEmitir.addEventListener("click", function (event) {
+//         event.preventDefault(); // Evita recarregar a página
 
-        // Capturar os valores do formulário
-        const nome = form.nome_cliente.value.trim();
-        const celular = form.num_celular.value.trim();
-        const cpfCnpj = form.cpf_ou_cnpj.value.trim();
-        const rua = form.nome_rua.value.trim();
-        const numero = form.numero_casa.value.trim();
-        const UF = form.UF.value.trim();
-        const cidade = form.cidade.value.trim();
-        const produto = form.nome_produto.value.trim();
-        const quantidade = form.quantidade_produto.value.trim();
-        const desconto = form.desconto.value.trim();
-        const subtotal = form.subtotal.value.trim();
-        const forma_pgto = form.forma_pagamento.value.trim();
-        const parcelas = form.quantidade_parcelas.value.trim();
-        const total = form.total_pagamento.value.trim();
-        const dataVencimento = form.vencimento_pg.value.trim();
+//         // Capturar os valores do formulário
+//         const nome = form.nome_cliente.value.trim();
+//         const celular = form.num_celular.value.trim();
+//         const cpfCnpj = form.cpf_ou_cnpj.value.trim();
+//         const rua = form.nome_rua.value.trim();
+//         const numero = form.numero_casa.value.trim();
+//         const UF = form.UF.value.trim();
+//         const cidade = form.cidade.value.trim();
+//         const produto = form.nome_produto.value.trim();
+//         const quantidade = form.quantidade_produto.value.trim();
+//         const desconto = form.desconto.value.trim();
+//         const subtotal = form.subtotal.value.trim();
+//         const forma_pgto = form.forma_pagamento.value.trim();
+//         const parcelas = form.quantidade_parcelas.value.trim();
+//         const total = form.total_pagamento.value.trim();
+//         const dataVencimento = form.vencimento_pg.value.trim();
 
+//         // Verificar se os campos obrigatórios estão preenchidos
+//         if (
+//             !nome || !celular || !cpfCnpj || !rua || !numero || !cidade || !UF ||
+//             !produto || !quantidade || !desconto || !subtotal || !forma_pgto ||
+//             !parcelas || !total || !dataVencimento
+//         ) {
+//             alert("Preencha todos os campos obrigatórios!");
+//             return;
+//         }
 
-        // Verificar se os campos obrigatórios estão preenchidos
-        if (
-            !nome || !celular || !cpfCnpj || !rua || !numero || !cidade || !UF ||
-            !produto || !quantidade || !desconto || !subtotal || !forma_pgto ||
-            !parcelas || !total || !dataVencimento
-        ) {
-            alert("Preencha todos os campos obrigatórios!");
-            return;
-        }
+//         // Criar um ID aleatório para simular um pedido
+//         const pedidoID = Date.now();
 
-        // Criar um ID aleatório para simular um pedido
-        const pedidoID = Date.now();
+//         // Salvar os dados no localStorage (como um objeto)
+//         const pedido = {
+//             pedidoID,
+//             nome,
+//             celular,
+//             cpfCnpj,
+//             rua,
+//             numero,
+//             UF,
+//             cidade,
+//             produto,
+//             quantidade,
+//             desconto,
+//             subtotal,
+//             forma_pgto,
+//             parcelas,
+//             total,
+//             dataVencimento
+//         };
 
-        // Salvar os dados no localStorage (como um objeto)
-        const pedido = {
-            pedidoID,
-            nome,
-            celular,
-            cpfCnpj,
-            rua,
-            numero,
-            UF,
-            cidade,
-            produto,
-            quantidade,
-            desconto,
-            subtotal,
-            forma_pgto,
-            parcelas,
-            total,
-            dataVencimento
-        };
+//         // Recuperar pedidos existentes ou criar um novo array
+//         let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+//         pedidos.push(pedido);
 
-        // Recuperar pedidos existentes ou criar um novo array
-        let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
-        pedidos.push(pedido);
-
-        // Atualizar no localStorage
-        localStorage.setItem('pedidos', JSON.stringify(pedidos));
+//         // Atualizar no localStorage
+//         localStorage.setItem('pedidos', JSON.stringify(pedidos));
         
-        // Resetar o formulário após a inserção
-        form.reset();
+//         // Resetar o formulário após a inserção
+//         form.reset();
 
-        // Exibir uma mensagem de sucesso
-        alert("Pedido salvo com sucesso!");
-    });
-});
+//         // Exibir uma mensagem de sucesso
+//         alert("Pedido salvo com sucesso!");
+//     });
+// });
+// //
 
-// Código para exibir os dados na tabela (consultasPedidos.html):
+// // // Código para exibir os dados na tabela (consultasPedidos.html):
+// document.addEventListener("DOMContentLoaded", function () {
+//     const tabelaPedidos = document.getElementById("tabela-pedidos");
 
-document.addEventListener("DOMContentLoaded", function () {
-    const tabelaPedidos = document.getElementById("tabela-pedidos");
+//     // Recuperar os dados dos pedidos do localStorage
+//     const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
 
-    // Recuperar os dados dos pedidos do localStorage
-    const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+//     // Se existirem pedidos, adicioná-los na tabela
+//     pedidos.forEach(function(pedido) {
+//         const newRow = document.createElement("tr");
 
-    // Se existirem pedidos, adicioná-los na tabela
-    pedidos.forEach(function(pedido) {
-        const newRow = document.createElement("tr");
+//         newRow.innerHTML = `
+//             <td class="checkbox-check">
+//                 <input type="checkbox" class="checkbox">
+//             </td>
+//             <td>${pedido.pedidoID}</td> <!-- ID pode ser gerado automaticamente no futuro -->
+//             <td>${pedido.nome}</td>
+//             <td>${pedido.cpfCnpj}</td>
+//             <td>${pedido.celular}</td>
+//             <td>${pedido.rua}</td>
+//             <td>${pedido.numero}</td>
+//             <td>${pedido.UF}</td> 
+//             <td>${pedido.cidade}</td>
+//             <td>${pedido.produto}</td>
+//             <td>${pedido.quantidade}</td>
+//             <td>${pedido.desconto}</td>
+//             <td>${pedido.subtotal}</td>
+//             <td>${pedido.forma_pgto}</td>
+//             <td>${pedido.parcelas}</td>
+//             <td>${pedido.total}</td>
+//             <td>${pedido.dataVencimento}</td>
+//         `;
 
-        newRow.innerHTML = `
-            <td class="checkbox-check">
-                <input type="checkbox" class="checkbox">
-            </td>
-            <td>${pedido.pedidoID}</td> <!-- ID pode ser gerado automaticamente no futuro -->
-            <td>${pedido.nome}</td>
-            <td>${pedido.cpfCnpj}</td>
-            <td>${pedido.celular}</td>
-            <td>${pedido.rua}</td>
-            <td>${pedido.numero}</td>
-            <td>${pedido.UF}</td> 
-            <td>${pedido.cidade}</td>
-            <td>${pedido.produto}</td>
-            <td>${pedido.quantidade}</td>
-            <td>${pedido.desconto}</td>
-            <td>${pedido.subtotal}</td>
-            <td>${pedido.forma_pgto}</td>
-            <td>${pedido.parcelas}</td>
-            <td>${pedido.total}</td>
-            <td>${pedido.dataVencimento}</td>
-        `;
+//         // Adicionar a nova linha ao tbody da tabela
+//         tabelaPedidos.appendChild(newRow);
+//     });
+// })
 
-        // Adicionar a nova linha ao tbody da tabela
-        tabelaPedidos.appendChild(newRow);
-    });
-})
-
+// Recuperação de senha
 document.addEventListener("DOMContentLoaded", function() {
     const linkRecuperacao = document.querySelector(".esqueceu-senha a");
     const formRecuperacao = document.getElementById("form-recuperacao");
@@ -300,91 +301,97 @@ document.getElementById("logout_btn").addEventListener("click", function () {
     }
 });
 
-// Adicionando Tooltips nos links de navegação
+// // Adicionando Tooltips nos links de navegação
+// document.addEventListener("DOMContentLoaded", function () {
+//     const sideLinks = document.querySelectorAll(".side-link");
+
+//     sideLinks.forEach(link => {
+//         const tooltipText = link.querySelector(".item-description")?.innerText.trim();
+
+//         if (tooltipText) {
+//             let tooltip; // Variável para armazenar a tooltip
+
+//             link.addEventListener("mouseenter", (e) => {
+//                 // Criar a tooltip apenas se ela não existir
+//                 if (!tooltip) {
+//                     tooltip = document.createElement("div");
+//                     tooltip.classList.add("tooltip");
+//                     tooltip.innerText = tooltipText;
+//                     document.body.appendChild(tooltip);
+//                 }
+
+//                 tooltip.style.display = "block";
+//                 tooltip.style.left = `${e.pageX + 10}px`;
+//                 tooltip.style.top = `${e.pageY}px`;
+//             });
+
+//             link.addEventListener("mousemove", (e) => {
+//                 if (tooltip) {
+//                     tooltip.style.left = `${e.pageX + 10}px`;
+//                     tooltip.style.top = `${e.pageY}px`;
+//                 }
+//             });
+
+//             link.addEventListener("mouseleave", () => {
+//                 if (tooltip) {
+//                     tooltip.remove(); // Remove a tooltip do DOM
+//                     tooltip = null; // Reseta a variável para evitar múltiplas criações
+//                 }
+//             });
+//         }
+//     });
+// });
+
+// Adicionando o evento click no botão para adicionar novo produto
 document.addEventListener("DOMContentLoaded", function () {
-    const sideLinks = document.querySelectorAll(".side-link");
-
-    sideLinks.forEach(link => {
-        const tooltipText = link.querySelector(".item-description")?.innerText.trim();
-
-        if (tooltipText) {
-            let tooltip; // Variável para armazenar a tooltip
-
-            link.addEventListener("mouseenter", (e) => {
-                // Criar a tooltip apenas se ela não existir
-                if (!tooltip) {
-                    tooltip = document.createElement("div");
-                    tooltip.classList.add("tooltip");
-                    tooltip.innerText = tooltipText;
-                    document.body.appendChild(tooltip);
-                }
-
-                tooltip.style.display = "block";
-                tooltip.style.left = `${e.pageX + 10}px`;
-                tooltip.style.top = `${e.pageY}px`;
-            });
-
-            link.addEventListener("mousemove", (e) => {
-                if (tooltip) {
-                    tooltip.style.left = `${e.pageX + 10}px`;
-                    tooltip.style.top = `${e.pageY}px`;
-                }
-            });
-
-            link.addEventListener("mouseleave", () => {
-                if (tooltip) {
-                    tooltip.remove(); // Remove a tooltip do DOM
-                    tooltip = null; // Reseta a variável para evitar múltiplas criações
-                }
-            });
-        }
+    document.querySelector(".add_produto").addEventListener("click", function () {
+        adicionarProduto();
     });
 });
 
-// Adicionar novo produto
 function adicionarProduto() {
-    // Obtém o container onde os produtos serão adicionados
-    const container = document.getElementById("produtos-container");
+    let produtosContainer = document.getElementById("produtos-container");
 
-    // Cria um novo bloco de produto
-    const novoProduto = document.createElement("div");
-    novoProduto.classList.add("produto");
+    let novoProduto = document.createElement("div");
+    novoProduto.classList.add("info-produtos");
 
-    // Define o conteúdo HTML dos novos campos
     novoProduto.innerHTML = `
-        <div  class="campo-cad">
-        <label>Produto</label>
-        <select name="nome_produto[]" required>
-            <option value="telha">Telha</option>
-            <option value="tijolo">Tijolo</option>
-            <option value="ferragem">ferragem</option>
-        </select>
+        <div class="campo-cad">
+            <label>Produto</label>
+            <select name="nome_produto[]" required>
+                <option value="telha">Telha</option>
+                <option value="tijolo">Tijolo</option>
+                <option value="ferragem">Ferragem</option>
+            </select>
         </div>
         <div class="campo-cad">
-            <label>Subtotal</label>
-            <input type="number" name="quantidade_produto[]" placeholder="Ex.: 10 UN">
+            <label>Quantidade</label>
+            <input type="number" name="quantidade_produto[]" placeholder="Ex.: 10 UN" required>
         </div>
         <div class="campo-cad">
             <label>Desconto</label>
-            <input type="text" name="desconto[]" placeholder="Ex.: R$ 5.00,00">
+            <input type="text" name="desconto[]" placeholder="Ex.: R$ 5.00">
         </div>
         <div class="campo-cad">
             <label>Subtotal</label>
-            <input type="text" name="subtotal[]" placeholder="Ex.: R$ 10.00,00">
+            <input type="text" name="subtotal[]" placeholder="Ex.: R$ 10.00">
         </div>
-
-        <button class="remover_produto" type="button" class="remover_produto" onclick="removerProduto(this)"><img src="assets/excluir.png"</button>
+        <div class="container_novo_produto">
+            <button class="remove_produto" type="button">
+                <img src="assets/excluir.png" alt="Remover produto">
+            </button>
+        </div>
     `;
 
-    // Adiciona o novo bloco ao container
-    container.appendChild(novoProduto);
-    
+    produtosContainer.appendChild(novoProduto);
+
+    // Adiciona evento para remover o produto
+    novoProduto.querySelector(".remove_produto").addEventListener("click", function () {
+        produtosContainer.removeChild(novoProduto);
+    });
 }
 
-// Função para remover um produto
-function removerProduto(botao) {
-    botao.parentElement.remove(); // Remove o bloco do produto correspondente
-}
+
 
 /* PopUp de confirmações */
 document.addEventListener("DOMContentLoaded", function () {
