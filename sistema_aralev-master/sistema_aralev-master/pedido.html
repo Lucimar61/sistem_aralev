@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/pedidos.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/popUp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -27,8 +28,6 @@
                 adicionarEventosSidebar();
             });
     </script>
-
-   
     <main>
         <header>
             <div class="cabecalho">
@@ -108,29 +107,33 @@
                         <fieldset>
                             <legend>Produtos</legend>
                             <div class="linha"></div>
-                            <div class="info-produtos">
-                                <div  class="campo-cad tamanho-personalizado">
-                                    <label>Produto</label>
-                                    <select name="nome_produto">
-                                        <option value="telha">Telha</option>
-                                        <option value="tijolo">Tijolo</option>
-                                        <option value="ferragem">ferragem</option>
-                                    </select>
-                                </div>
-                                <div class="campo-cad">
-                                    <label>Subtotal</label>
-                                    <input type="number" name="quantidade_produto" placeholder="Ex.: 10 UN">
-                                </div>
-                                <div class="campo-cad">
-                                    <label>Desconto</label>
-                                    <input type="text" name="desconto" placeholder="Ex.: R$ 5.00,00">
-                                </div>
-                                <div class="campo-cad">
-                                    <label>Subtotal</label>
-                                    <input type="text" name="subtotal" placeholder="Ex.: R$ 10.00,00">
-                                </div>
-                                <div class="container_novo_produto">
-                                    <button class="add_produto"><img src="assets/add_produto.png" alt="Adicionar novo produto"></button>
+                            <div id="produtos-container">
+                                <div class="info-produtos">
+                                    <div  class="campo-cad">
+                                        <label>Produto</label>
+                                        <select name="nome_produto[]" required>
+                                            <option value="telha">Telha</option>
+                                            <option value="tijolo">Tijolo</option>
+                                            <option value="ferragem">ferragem</option>
+                                        </select>
+                                    </div>
+                                    <div class="campo-cad">
+                                        <label>Quantidade</label>
+                                        <input type="number" name="quantidade_produto[]" placeholder="Ex.: 10 UN">
+                                    </div>
+                                    <div class="campo-cad">
+                                        <label>Desconto</label>
+                                        <input type="text" name="desconto[]" placeholder="Ex.: R$ 5.00,00">
+                                    </div>
+                                    <div class="campo-cad">
+                                        <label>Subtotal</label>
+                                        <input type="text" name="subtotal[]" placeholder="Ex.: R$ 10.00,00">
+                                    </div>
+                                    <div class="container_novo_produto">
+                                        <button class="add_produto" type="button" onclick="adicionarProduto()">
+                                            <img src="assets/add_produto.png" alt="Adicionar novo produto" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </fieldset>
@@ -138,7 +141,7 @@
                             <legend>Pagamento</legend>
                             <div class="linha"></div>
                             <div class="info-produtos">
-                                <div  class="campo-cad tamanho-personalizado">
+                                <div  class="campo-cad">
                                     <label>Forma de Pagamento</label>
                                     <select name="forma_pagamento">
                                         <option value="cartao_credito">Cartão de crédito</option>
@@ -164,14 +167,28 @@
                         <div class="container-enviar-pedido">
 
                             <button id="cancelar" class="btn_cancelar" type="reset">Cancelar</button>
-                            <button class="btn_emitir" type="button">Emitir</button>
+                            <button class="btn_emitir" type="button" onclick="abrirPopUp()">Emitir</button>
                         
                         </div>
                     </form>
+                    <!-- PopUp de confirmação do cadastro de pedidos -->
+                    <div id="popUp" class="popUp">
+                        <div class="popUp-container">
+                            <p>Você está prestes a emitir um pedido. <strong>Tem certeza que deseja cadastrar esse pedido?</strong></p>
+                            <button id="close_popUp" class="btn_cancelar" onclick="fecharPopUp()">Cancelar</button>
+                            <button id="open_popUp" class="btn_salvar" type="submit">Salvar</button> <!-- type="submit" correto -->
+                        </div>
+                    </div>
                 
             </div>
         </div>
     </main>
+    <!-- Carregar jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Carregar jQuery Mask Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="javascript/script.js"></script>
+    <script src="javascript/mascaras.js"></script>
 </body>
 </html>

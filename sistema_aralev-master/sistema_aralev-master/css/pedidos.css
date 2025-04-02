@@ -1,4 +1,4 @@
-
+/* Estilos específicos da tela de pedidos */
 .container_novo_produto {
     display: flex;
     align-items: flex-end;
@@ -23,8 +23,60 @@
     padding: 10px;
 }
 
+.container_frm_pedido {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #fff;
+    margin: 20px;
+    border-radius: 15px;
+    height: 97%;
+}
+
 .container_frm_pedido form {
-    max-width: 1500px;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-left: 10px;
+    overflow: auto;
+}
+
+.container_frm_pedido form fieldset {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: none;
     padding: 20px;
+}
+
+#produtos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.info-produtos,
+.produto {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.info-produtos img,
+.produto img {
+    position: absolute;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.remove_produto {
+    border: none;
+    background-color: transparent;
+    margin-bottom: 0;
 }
 
