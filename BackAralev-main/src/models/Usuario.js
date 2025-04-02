@@ -103,4 +103,3 @@ class Usuario {
 }
 
 module.exports = Usuario;
-//teste

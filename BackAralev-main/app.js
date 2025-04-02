@@ -4,6 +4,10 @@ const meuAPP = express();
 const { connectDB, pool } = require('./database');
 const { router: loginRouter, verifyJWT } = require('./src/models/login');
 const statusRouter = require('./src/models/status');  // Importa o router de status
+const estoqueRoutes = require('./routes/estoqueRoutes');
+const usuarioRoutes = require('./usuarioRoutes');
+const bodyParser = require('body-parser');
+
 const path = require('path');
 
 require('dotenv').config();
@@ -16,20 +20,44 @@ meuAPP.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
-const bodyParser = require('body-parser');
-const usuarioRoutes = require('./usuarioRoutes');
-
-const app = express();
+//Alteração Luan
 
 // Middlewares
-app.use(cors());
-app.use(bodyParser.json());
+meuAPP.use(cors());
+meuAPP.use(bodyParser.json());
 
 // Rotas
-app.use('/api', usuarioRoutes);
+meuAPP.use('/api', usuarioRoutes);
 
 // Inicia o servidor
-app.listen(PORT, () => {
+meuAPP.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
+
+const pedidoRoutes = require('./pedidoRoutes');
+
+// Middlewares
+meuAPP.use(cors());
+meuAPP.use(bodyParser.json());
+
+// Rotas
+meuAPP.use('/pedidos', pedidoRoutes);
+
+// Inicia o servidor
+meuAPP.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
+
+const estoqueRoutes = require('./routes/estoqueRoutes');
+
+
+// Middlewares
+meuAPP.use(cors());
+meuAPP.use(bodyParser.json());
+
+meuAPP.use('/estoque', estoqueRoutes);
+
+meuAPP.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
 

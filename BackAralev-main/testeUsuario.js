@@ -8,14 +8,14 @@ async function testarUsuario() {
     ];
 
     // Testar validação de login existente
-    //const loginExistente = Usuario.validarLoginExistente('joao.silva', listaUsuarios);
+    const loginExistente = Usuario.validarLoginExistente('joao.silva', listaUsuarios);
     //console.log('Login já existe?', loginExistente ? 'Sim' : 'Não');
 
     // Criar um novo usuário no banco de dados
     const novoUsuario = new Usuario(null, 'Ernane', 'arroba', 'Unileste', '1');
 
     // Testar o método criarUsuario
-    novoUsuario.criarUsuario(novoUsuario.nome, novoUsuario.login, novoUsuario.senha, novoUsuario.nivelAcesso);
+    // novoUsuario.criarUsuario(novoUsuario.nome, novoUsuario.login, novoUsuario.senha, novoUsuario.nivelAcesso);
 
     // Testar autenticação de usuário
     //const autenticado = novoUsuario.autenticarUsuario('carlos.oliveira', 'senha789');
