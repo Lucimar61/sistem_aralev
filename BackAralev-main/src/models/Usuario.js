@@ -42,6 +42,7 @@ class Usuario {
             console.error('Erro ao criar usuário:', err);
         }
     }
+    
 
     atualizarUsuario(id, nome, login, senha, nivelAcesso) {
         return new Promise((resolve, reject) => {
@@ -99,32 +100,6 @@ class Usuario {
         });
     }
 
-
-    // autenticarUsuario(login, senha) {
-    //     if (this.login === login && this.senha === senha) {
-    //         console.log('Usuário autenticado com sucesso!');
-    //         return true;
-    //     } else {
-    //         console.log('Login ou senha incorretos.');
-    //         return false;
-    //     }
-    // }
-
-    // definirPermissoes() {
-    //     switch (this.nivelAcesso) {
-    //         case '1':
-    //             console.log('Permissões de administrador: Acesso total ao sistema.');
-    //             break;
-    //         case '2':
-    //             console.log('Permissões de editor: Pode editar conteúdo, mas não pode administrar usuários.');
-    //             break;
-    //         case '3':
-    //             console.log('Permissões de visitante: Apenas leitura.');
-    //             break;
-    //         default:
-    //             console.log('Nível de acesso desconhecido. Permissões não definidas.');
-    //     }
-    // }
 }
 
 module.exports = Usuario;

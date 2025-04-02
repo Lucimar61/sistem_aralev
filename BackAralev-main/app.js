@@ -16,6 +16,23 @@ meuAPP.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
+const bodyParser = require('body-parser');
+const usuarioRoutes = require('./usuarioRoutes');
+
+const app = express();
+
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json());
+
+// Rotas
+app.use('/api', usuarioRoutes);
+
+// Inicia o servidor
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
+
 meuAPP.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_aralev-master')));
 
 // Rota principal
