@@ -43,31 +43,88 @@ class Usuario {
         }
     }
 
-    autenticarUsuario(login, senha) {
-        if (this.login === login && this.senha === senha) {
-            console.log('Usuário autenticado com sucesso!');
-            return true;
-        } else {
-            console.log('Login ou senha incorretos.');
-            return false;
-        }
+    atualizarUsuario(id, nome, login, senha, nivelAcesso) {
+        return new Promise((resolve, reject) => {
+            if (!id) {
+                const erro = new Error('ID do usuário não fornecido');
+                console.error(erro.message);
+                return reject(erro);
+            }
+    
+            const query = 'UPDATE tb_usuario SET nome = ?, login = ?, senha = ?, nivel_acesso = ? WHERE id = ?';
+            
+            connection.query(query, [nome, login, senha, nivelAcesso, id], (err, results) => {
+                if (err) {
+                    console.error('Erro ao atualizar usuário:', err);
+                    return reject(err);
+                }
+                
+                if (results.affectedRows === 0) {
+                    const msg = `Nenhum usuário encontrado com o ID ${id}`;
+                    console.log(msg);
+                    return resolve({ success: false, message: msg });
+                }
+                
+                console.log('Usuário atualizado com sucesso!');
+                resolve({ success: true, affectedRows: results.affectedRows });
+            });
+        });
     }
 
-    definirPermissoes() {
-        switch (this.nivelAcesso) {
-            case '1':
-                console.log('Permissões de administrador: Acesso total ao sistema.');
-                break;
-            case '2':
-                console.log('Permissões de editor: Pode editar conteúdo, mas não pode administrar usuários.');
-                break;
-            case '3':
-                console.log('Permissões de visitante: Apenas leitura.');
-                break;
-            default:
-                console.log('Nível de acesso desconhecido. Permissões não definidas.');
-        }
+    deletarUsuario(id) {
+        return new Promise((resolve, reject) => {
+            if (!id) {
+                const erro = new Error('ID do usuário não fornecido para deleção');
+                console.error(erro.message);
+                return reject(erro);
+            }
+    
+            const query = 'DELETE FROM tb_usuario WHERE id = ?';
+            
+            connection.query(query, [id], (err, results) => {
+                if (err) {
+                    console.error('Erro ao deletar usuário:', err);
+                    return reject(err);
+                }
+                
+                if (results.affectedRows === 0) {
+                    const msg = `Nenhum usuário encontrado com o ID ${id}`;
+                    console.log(msg);
+                    return resolve({ success: false, message: msg });
+                }
+                
+                console.log('Usuário deletado com sucesso!');
+                resolve({ success: true, affectedRows: results.affectedRows });
+            });
+        });
     }
+
+
+    // autenticarUsuario(login, senha) {
+    //     if (this.login === login && this.senha === senha) {
+    //         console.log('Usuário autenticado com sucesso!');
+    //         return true;
+    //     } else {
+    //         console.log('Login ou senha incorretos.');
+    //         return false;
+    //     }
+    // }
+
+    // definirPermissoes() {
+    //     switch (this.nivelAcesso) {
+    //         case '1':
+    //             console.log('Permissões de administrador: Acesso total ao sistema.');
+    //             break;
+    //         case '2':
+    //             console.log('Permissões de editor: Pode editar conteúdo, mas não pode administrar usuários.');
+    //             break;
+    //         case '3':
+    //             console.log('Permissões de visitante: Apenas leitura.');
+    //             break;
+    //         default:
+    //             console.log('Nível de acesso desconhecido. Permissões não definidas.');
+    //     }
+    // }
 }
 
 module.exports = Usuario;
