@@ -68,11 +68,19 @@ meuAPP.post("/usuarios", verifyJWT, async (req, res) => {
   const resultado = await user.criarUsuario(nome, login, senha, nivelAcesso);
 
   if (resultado.erro) {
-    res.status(500).json(resultado); // retorna erro detalhado
-  } else {
-    res.status(201).json(resultado);
+    // Se o erro for login duplicado
+    if (resultado.erro === "Login já está em uso") {
+      return res.status(409).json({ mensagem: resultado.erro });
+    }
+
+    // Outros erros
+    return res.status(500).json({ mensagem: resultado.erro, detalhe: resultado.detalhe });
   }
+
+  // Sucesso
+  res.status(201).json({ sucesso: true, id: resultado.id });
 });
+
 
 
 meuAPP.get("/inicio", verifyJWT, (req, res) => {

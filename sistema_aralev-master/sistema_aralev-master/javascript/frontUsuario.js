@@ -14,32 +14,36 @@ document.getElementById("open_popUp").addEventListener("click", async function (
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-access-token": token // 👈 CORREÇÃO: o back-end espera isso
+                "x-access-token": token
             },
             body: JSON.stringify({
-                nome: nome_usuario,        // 👈 nomes alinhados com o back-end
+                nome: nome_usuario,
                 login,
                 senha,
                 nivelAcesso: nivel_acesso
             })
         });
+    
+        const data = await response.json(); // tentar ler a resposta, mesmo com erro
+        
+        console.log("Resposta do servidor:", data);
 
-        if (!response.ok) {
-            throw new Error("Erro na resposta do servidor");
-        }
-
-        const data = await response.json();
-
-        if (data?.sucesso) {
-            alert("Usuário cadastrado com sucesso!");
-            document.getElementById("popUp").style.display = "none";
+        if (response.ok) {
+            if (data?.sucesso) {
+                alert("Usuário cadastrado com sucesso!");
+                document.getElementById("popUp").style.display = "none";
+            } else {
+                alert(data?.mensagem || "Erro ao cadastrar usuário 2.");
+            }
         } else {
-            alert(data?.mensagem || "Erro ao cadastrar usuário.");
+            // resposta com erro tratado (ex: login duplicado)
+            alert(data?.mensagem || "Erro ao cadastrar usuário 1.");
         }
+    
     } catch (error) {
         console.error("Erro ao enviar:", error);
         alert("Falha na conexão com o servidor.");
-    }
+    }    
 });
 document.getElementById("close_popUp").addEventListener("click", function () {
     document.getElementById("popUp").style.display = "none";
