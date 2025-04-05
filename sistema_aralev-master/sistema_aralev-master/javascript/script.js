@@ -187,7 +187,6 @@ document.getElementById("logout_btn").addEventListener("click", function () {
     }
 });
 
-
 // Adicionando o evento click no botão para adicionar novo produto
 // =================================================================
 document.addEventListener("DOMContentLoaded", function () {
