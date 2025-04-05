@@ -57,7 +57,7 @@
                         <img src="assets/Adm.png" alt="Caixa de produtos">
                         <h1>Administrador</h1>
                     </div>
-                        <form class="frm_cadUsuarios" action="#" method="post">
+                    <form class="frm_cadUsuarios" onsubmit="return false;">
                             <fieldset>
                                 <legend>Informações do Usuário</legend>
                                 <div class="linha"></div>
@@ -77,10 +77,9 @@
                                     <div class="campo-cad">
                                         <label>Nível de Acesso</label>
                                         <select name="medicao">
-                                            <option value="administrador">Administrador</option>
-                                            <option value="supervisor">Supervisor</option>
-                                            <option value="vendedor">Vendedor</option>
-                                            <option value="operador">Operador</option>
+                                            <option value="administrador">1</option>
+                                            <option value="supervisor">2</option>
+                                            <option value="vendedor">3</option>
                                         </select>
                                     </div>
                                 </div>
@@ -96,7 +95,7 @@
                         <div class="popUp-container">
                             <p>Você está prestes a cadastrar um produto. <strong>Tem certeza que deseja cadastrar esse produto.</strong></p>
                             <button id="close_popUp" class="btn_cancelar" >Cancelar</button>
-                            <button id="open_popUp" class="btn_salvar" type="submit" method="post" >Salvar</button>
+                            <button id="open_popUp" class="btn_salvar">Salvar</button>
                         </div>
                     </div>
                 </div>
