@@ -11,7 +11,7 @@ function adicionarEventosSidebar() {
 //document.addEventListener("DOMContentLoaded", destacarPaginaAtiva);
 
 // Executa a função após carregar a sidebar
-document.addEventListener("DOMContentLoaded", destacarPaginaAtual);
+//document.addEventListener("DOMContentLoaded", destacarPaginaAtual);
 
 // Exibindo pop up na tela de cadastro de produtos
 function abrirPopUp() {
