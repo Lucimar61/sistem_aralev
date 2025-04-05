@@ -7,7 +7,6 @@ function adicionarEventosSidebar() {
     });
 }
 
-
 // Chama a função ao carregar a página
 //document.addEventListener("DOMContentLoaded", destacarPaginaAtiva);
 
@@ -128,7 +127,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "cidade": 8 // cidade está na 6ª coluna (índice 8)
     };
 
-
     inputFiltro.addEventListener("input", function () {
         // Obtém o texto digitado e converte para minúsculas
         const termo = inputFiltro.value.toLowerCase().trim();
@@ -161,118 +159,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-//
-// Código JavaScript para inserir os dados na tabela
-// document.addEventListener("DOMContentLoaded", function () {
-//     const btnEmitir = document.querySelector(".btn_emitir");
-//     const form = document.querySelector("form");
-
-//     btnEmitir.addEventListener("click", function (event) {
-//         event.preventDefault(); // Evita recarregar a página
-
-//         // Capturar os valores do formulário
-//         const nome = form.nome_cliente.value.trim();
-//         const celular = form.num_celular.value.trim();
-//         const cpfCnpj = form.cpf_ou_cnpj.value.trim();
-//         const rua = form.nome_rua.value.trim();
-//         const numero = form.numero_casa.value.trim();
-//         const UF = form.UF.value.trim();
-//         const cidade = form.cidade.value.trim();
-//         const produto = form.nome_produto.value.trim();
-//         const quantidade = form.quantidade_produto.value.trim();
-//         const desconto = form.desconto.value.trim();
-//         const subtotal = form.subtotal.value.trim();
-//         const forma_pgto = form.forma_pagamento.value.trim();
-//         const parcelas = form.quantidade_parcelas.value.trim();
-//         const total = form.total_pagamento.value.trim();
-//         const dataVencimento = form.vencimento_pg.value.trim();
-
-//         // Verificar se os campos obrigatórios estão preenchidos
-//         if (
-//             !nome || !celular || !cpfCnpj || !rua || !numero || !cidade || !UF ||
-//             !produto || !quantidade || !desconto || !subtotal || !forma_pgto ||
-//             !parcelas || !total || !dataVencimento
-//         ) {
-//             alert("Preencha todos os campos obrigatórios!");
-//             return;
-//         }
-
-//         // Criar um ID aleatório para simular um pedido
-//         const pedidoID = Date.now();
-
-//         // Salvar os dados no localStorage (como um objeto)
-//         const pedido = {
-//             pedidoID,
-//             nome,
-//             celular,
-//             cpfCnpj,
-//             rua,
-//             numero,
-//             UF,
-//             cidade,
-//             produto,
-//             quantidade,
-//             desconto,
-//             subtotal,
-//             forma_pgto,
-//             parcelas,
-//             total,
-//             dataVencimento
-//         };
-
-//         // Recuperar pedidos existentes ou criar um novo array
-//         let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
-//         pedidos.push(pedido);
-
-//         // Atualizar no localStorage
-//         localStorage.setItem('pedidos', JSON.stringify(pedidos));
-        
-//         // Resetar o formulário após a inserção
-//         form.reset();
-
-//         // Exibir uma mensagem de sucesso
-//         alert("Pedido salvo com sucesso!");
-//     });
-// });
-// //
-
-// // // Código para exibir os dados na tabela (consultasPedidos.html):
-// document.addEventListener("DOMContentLoaded", function () {
-//     const tabelaPedidos = document.getElementById("tabela-pedidos");
-
-//     // Recuperar os dados dos pedidos do localStorage
-//     const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
-
-//     // Se existirem pedidos, adicioná-los na tabela
-//     pedidos.forEach(function(pedido) {
-//         const newRow = document.createElement("tr");
-
-//         newRow.innerHTML = `
-//             <td class="checkbox-check">
-//                 <input type="checkbox" class="checkbox">
-//             </td>
-//             <td>${pedido.pedidoID}</td> <!-- ID pode ser gerado automaticamente no futuro -->
-//             <td>${pedido.nome}</td>
-//             <td>${pedido.cpfCnpj}</td>
-//             <td>${pedido.celular}</td>
-//             <td>${pedido.rua}</td>
-//             <td>${pedido.numero}</td>
-//             <td>${pedido.UF}</td> 
-//             <td>${pedido.cidade}</td>
-//             <td>${pedido.produto}</td>
-//             <td>${pedido.quantidade}</td>
-//             <td>${pedido.desconto}</td>
-//             <td>${pedido.subtotal}</td>
-//             <td>${pedido.forma_pgto}</td>
-//             <td>${pedido.parcelas}</td>
-//             <td>${pedido.total}</td>
-//             <td>${pedido.dataVencimento}</td>
-//         `;
-
-//         // Adicionar a nova linha ao tbody da tabela
-//         tabelaPedidos.appendChild(newRow);
-//     });
-// })
 
 // Recuperação de senha
 document.addEventListener("DOMContentLoaded", function() {
@@ -301,48 +187,9 @@ document.getElementById("logout_btn").addEventListener("click", function () {
     }
 });
 
-// // Adicionando Tooltips nos links de navegação
-// document.addEventListener("DOMContentLoaded", function () {
-//     const sideLinks = document.querySelectorAll(".side-link");
-
-//     sideLinks.forEach(link => {
-//         const tooltipText = link.querySelector(".item-description")?.innerText.trim();
-
-//         if (tooltipText) {
-//             let tooltip; // Variável para armazenar a tooltip
-
-//             link.addEventListener("mouseenter", (e) => {
-//                 // Criar a tooltip apenas se ela não existir
-//                 if (!tooltip) {
-//                     tooltip = document.createElement("div");
-//                     tooltip.classList.add("tooltip");
-//                     tooltip.innerText = tooltipText;
-//                     document.body.appendChild(tooltip);
-//                 }
-
-//                 tooltip.style.display = "block";
-//                 tooltip.style.left = `${e.pageX + 10}px`;
-//                 tooltip.style.top = `${e.pageY}px`;
-//             });
-
-//             link.addEventListener("mousemove", (e) => {
-//                 if (tooltip) {
-//                     tooltip.style.left = `${e.pageX + 10}px`;
-//                     tooltip.style.top = `${e.pageY}px`;
-//                 }
-//             });
-
-//             link.addEventListener("mouseleave", () => {
-//                 if (tooltip) {
-//                     tooltip.remove(); // Remove a tooltip do DOM
-//                     tooltip = null; // Reseta a variável para evitar múltiplas criações
-//                 }
-//             });
-//         }
-//     });
-// });
 
 // Adicionando o evento click no botão para adicionar novo produto
+// =================================================================
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".add_produto").addEventListener("click", function () {
         adicionarProduto();
@@ -392,6 +239,7 @@ function adicionarProduto() {
 }
 
 /* PopUp de confirmações */
+// =========================================================================
 document.addEventListener("DOMContentLoaded", function () {
     const popUp = document.getElementById("popUp");
     const btnSalvar = document.querySelector(".btn_salvar"); // Botão principal
@@ -422,152 +270,3 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// Função para editar o acesso dos usuários
-// function editarLinha(botao) {
-//     let linha = botao.closest('tr');
-//     let editando = linha.dataset.editando === "true";
-
-//     if (!editando) {
-//         linha.querySelectorAll('td[contenteditable]').forEach(td => td.contentEditable = "true");
-//         botao.innerHTML = '<i class="fa fa-save"></i>';
-//         linha.dataset.editando = "true";
-//     } else {
-//         linha.querySelectorAll('td[contenteditable]').forEach(td => td.contentEditable = "false");
-//         botao.innerHTML = '<i class="fa fa-edit"></i>';
-//         linha.dataset.editando = "false";
-//         // Adicione aqui a lógica para salvar as alterações no banco de dados
-//     }
-// }
-
-// // Função para excluir o acesso dos usuários
-// function excluirLinha(botao) {
-//     if (confirm("Tem certeza que deseja excluir este usuário?")) {
-//         let linha = botao.closest('tr');
-//         linha.remove();
-//         // Adicione aqui a lógica para remover o usuário do banco de dados
-//     }
-// }
-
-// =================================================================
-// Administração de Usuários
-// =================================================================
-
-
-// Importa as funções do módulo de usuários
-// import { cadastrarUsuario, carregarUsuarios, atualizarUsuario, excluirUsuario } from "./usuarios.js";
-
-// // Executa assim que a página carrega
-// // ==============================
-// window.addEventListener("DOMContentLoaded", () => {
-//     carregarUsuarios(); // Carrega os usuários da API e preenche a tabela
-// });
-
-// // Adiciona evento de clique em todos os botões de mostrar/ocultar senha
-// // document.querySelectorAll(".toggle-password").forEach(botao => {
-// //     botao.addEventListener("click", function () {
-// //         toggleSenha(this);
-// //     });
-// // });
-
-
-// // Exibindo a senha do usuário
-// window.toggleSenha = function (botao) {
-//     const senhaTd = botao.closest('tr').querySelector('.senha');
-    
-//     if (senhaTd.textContent === "****") {
-//         senhaTd.textContent = senhaTd.dataset.senha;
-//         botao.innerHTML = '<i class="fa fa-eye-slash"></i>';
-//         botao.setAttribute("data-tooltip", "Ocultar senha");
-//     } else {
-//         senhaTd.textContent = "****";
-//         botao.innerHTML = '<i class="fa fa-eye"></i>';
-//         botao.setAttribute("data-tooltip", "Mostrar senha");
-//     }
-// }
-
-// window.addEventListener("DOMContentLoaded", () => {
-//     carregarUsuarios(); // Carrega os dados via fetch
-
-//     // Aplica os listeners aos botões que já estão no HTML
-//     document.querySelectorAll(".toggle-password").forEach(botao => {
-//         botao.addEventListener("click", () => toggleSenha(botao));
-//     });
-// });
-
-
-// // Habilita edição de uma linha
-// // ==============================
-// window.editarLinha = function (botao) {
-//     const tr = botao.closest("tr"); // Pega a <tr> onde está o botão clicado
-
-//     // Seleciona as colunas da linha (exceto a de ID e a de ações)
-//     const tdsEditaveis = tr.querySelectorAll("td:nth-child(n+2):nth-child(-n+5)");
-//     tdsEditaveis.forEach(td => td.contentEditable = true); // Ativa edição para essas células
-
-//     // Altera o botão "Editar" para "Salvar"
-//     botao.innerHTML = '<i class="fa fa-save"></i>';
-    
-//     // Substitui o evento de clique para salvar a edição
-//     botao.onclick = function () {
-//         salvarEdicao(tr, botao);
-//     };
-// };
-
-// // Salva a edição de uma linha
-// // ==============================
-// // async function salvarEdicao(tr, botao) {
-// //     const id = tr.getAttribute("data-id"); // Pega o ID da linha
-
-// //     // Captura os dados editados da linha
-// //     const nome = tr.children[1].textContent.trim();
-// //     const login = tr.children[2].textContent.trim();
-// //     const senha = tr.querySelector(".senha").getAttribute("data-senha");
-// //     const nivel_acesso = tr.children[4].textContent.trim();
-
-// //     const dadosAtualizados = {
-// //         nome,
-// //         login,
-// //         senha,
-// //         nivel_acesso
-// //     };
-
-// //     // Chama a função que atualiza no banco de dados
-// //     await atualizarUsuario(id, dadosAtualizados);
-
-// //     // Volta os campos para modo não editável
-// //     const tdsEditaveis = tr.querySelectorAll("td:nth-child(n+2):nth-child(-n+5)");
-// //     tdsEditaveis.forEach(td => td.contentEditable = false);
-
-// //     // Troca o botão de volta para "Editar"
-// //     botao.innerHTML = '<i class="fa fa-edit"></i>';
-// //     botao.onclick = function () {
-// //         editarLinha(botao);
-// //     };
-// // }
-
-// // Exclui uma linha
-// // ==============================
-// window.excluirLinha = function (botao) {
-//     const tr = botao.closest("tr"); // Pega a linha
-//     const id = tr.getAttribute("data-id"); // Pega o ID
-//     excluirUsuario(id); // Chama a função para excluir
-// };
-
-// // Controle do pop-up de cadastro
-// // ==============================
-
-// // Abre o pop-up de confirmação de cadastro
-// window.abrirPopUp = function () {
-//     document.getElementById("popUp").style.display = "flex";
-// };
-
-// // Fecha o pop-up
-// window.fecharPopUp = function () {
-//     document.getElementById("popUp").style.display = "none";
-// };
-
-// // Evento do botão "Salvar" dentro do pop-up
-// document.getElementById("open_popUp").addEventListener("click", (event) => {
-//     cadastrarUsuario(event); // Chama a função de cadastro
-//     fecharPopUp(); // Fecha o pop-up depois do envio
-// });
