@@ -10,38 +10,44 @@ class Usuario {
         this.nivelAcesso = nivelAcesso;
     }
 
-    static validarLoginExistente(login, listaUsuarios) {
-        const loginExistente = listaUsuarios.some(usuario => usuario.login === login);
-        if (loginExistente) {
-            this.exibirAlerta(`O login "${login}" já está em uso. Por favor, escolha outro login.`);
-        }
-        return loginExistente;
-    }
+    // static validarLoginExistente(login, listaUsuarios) {
+    //     const loginExistente = listaUsuarios.some(usuario => usuario.login === login);
+    //     if (loginExistente) {
+    //         this.exibirAlerta(`O login "${login}" já está em uso. Por favor, escolha outro login.`);
+    //     }
+    //     return loginExistente;
+    // }
 
-    static exibirAlerta(mensagem) {
-        console.warn('ALERTA:', mensagem);
-    }
+    // static exibirAlerta(mensagem) {
+    //     console.warn('ALERTA:', mensagem);
+    // }
 
     async criarUsuario(nome, login, senha, nivelAcesso) {
         try {
-            // Verifica se o login já existe no banco de dados
+            console.log("Criando usuário com:", nome, login, senha, nivelAcesso);
+            
             const [rows] = await pool.execute('SELECT * FROM tb_usuario WHERE LOGIN = ?', [login]);
             if (rows.length > 0) {
                 console.log('ALERTA: O login já está em uso.');
-                return;
+                return { erro: "Login já está em uso" };
             }
-
-            // Gera o hash da senha usando a função hashPassword do encrypt.js
+    
             const { salt, hash } = hashPassword(senha);
-
-            // Insere o novo usuário no banco de dados com a senha criptografada
+            console.log("Hash e salt gerados:", { hash, salt });
+    
             const query = 'INSERT INTO tb_usuario (NOME, LOGIN, SENHA, SALT, NIVEL_ACESSO) VALUES (?, ?, ?, ?, ?)';
             const [results] = await pool.execute(query, [nome, login, hash, salt, nivelAcesso]);
             console.log('Usuário registrado com sucesso! ID:', results.insertId);
+            
+            return { sucesso: true, id: results.insertId };
+    
         } catch (err) {
-            console.error('Erro ao criar usuário:', err);
+            console.error('Erro ao criar usuário:', err); // imprime tudo
+            return { erro: "Erro ao criar usuário", detalhe: err.message }; // envia erro ao front
         }
     }
+    
+    
     
 
     atualizarUsuario(id, nome, login, senha, nivelAcesso) {
@@ -103,4 +109,3 @@ class Usuario {
 }
 
 module.exports = Usuario;
-//teste

@@ -1,7 +1,7 @@
 // routes/usuarioRoutes.js
 const express = require('express');
 const router = express.Router();
-const Usuario = require('../src/models/Usuario'); 
+//const Usuario = require('./src/models/Usuario'); 
 
 // Rota para criar usuário
 router.post('/usuarios', async (req, res) => {
