@@ -42,8 +42,8 @@ class Usuario {
             return { sucesso: true, id: results.insertId };
     
         } catch (err) {
-            console.error('Erro ao criar usuário:', err); // imprime tudo
-            return { erro: "Erro ao criar usuário", detalhe: err.message }; // envia erro ao front
+            console.error('Erro ao criar usuário 2:', err); // imprime tudo
+            return { erro: "Erro ao criar usuário 3", detalhe: err.message }; // envia erro ao front
         }
     }
     

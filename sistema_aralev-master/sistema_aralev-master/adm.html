@@ -77,9 +77,9 @@
                                     <div class="campo-cad">
                                         <label>Nível de Acesso</label>
                                         <select name="medicao">
-                                            <option value="administrador">1</option>
-                                            <option value="supervisor">2</option>
-                                            <option value="vendedor">3</option>
+                                            <option value="1">Administrador</option>
+                                            <option value="2">Supervisor</option>
+                                            <option value="3">Vendedor</option>
                                         </select>
                                     </div>
                                 </div>
@@ -108,37 +108,12 @@
                                 <th>Login</th>
                                 <th>Senha</th>
                                 <th>Nível Acesso</th>
-                                <th>Acões</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
-                        <body id="tabela-usuarios">
-                            <!-- Os dados do banco de dados serão inseridos aqui -->
-                            <tr>
-                                <td>1</td>
-                                <td contenteditable="false">Caua Mateus</td>
-                                <td contenteditable="false">caua.mateus</td>
-                                <td contenteditable="false" class="senha" data-senha="1234">****</td>
-                                <td contenteditable="false">Administrador</td>
-                                <td>
-                                    <button class="toggle-password" onclick="toggleSenha(this)" data-tooltip="Mostrar senha"><i class="fa fa-eye"></i></button>
-                                    <button class="editar" onclick="editarLinha(this)"><i class="fa fa-edit"></i></button>
-                                    <button class="excluir" onclick="excluirLinha(this)"><i class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td contenteditable="false">Lucimar</td>
-                                <td contenteditable="false">lucimar.silva</td>
-                                <td contenteditable="false"class="senha" data-senha="1234">****</td>
-                                <td contenteditable="false">Administrador</td>
-                                <td>
-                                    <button class="toggle-password" onclick="toggleSenha(this)" data-tooltip="Mostrar senha"><i class="fa fa-eye"></i></button>
-                                    <button class="editar" onclick="editarLinha(this)"><i class="fa fa-edit"></i></button>
-                                    <button class="excluir" onclick="excluirLinha(this)"><i class="fa fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            
-                        </body>
+                        <tbody id="tabela-usuarios">
+                            <!-- preenchido via JavaScript -->
+                        </tbody>
                     </table>
                 </div>          
             </div>
