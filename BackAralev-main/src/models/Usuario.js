@@ -10,17 +10,17 @@ class Usuario {
         this.nivelAcesso = nivelAcesso;
     }
 
-    static validarLoginExistente(login, listaUsuarios) {
-        const loginExistente = listaUsuarios.some(usuario => usuario.login === login);
-        if (loginExistente) {
-            this.exibirAlerta(`O login "${login}" já está em uso. Por favor, escolha outro login.`);
-        }
-        return loginExistente;
-    }
+    // static validarLoginExistente(login, listaUsuarios) {
+    //     const loginExistente = listaUsuarios.some(usuario => usuario.login === login);
+    //     if (loginExistente) {
+    //         this.exibirAlerta(`O login "${login}" já está em uso. Por favor, escolha outro login.`);
+    //     }
+    //     return loginExistente;
+    // }
 
-    static exibirAlerta(mensagem) {
-        console.warn('ALERTA:', mensagem);
-    }
+    // static exibirAlerta(mensagem) {
+    //     console.warn('ALERTA:', mensagem);
+    // }
 
     async criarUsuario(nome, login, senha, nivelAcesso) {
         try {

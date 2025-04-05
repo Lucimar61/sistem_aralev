@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Estoque = require('../models/Estoque'); 
+const Estoque = require('../src/models/Estoque'); 
 const pool = require('../../database'); 
 const { Item } = require('./Item'); 
 

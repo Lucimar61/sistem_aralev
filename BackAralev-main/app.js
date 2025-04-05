@@ -3,8 +3,9 @@ const cors = require('cors');
 const meuAPP = express();
 const { connectDB, pool } = require('./database');
 const { router: loginRouter, verifyJWT } = require('./src/models/login');
-const statusRouter = require('./src/models/status');  // Importa o router de status
-const estoqueRoutes = require('./routes/estoqueRoutes');
+const statusRouter = require('./src/models/status'); 
+const estoqueRoutes = require('./estoqueRoutes');
+const itemRoutes = require('./itemRoutes'); 
 const usuarioRoutes = require('./usuarioRoutes');
 const bodyParser = require('body-parser');
 
@@ -29,11 +30,6 @@ meuAPP.use(bodyParser.json());
 // Rotas
 meuAPP.use('/api', usuarioRoutes);
 
-// Inicia o servidor
-meuAPP.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
-
 const pedidoRoutes = require('./pedidoRoutes');
 
 // Middlewares
@@ -43,13 +39,6 @@ meuAPP.use(bodyParser.json());
 // Rotas
 meuAPP.use('/pedidos', pedidoRoutes);
 
-// Inicia o servidor
-meuAPP.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
-
-const estoqueRoutes = require('./routes/estoqueRoutes');
-
 
 // Middlewares
 meuAPP.use(cors());
@@ -57,16 +46,9 @@ meuAPP.use(bodyParser.json());
 
 meuAPP.use('/estoque', estoqueRoutes);
 
-meuAPP.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
+
 
 meuAPP.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_aralev-master')));
-
-// Rota principal
-meuAPP.get("/", (req, res) => {
-  res.send("Olá mundo");
-});
 
 // Rota para buscar usuários
 meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
@@ -109,3 +91,12 @@ meuAPP.use(statusRouter);
 meuAPP.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT} http://localhost:${PORT}/`);
 });
+
+
+meuAPP.use(cors());
+meuAPP.use(bodyParser.json());
+
+// Rotas
+meuAPP.use('/api/itens', itemRoutes); // Rotas para itens
+meuAPP.use('/api/estoque', estoqueRoutes); // Suas rotas existentes
+
