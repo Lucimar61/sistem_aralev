@@ -50,7 +50,7 @@ meuAPP.use('/estoque', estoqueRoutes);
 
 meuAPP.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_aralev-master')));
 
-// Rota para buscar usuários
+/* Rota para buscar usuários
 meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM tb_usuario");
@@ -59,7 +59,21 @@ meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
     console.error("Erro ao buscar usuário:", err);
     res.status(500).send("Erro ao buscar usuário");
   }
+});*/
+
+meuAPP.post("/usuarios", verifyJWT, async (req, res) => {
+  const { nome, login, senha, nivelAcesso } = req.body;
+  const Usuario = require('./src/models/usuario');
+  const user = new Usuario();
+  const resultado = await user.criarUsuario(nome, login, senha, nivelAcesso);
+
+  if (resultado.erro) {
+    res.status(500).json(resultado); // retorna erro detalhado
+  } else {
+    res.status(201).json(resultado);
+  }
 });
+
 
 meuAPP.get("/inicio", verifyJWT, (req, res) => {
   res.redirect("http://127.0.0.1:5500/sistema_aralev-master/inicio.html");

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Estoque = require('../src/models/Estoque'); 
-const pool = require('../../database'); 
-const { Item } = require('./Item'); 
+const Estoque = require('./src/models/Estoque'); 
+const pool = require('./database'); 
+const { Item } = require('./src/models/Item'); 
 
 const validarMovimentacao = (req, res, next) => {
     const { tipoMovimentacao, quantidade, idProduto } = req.body;

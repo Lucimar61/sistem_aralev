@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Pedido = require('../src/models/Pedido'); // Ajuste o caminho conforme sua estrutura
-const pool = require('../../database'); // Importe o pool de conexões
+const Pedido = require('./src/models/Pedido'); // Ajuste o caminho conforme sua estrutura
+const pool = require('./database'); // Importe o pool de conexões
 
 // Middleware para validação de dados do pedido
 const validarPedido = (req, res, next) => {
