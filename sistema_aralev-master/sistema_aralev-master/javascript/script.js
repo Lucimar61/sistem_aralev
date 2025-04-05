@@ -391,8 +391,6 @@ function adicionarProduto() {
     });
 }
 
-
-
 /* PopUp de confirmações */
 document.addEventListener("DOMContentLoaded", function () {
     const popUp = document.getElementById("popUp");
@@ -423,43 +421,153 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
 // Função para editar o acesso dos usuários
-function editarLinha(botao) {
-    let linha = botao.closest('tr');
-    let editando = linha.dataset.editando === "true";
+// function editarLinha(botao) {
+//     let linha = botao.closest('tr');
+//     let editando = linha.dataset.editando === "true";
 
-    if (!editando) {
-        linha.querySelectorAll('td[contenteditable]').forEach(td => td.contentEditable = "true");
-        botao.innerHTML = '<i class="fa fa-save"></i>';
-        linha.dataset.editando = "true";
-    } else {
-        linha.querySelectorAll('td[contenteditable]').forEach(td => td.contentEditable = "false");
-        botao.innerHTML = '<i class="fa fa-edit"></i>';
-        linha.dataset.editando = "false";
-        // Adicione aqui a lógica para salvar as alterações no banco de dados
-    }
-}
+//     if (!editando) {
+//         linha.querySelectorAll('td[contenteditable]').forEach(td => td.contentEditable = "true");
+//         botao.innerHTML = '<i class="fa fa-save"></i>';
+//         linha.dataset.editando = "true";
+//     } else {
+//         linha.querySelectorAll('td[contenteditable]').forEach(td => td.contentEditable = "false");
+//         botao.innerHTML = '<i class="fa fa-edit"></i>';
+//         linha.dataset.editando = "false";
+//         // Adicione aqui a lógica para salvar as alterações no banco de dados
+//     }
+// }
 
-// Função para excluir o acesso dos usuários
-function excluirLinha(botao) {
-    if (confirm("Tem certeza que deseja excluir este usuário?")) {
-        let linha = botao.closest('tr');
-        linha.remove();
-        // Adicione aqui a lógica para remover o usuário do banco de dados
-    }
-}
+// // Função para excluir o acesso dos usuários
+// function excluirLinha(botao) {
+//     if (confirm("Tem certeza que deseja excluir este usuário?")) {
+//         let linha = botao.closest('tr');
+//         linha.remove();
+//         // Adicione aqui a lógica para remover o usuário do banco de dados
+//     }
+// }
 
-// Exibindo a senha do usuário
+// =================================================================
+// Administração de Usuários
+// =================================================================
 
-function toggleSenha(botao) {
-    let senhaTd = botao.closest('tr').querySelector('.senha');
-    if (senhaTd.textContent === "****") {
-        senhaTd.textContent = senhaTd.dataset.senha;
-        botao.innerHTML = '<i class="fa fa-eye-slash"></i>';
-        botao.setAttribute("data-tooltip", "Ocultar senha");
-    } else {
-        senhaTd.textContent = "****";
-        botao.innerHTML = '<i class="fa fa-eye"></i>';
-        botao.setAttribute("data-tooltip", "Mostrar senha");
-    }
-}
+
+// Importa as funções do módulo de usuários
+// import { cadastrarUsuario, carregarUsuarios, atualizarUsuario, excluirUsuario } from "./usuarios.js";
+
+// // Executa assim que a página carrega
+// // ==============================
+// window.addEventListener("DOMContentLoaded", () => {
+//     carregarUsuarios(); // Carrega os usuários da API e preenche a tabela
+// });
+
+// // Adiciona evento de clique em todos os botões de mostrar/ocultar senha
+// // document.querySelectorAll(".toggle-password").forEach(botao => {
+// //     botao.addEventListener("click", function () {
+// //         toggleSenha(this);
+// //     });
+// // });
+
+
+// // Exibindo a senha do usuário
+// window.toggleSenha = function (botao) {
+//     const senhaTd = botao.closest('tr').querySelector('.senha');
+    
+//     if (senhaTd.textContent === "****") {
+//         senhaTd.textContent = senhaTd.dataset.senha;
+//         botao.innerHTML = '<i class="fa fa-eye-slash"></i>';
+//         botao.setAttribute("data-tooltip", "Ocultar senha");
+//     } else {
+//         senhaTd.textContent = "****";
+//         botao.innerHTML = '<i class="fa fa-eye"></i>';
+//         botao.setAttribute("data-tooltip", "Mostrar senha");
+//     }
+// }
+
+// window.addEventListener("DOMContentLoaded", () => {
+//     carregarUsuarios(); // Carrega os dados via fetch
+
+//     // Aplica os listeners aos botões que já estão no HTML
+//     document.querySelectorAll(".toggle-password").forEach(botao => {
+//         botao.addEventListener("click", () => toggleSenha(botao));
+//     });
+// });
+
+
+// // Habilita edição de uma linha
+// // ==============================
+// window.editarLinha = function (botao) {
+//     const tr = botao.closest("tr"); // Pega a <tr> onde está o botão clicado
+
+//     // Seleciona as colunas da linha (exceto a de ID e a de ações)
+//     const tdsEditaveis = tr.querySelectorAll("td:nth-child(n+2):nth-child(-n+5)");
+//     tdsEditaveis.forEach(td => td.contentEditable = true); // Ativa edição para essas células
+
+//     // Altera o botão "Editar" para "Salvar"
+//     botao.innerHTML = '<i class="fa fa-save"></i>';
+    
+//     // Substitui o evento de clique para salvar a edição
+//     botao.onclick = function () {
+//         salvarEdicao(tr, botao);
+//     };
+// };
+
+// // Salva a edição de uma linha
+// // ==============================
+// // async function salvarEdicao(tr, botao) {
+// //     const id = tr.getAttribute("data-id"); // Pega o ID da linha
+
+// //     // Captura os dados editados da linha
+// //     const nome = tr.children[1].textContent.trim();
+// //     const login = tr.children[2].textContent.trim();
+// //     const senha = tr.querySelector(".senha").getAttribute("data-senha");
+// //     const nivel_acesso = tr.children[4].textContent.trim();
+
+// //     const dadosAtualizados = {
+// //         nome,
+// //         login,
+// //         senha,
+// //         nivel_acesso
+// //     };
+
+// //     // Chama a função que atualiza no banco de dados
+// //     await atualizarUsuario(id, dadosAtualizados);
+
+// //     // Volta os campos para modo não editável
+// //     const tdsEditaveis = tr.querySelectorAll("td:nth-child(n+2):nth-child(-n+5)");
+// //     tdsEditaveis.forEach(td => td.contentEditable = false);
+
+// //     // Troca o botão de volta para "Editar"
+// //     botao.innerHTML = '<i class="fa fa-edit"></i>';
+// //     botao.onclick = function () {
+// //         editarLinha(botao);
+// //     };
+// // }
+
+// // Exclui uma linha
+// // ==============================
+// window.excluirLinha = function (botao) {
+//     const tr = botao.closest("tr"); // Pega a linha
+//     const id = tr.getAttribute("data-id"); // Pega o ID
+//     excluirUsuario(id); // Chama a função para excluir
+// };
+
+// // Controle do pop-up de cadastro
+// // ==============================
+
+// // Abre o pop-up de confirmação de cadastro
+// window.abrirPopUp = function () {
+//     document.getElementById("popUp").style.display = "flex";
+// };
+
+// // Fecha o pop-up
+// window.fecharPopUp = function () {
+//     document.getElementById("popUp").style.display = "none";
+// };
+
+// // Evento do botão "Salvar" dentro do pop-up
+// document.getElementById("open_popUp").addEventListener("click", (event) => {
+//     cadastrarUsuario(event); // Chama a função de cadastro
+//     fecharPopUp(); // Fecha o pop-up depois do envio
+// });
