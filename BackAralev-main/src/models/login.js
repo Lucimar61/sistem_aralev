@@ -77,7 +77,7 @@ router.post('/', async (req, res) => {
     try {
         const success = await loginUser(login, senha);
         if (success) {
-            const token = jwt.sign({ login: 1 }, SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ login: 1 }, SECRET, { expiresIn: '12h' });
             return res.status(200).json({ auth: true, token, message: 'Login bem-sucedido!' });
         } else {
             return res.status(401).json({ message: 'Credenciais inválidas!' });

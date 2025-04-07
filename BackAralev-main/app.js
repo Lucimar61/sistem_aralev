@@ -51,8 +51,8 @@ meuAPP.use('/estoque', estoqueRoutes);
 meuAPP.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_aralev-master')));
 
 // Rota para buscar usuários
-//meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
-  meuAPP.get("/usuarios", async (req, res) => {
+meuAPP.get("/usuarios", verifyJWT, async (req, res) => {
+//meuAPP.get("/usuarios", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM tb_usuario");
     res.json(rows);
@@ -62,8 +62,8 @@ meuAPP.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_a
   }
 });
 
-//meuAPP.post("/usuarios", verifyJWT, async (req, res) => {
-  meuAPP.post("/usuarios", async (req, res) => {
+meuAPP.post("/usuarios", verifyJWT, async (req, res) => {
+//meuAPP.post("/usuarios", async (req, res) => {
   const { nome, login, senha, nivelAcesso } = req.body;
   const Usuario = require('./src/models/usuario');
   const user = new Usuario();
