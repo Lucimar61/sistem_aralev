@@ -8,17 +8,29 @@ Content-Type: application/json
 }
 
 ### GET USUÁRIOS - Listar usuários (requer token)
-DELETE http://localhost:8080/usuarios/71
+DELETE http://localhost:8080/usuarios/78
 Content-Type: application/json
-x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQzOTg4ODU3LCJleHAiOjE3NDQwMzIwNTd9.s1CYpKE79tFi2-68AIkBfAOefTj-0BU7-Sc4OuM9nNo
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQ0MDQ2NDE5LCJleHAiOjE3NDQwODk2MTl9.9PoK3cyAxBs9l3u1zpcnE2dlXEi9MEHQPTz3sT57_Zs
 
 ### PUT USUÁRIOS - Altera usuários (requer token)
 PUT http://localhost:8080/usuarios/77
 Content-Type: application/json
-x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQ0MDMxMzkyLCJleHAiOjE3NDQwNzQ1OTJ9.I9g2WxfCRHrr-KyCYMh7NXAK2XQLkg7GFURIv8YiNsI
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQ0MDQ3Nzg4LCJleHAiOjE3NDQwOTA5ODh9.BCUXAK-PCfGz-6ff8zh2xaTxIq6gvR2ai3BLQPYvcmc
 
 {
-  "nome": "Novo Nome",
-  "login": "novologin",
-  "nivelAcesso": 3
+  "nome": "Ernane",
+  "login": "ernane.moraes",
+  "nivelAcesso": 1
+}
+
+### CRIAR USUARIo
+POST http://localhost:8080/usuarios
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQ0MDU0MjU1LCJleHAiOjE3NDQwOTc0NTV9.1yM7tXj2--zAoh2MmVcdNeZ5DqqOVKU3DH7LeX7Lz2I
+
+{
+  "nome": "João Silva",
+  "login": "joao.silva",
+  "senha": "123456",
+  "nivelAcesso": "1"
 }
