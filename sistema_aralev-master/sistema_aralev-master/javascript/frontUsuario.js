@@ -17,11 +17,11 @@ document.getElementById("open_popUp").addEventListener("click", async function (
         "x-access-token": token
     },
     body: JSON.stringify({
-        NOME: nome_usuario,
-        LOGIN: login,
-        SENHA: senha,
-        NIVEL_ACESSO: parseInt(nivel_acesso)
-    })
+        nome: nome_usuario,
+        login: login,
+        senha: senha,
+        nivelAcesso: parseInt(nivel_acesso)
+    })    
 });
     
         const data = await response.json(); // tentar ler a resposta, mesmo com erro
@@ -32,6 +32,7 @@ document.getElementById("open_popUp").addEventListener("click", async function (
             if (data?.sucesso) {
                 alert("Usuário cadastrado com sucesso!");
                 document.getElementById("popUp").style.display = "none";
+                location.reload();
             } else {
                 alert(data?.mensagem || "Erro ao cadastrar usuário 2.");
             }

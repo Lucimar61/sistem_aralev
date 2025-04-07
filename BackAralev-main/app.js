@@ -62,7 +62,8 @@ meuAPP.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_a
   }
 });
 
-meuAPP.post("/usuarios", verifyJWT, async (req, res) => {
+//meuAPP.post("/usuarios", verifyJWT, async (req, res) => {
+  meuAPP.post("/usuarios", async (req, res) => {
   const { nome, login, senha, nivelAcesso } = req.body;
   const Usuario = require('./src/models/usuario');
   const user = new Usuario();
