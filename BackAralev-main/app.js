@@ -83,6 +83,27 @@ meuAPP.post("/usuarios", verifyJWT, async (req, res) => {
   res.status(201).json({ sucesso: true, id: resultado.id });
 });
 
+meuAPP.delete("/usuarios/:id", verifyJWT, async (req, res) => {
+  const id = req.params.id;
+
+  const Usuario = require('./src/models/usuario');
+  const user = new Usuario();
+
+  try {
+    const resultado = await user.excluirUsuario(id);
+
+    if (resultado.sucesso) {
+      return res.status(200).json({ sucesso: true, mensagem: "Usuário excluído com sucesso." });
+    } else {
+      return res.status(404).json({ sucesso: false, mensagem: "Usuário não encontrado." });
+    }
+  } catch (erro) {
+    console.error("Erro ao excluir usuário:", erro);
+    return res.status(500).json({ sucesso: false, mensagem: "Erro interno ao excluir o usuário." });
+  }
+});
+
+
 
 
 meuAPP.get("/inicio", verifyJWT, (req, res) => {

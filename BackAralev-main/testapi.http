@@ -15,6 +15,9 @@ GET http://localhost:8080/usuarios
 Content-Type: application/json
 x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQzODkzNjEwLCJleHAiOjE3NDM4OTcyMTB9.FQWYrnUlDvIXALAPpBtPNhPWWuFb5hWl72k6XMSLqBc
 
+DELETE http://localhost:3000/usuarios/1
+Authorization: Bearer SEU_TOKEN_AQUI
+
 
 ### POST USUÁRIO - Criar novo usuário (requer token)
 POST {{base_url}}/usuarios

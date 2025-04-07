@@ -6,3 +6,8 @@ Content-Type: application/json
     "login": "ernane.moraes",
     "senha": "Unileste"
 }
+
+### GET USUÁRIOS - Listar usuários (requer token)
+DELETE http://localhost:8080/usuarios/71
+Content-Type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQzOTg4ODU3LCJleHAiOjE3NDQwMzIwNTd9.s1CYpKE79tFi2-68AIkBfAOefTj-0BU7-Sc4OuM9nNo

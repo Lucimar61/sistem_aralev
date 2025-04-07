@@ -73,17 +73,18 @@ import { API_URL } from './api.js';
             usuarios.forEach((usuario, index) => {
                 const linha = document.createElement("tr");
                 linha.innerHTML = `
-                    <td>${usuario.ID_USUARIO_PK}</td>
-                    <td contenteditable="false">${usuario.NOME}</td>
-                    <td contenteditable="false">${usuario.LOGIN}</td>
-                    <td contenteditable="false" class="senha" data-senha="${usuario.SENHA}">****</td>
-                    <td contenteditable="false">${nivelTexto(usuario.NIVEL_ACESSO)}</td>
-                    <td>
-                        <button class="toggle-password" onclick="toggleSenha(this)" data-tooltip="Mostrar senha"><i class="fa fa-eye"></i></button>
-                        <button class="editar" onclick="editarLinha(this)"><i class="fa fa-edit"></i></button>
-                        <button class="excluir" onclick="excluirLinha(this)"><i class="fa fa-trash"></i></button>
-                    </td>
-                `;
+    <td>${usuario.ID_USUARIO_PK}</td>
+    <td contenteditable="false">${usuario.NOME}</td>
+    <td contenteditable="false">${usuario.LOGIN}</td>
+    <td contenteditable="false" class="senha">*****</td>
+    <td contenteditable="false">${nivelTexto(usuario.NIVEL_ACESSO)}</td>
+    <td>
+        <button class="editar" onclick="editarLinha(this)"><i class="fa fa-edit"></i></button>
+        <button class="salvar" onclick="salvarLinha(this)" style="display:none;"><i class="fa fa-check"></i></button>
+        <button class="excluir" onclick="excluirLinha(this)"><i class="fa fa-trash"></i></button>
+    </td>
+`;
+
                 tabela.appendChild(linha);
             });
         })
@@ -100,3 +101,108 @@ import { API_URL } from './api.js';
             default: return "Desconhecido";
         }
     }
+
+    function excluirLinha(botao) {
+        const linha = botao.closest("tr");
+        const id = linha.children[0].textContent;
+        const token = localStorage.getItem("jwtToken");
+    
+        console.log("ID do usuário a excluir:", id);
+        console.log("Token usado:", token);
+    
+        if (confirm("Tem certeza que deseja excluir este usuário?")) {
+            fetch(`${API_URL}/usuarios/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "x-access-token": token
+                }
+            })
+            .then(response => {
+                console.log("Status da resposta:", response.status);
+                return response.json().then(data => {
+                    console.log("Resposta do servidor:", data);
+                    if (!response.ok) throw new Error(data?.mensagem || "Erro ao excluir usuário.");
+                    linha.remove();
+                });
+            })
+            .catch(error => {
+                console.error("Erro ao excluir:", error);
+                alert("Erro ao excluir usuário.");
+            });
+        }
+    }
+    window.excluirLinha = excluirLinha;
+    
+
+    function editarLinha(botao) {
+        const linha = botao.closest("tr");
+    
+        // Ativa edição nas colunas: nome, login, senha (a senha será editável diretamente)
+        for (let i = 1; i <= 3; i++) {
+            linha.children[i].setAttribute("contenteditable", "true");
+        }
+    
+        linha.children[3].textContent = ""; // limpa os "*****" pra digitar nova senha
+    
+        linha.querySelector(".editar").style.display = "none";
+        linha.querySelector(".salvar").style.display = "inline-block";
+    }
+    window.editarLinha = editarLinha;
+
+    function salvarLinha(botao) {
+        const linha = botao.closest("tr");
+        const id = linha.children[0].textContent;
+        const nome = linha.children[1].textContent.trim();
+        const login = linha.children[2].textContent.trim();
+        const senha = linha.children[3].textContent.trim();
+        const nivelTexto = linha.children[4].textContent.trim();
+    
+        const nivelMap = {
+            "Administrador": 1,
+            "Supervisor": 2,
+            "Vendedor": 3
+        };
+        const nivel = nivelMap[nivelTexto] || 3;
+    
+        const token = localStorage.getItem("jwtToken");
+    
+        fetch(`${API_URL}/usuarios/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "x-access-token": token
+            },
+            body: JSON.stringify({
+                nome: nome,
+                login: login,
+                senha: senha,
+                nivelAcesso: nivel
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data?.sucesso) {
+                alert("Usuário atualizado com sucesso.");
+                linha.querySelector(".editar").style.display = "inline-block";
+                linha.querySelector(".salvar").style.display = "none";
+    
+                // Desativa edição
+                for (let i = 1; i <= 3; i++) {
+                    linha.children[i].setAttribute("contenteditable", "false");
+                }
+    
+                linha.children[3].textContent = "*****";
+            } else {
+                alert(data?.mensagem || "Erro ao atualizar usuário.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao atualizar:", error);
+            alert("Erro ao atualizar usuário.");
+        });
+    }
+    window.salvarLinha = salvarLinha;
+
+    
+    
+    
