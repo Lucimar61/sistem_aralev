@@ -103,6 +103,32 @@ meuAPP.delete("/usuarios/:id", verifyJWT, async (req, res) => {
   }
 });
 
+meuAPP.put("/usuarios/:id", async (req, res) => {
+  const id = req.params.id;
+  const { nome, login, senha } = req.body;
+
+  if (!nome || !login) {
+    return res.status(400).json({ sucesso: false, mensagem: "Preencha todos os campos corretamente." });
+  }
+
+  const Usuario = require('./src/models/usuario');
+  const user = new Usuario();
+
+  try {
+    const resultado = await user.atualizarUsuario(id, { nome, login, senha });
+
+    if (resultado.sucesso) {
+      return res.status(200).json({ sucesso: true, mensagem: "Usuário atualizado com sucesso." });
+    } else {
+      return res.status(404).json({ sucesso: false, mensagem: "Usuário não encontrado." });
+    }
+  } catch (erro) {
+    console.error("Erro ao atualizar usuário:", erro);
+    return res.status(500).json({ sucesso: false, mensagem: "Erro interno ao atualizar o usuário." });
+  }
+});
+
+
 
 
 
