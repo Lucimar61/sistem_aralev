@@ -105,7 +105,7 @@ meuAPP.delete("/usuarios/:id", verifyJWT, async (req, res) => {
 
 meuAPP.put("/usuarios/:id", async (req, res) => {
   const id = req.params.id;
-  const { nome, login, senha } = req.body;
+  const { nome, login, senha, nivelAcesso } = req.body;
 
   if (!nome || !login) {
     return res.status(400).json({ sucesso: false, mensagem: "Preencha todos os campos corretamente." });
@@ -115,7 +115,7 @@ meuAPP.put("/usuarios/:id", async (req, res) => {
   const user = new Usuario();
 
   try {
-    const resultado = await user.atualizarUsuario(id, { nome, login, senha });
+    const resultado = await user.atualizarUsuario(id, { nome, login, senha, nivelAcesso });
 
     if (resultado.sucesso) {
       return res.status(200).json({ sucesso: true, mensagem: "Usuário atualizado com sucesso." });
@@ -127,6 +127,7 @@ meuAPP.put("/usuarios/:id", async (req, res) => {
     return res.status(500).json({ sucesso: false, mensagem: "Erro interno ao atualizar o usuário." });
   }
 });
+
 
 
 

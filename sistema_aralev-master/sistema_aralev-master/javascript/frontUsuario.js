@@ -157,11 +157,26 @@ function editarLinha(botao) {
 
     linhaEmEdicao = novaLinha;
 
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 3; i++) {
         novaLinha.children[i].setAttribute("contenteditable", "true");
     }
-
+    
+    // Campo de senha
     novaLinha.children[3].textContent = "[Digite nova senha]";
+    
+    // Substitui o campo de nível por um dropdown
+    const nivelAtual = novaLinha.children[4].textContent.trim();
+    const select = document.createElement("select");
+    ["Administrador", "Supervisor", "Vendedor"].forEach(opcao => {
+        const option = document.createElement("option");
+        option.value = opcao;
+        option.textContent = opcao;
+        if (opcao === nivelAtual) option.selected = true;
+        select.appendChild(option);
+    });
+    novaLinha.children[4].innerHTML = "";
+    novaLinha.children[4].appendChild(select);
+    
 
     novaLinha.querySelector(".editar").style.display = "none";
     novaLinha.querySelector(".salvar").style.display = "inline-block";
@@ -206,7 +221,7 @@ function salvarLinha(botao) {
     const nome = linha.children[1].textContent.trim();
     const login = linha.children[2].textContent.trim();
     const senhaCampo = linha.children[3].textContent.trim();
-    const nivelTextoCampo = linha.children[4].textContent.trim();
+    const nivelTextoCampo = linha.children[4].querySelector("select")?.value?.trim();
     const token = getToken();
     if (!token) return;
 

@@ -50,30 +50,30 @@ class Usuario {
 
     async atualizarUsuario(id, dados) {
         try {
-            let query = '';
-            let params = [];
-    
-            if (dados.senha) {
-                const { salt, hash } = hashPassword(dados.senha);
-                query = `UPDATE tb_usuario SET NOME = ?, LOGIN = ?, SENHA = ?, SALT = ? WHERE ID_USUARIO_PK = ?`;
-                params = [dados.nome, dados.login, hash, salt, id];
-            } else {
-                query = `UPDATE tb_usuario SET NOME = ?, LOGIN = ? WHERE ID_USUARIO_PK = ?`;
-                params = [dados.nome, dados.login, id];
-            }
-    
-            const [resultado] = await pool.execute(query, params);
-    
-            if (resultado.affectedRows === 0) {
-                return { sucesso: false, mensagem: "Usuário não encontrado." };
-            }
-    
-            return { sucesso: true };
+          let query = '';
+          let params = [];
+      
+          if (dados.senha) {
+            const { salt, hash } = hashPassword(dados.senha);
+            query = `UPDATE tb_usuario SET NOME = ?, LOGIN = ?, SENHA = ?, SALT = ?, NIVEL_ACESSO = ? WHERE ID_USUARIO_PK = ?`;
+            params = [dados.nome, dados.login, hash, salt, dados.nivelAcesso, id];
+          } else {
+            query = `UPDATE tb_usuario SET NOME = ?, LOGIN = ?, NIVEL_ACESSO = ? WHERE ID_USUARIO_PK = ?`;
+            params = [dados.nome, dados.login, dados.nivelAcesso, id];
+          }
+      
+          const [resultado] = await pool.execute(query, params);
+      
+          if (resultado.affectedRows === 0) {
+            return { sucesso: false, mensagem: "Usuário não encontrado." };
+          }
+      
+          return { sucesso: true };
         } catch (erro) {
-            console.error("Erro no model ao atualizar:", erro);
-            throw erro;
+          console.error("Erro no model ao atualizar:", erro);
+          throw erro;
         }
-    }
+      }      
 }
 
 
