@@ -1,4 +1,5 @@
 import { API_URL } from './api.js';
+let linhaEmEdicao = null;
 
 document.getElementById("open_popUp").addEventListener("click", async function (event) {
     event.preventDefault();
@@ -38,7 +39,7 @@ document.getElementById("open_popUp").addEventListener("click", async function (
             if (data?.sucesso) {
                 alert("Usuário cadastrado com sucesso!");
                 document.getElementById("popUp").style.display = "none";
-                fetchUsuarios(); // recarrega a tabela sem recarregar a página
+                fetchUsuarios();
             } else {
                 alert(data?.mensagem || "Erro ao cadastrar usuário.");
             }
@@ -111,6 +112,15 @@ function nivelTexto(nivel) {
     }
 }
 
+function textoParaNivel(texto) {
+    switch (texto.toLowerCase()) {
+        case "administrador": return 1;
+        case "supervisor": return 2;
+        case "vendedor": return 3;
+        default: return null;
+    }
+}
+
 function excluirLinha(botao) {
     const linha = botao.closest("tr");
     const id = linha.children[0].textContent;
@@ -139,18 +149,56 @@ function excluirLinha(botao) {
 window.excluirLinha = excluirLinha;
 
 function editarLinha(botao) {
-    const linha = botao.closest("tr");
+    const novaLinha = botao.closest("tr");
 
-    for (let i = 1; i <= 3; i++) {
-        linha.children[i].setAttribute("contenteditable", "true");
+    if (linhaEmEdicao && linhaEmEdicao !== novaLinha) {
+        cancelarEdicao(linhaEmEdicao);
     }
 
-    linha.children[3].textContent = "[Digite nova senha]";
+    linhaEmEdicao = novaLinha;
 
-    linha.querySelector(".editar").style.display = "none";
-    linha.querySelector(".salvar").style.display = "inline-block";
+    for (let i = 1; i <= 4; i++) {
+        novaLinha.children[i].setAttribute("contenteditable", "true");
+    }
+
+    novaLinha.children[3].textContent = "[Digite nova senha]";
+
+    novaLinha.querySelector(".editar").style.display = "none";
+    novaLinha.querySelector(".salvar").style.display = "inline-block";
+
+    const excluirBtn = novaLinha.querySelector(".excluir");
+    excluirBtn.innerHTML = `<i class="fa fa-times"></i>`;
+    excluirBtn.classList.remove("excluir");
+    excluirBtn.classList.add("cancelar");
+    excluirBtn.setAttribute("onclick", "cancelarEdicao(this.closest('tr'))");
 }
 window.editarLinha = editarLinha;
+
+function cancelarEdicao(linha) {
+    if (!linha) return;
+
+    for (let i = 1; i <= 4; i++) {
+        linha.children[i].setAttribute("contenteditable", "false");
+    }
+
+    linha.children[3].textContent = "*****";
+
+    linha.querySelector(".editar").style.display = "inline-block";
+    linha.querySelector(".salvar").style.display = "none";
+
+    const cancelarBtn = linha.querySelector(".cancelar");
+    if (cancelarBtn) {
+        cancelarBtn.innerHTML = `<i class="fa fa-trash"></i>`;
+        cancelarBtn.classList.remove("cancelar");
+        cancelarBtn.classList.add("excluir");
+        cancelarBtn.setAttribute("onclick", "excluirLinha(this)");
+    }
+
+    if (linhaEmEdicao === linha) {
+        linhaEmEdicao = null;
+    }
+}
+window.cancelarEdicao = cancelarEdicao;
 
 function salvarLinha(botao) {
     const linha = botao.closest("tr");
@@ -158,17 +206,23 @@ function salvarLinha(botao) {
     const nome = linha.children[1].textContent.trim();
     const login = linha.children[2].textContent.trim();
     const senhaCampo = linha.children[3].textContent.trim();
+    const nivelTextoCampo = linha.children[4].textContent.trim();
     const token = getToken();
     if (!token) return;
 
-    if (!nome || !login) {
+    if (!nome || !login || !nivelTextoCampo) {
         alert("Preencha todos os campos corretamente.");
         return;
     }
 
-    const payload = { nome, login };
+    const nivelAcesso = textoParaNivel(nivelTextoCampo);
+    if (!nivelAcesso) {
+        alert("Nível de acesso inválido. Use: Administrador, Supervisor ou Vendedor.");
+        return;
+    }
 
-    // Envia a senha apenas se ela foi alterada
+    const payload = { nome, login, nivelAcesso };
+
     if (senhaCampo && senhaCampo !== "*****" && senhaCampo !== "[Digite nova senha]") {
         payload.senha = senhaCampo;
     }
@@ -181,25 +235,33 @@ function salvarLinha(botao) {
         },
         body: JSON.stringify(payload)
     })
-    .then(response => {
-        return response.json().then(data => {
-            if (!response.ok) throw new Error(data?.mensagem || "Erro ao salvar usuário.");
+    .then(response => response.json().then(data => {
+        if (!response.ok) throw new Error(data?.mensagem || "Erro ao salvar usuário.");
 
-            for (let i = 1; i <= 3; i++) {
-                linha.children[i].setAttribute("contenteditable", "false");
-            }
+        for (let i = 1; i <= 4; i++) {
+            linha.children[i].setAttribute("contenteditable", "false");
+        }
 
-            linha.children[3].textContent = "*****";
+        linha.children[3].textContent = "*****";
+        linha.children[4].textContent = nivelTexto(nivelAcesso);
 
-            linha.querySelector(".editar").style.display = "inline-block";
-            linha.querySelector(".salvar").style.display = "none";
-            alert("Usuário atualizado com sucesso!");
-        });
-    })
+        linha.querySelector(".editar").style.display = "inline-block";
+        linha.querySelector(".salvar").style.display = "none";
+
+        const cancelarBtn = linha.querySelector(".cancelar");
+        if (cancelarBtn) {
+            cancelarBtn.innerHTML = `<i class="fa fa-trash"></i>`;
+            cancelarBtn.classList.remove("cancelar");
+            cancelarBtn.classList.add("excluir");
+            cancelarBtn.setAttribute("onclick", "excluirLinha(this)");
+        }
+
+        linhaEmEdicao = null;
+        alert("Usuário atualizado com sucesso!");
+    }))
     .catch(error => {
         console.error("Erro ao salvar:", error);
         alert(error.message || "Erro ao salvar alterações.");
     });
 }
 window.salvarLinha = salvarLinha;
-    

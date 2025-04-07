@@ -513,3 +513,22 @@ table {
     border: 1px solid black;
 }
 
+button.cancelar {
+    background-color: red;
+    color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 5px 10px; /* opcional para espaçamento */
+    border-radius: 5px; /* opcional para bordas arredondadas */
+    margin-left: 15px;
+}
+
+button.salvar {
+    background-color: #00CF3B(0, 255, 0);
+    color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 5px 10px; /* opcional para espaçamento */
+    border-radius: 5px; /* opcional para bordas arredondadas */
+    margin: 0 3px;
+}
