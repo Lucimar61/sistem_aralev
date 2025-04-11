@@ -1,5 +1,5 @@
 const { pool } = require('../../database');
-const { hashPassword } = require('./encrypt'); // Corrigido aqui
+const { hashPassword } = require('./encrypt');
 
 class Usuario {
     constructor(idUsuario, nome, login, senha, nivelAcesso) {
@@ -10,102 +10,86 @@ class Usuario {
         this.nivelAcesso = nivelAcesso;
     }
 
-    // static validarLoginExistente(login, listaUsuarios) {
-    //     const loginExistente = listaUsuarios.some(usuario => usuario.login === login);
-    //     if (loginExistente) {
-    //         this.exibirAlerta(`O login "${login}" já está em uso. Por favor, escolha outro login.`);
-    //     }
-    //     return loginExistente;
-    // }
-
-    // static exibirAlerta(mensagem) {
-    //     console.warn('ALERTA:', mensagem);
-    // }
-
     async criarUsuario(nome, login, senha, nivelAcesso) {
+      try {
+          console.log("Criando usuário com:", nome, login, senha, nivelAcesso);
+          const [rows] = await pool.execute('SELECT * FROM tb_usuario WHERE LOGIN = ?', [login]);
+  
+          // Esse console.log abaixo está errado e deve ser removido:
+          // console.log("Resultado do UPDATE:", resultado);
+          
+          if (rows.length > 0) {
+              return { erro: "Login já está em uso" };
+          }
+  
+          const { salt, hash } = hashPassword(senha);
+          const query = 'INSERT INTO tb_usuario (NOME, LOGIN, SENHA, SALT, NIVEL_ACESSO) VALUES (?, ?, ?, ?, ?)';
+          const [results] = await pool.execute(query, [nome, login, hash, salt, nivelAcesso]);
+  
+          // Aqui também:
+          // console.log("Resultado do UPDATE:", resultado);
+  
+          console.log("Usuário criado com sucesso, ID:", results.insertId);
+          return { sucesso: true, id: results.insertId };
+      } catch (err) {
+          return { erro: "Erro ao criar usuário", detalhe: err.message };
+      }
+  }
+  
+
+    async excluirUsuario(id) {
         try {
-            console.log("Criando usuário com:", nome, login, senha, nivelAcesso);
-            
-            const [rows] = await pool.execute('SELECT * FROM tb_usuario WHERE LOGIN = ?', [login]);
-            if (rows.length > 0) {
-                console.log('ALERTA: O login já está em uso.');
-                return { erro: "Login já está em uso" };
+            console.log("Iniciando exclusão de usuário com ID:", id); // Verifica se o método foi chamado
+    
+            const [resultado] = await pool.execute("DELETE FROM tb_usuario WHERE ID_USUARIO_PK = ?", [id]);
+            console.log("Resultado do UPDATE:", resultado);
+
+    
+            console.log("Resultado da query DELETE:", resultado); // Mostra o resultado da execução da query
+    
+            if (resultado.affectedRows > 0) {
+                console.log("Usuário excluído com sucesso!");
+                return { sucesso: true };
+            } else {
+                console.log("Nenhum usuário encontrado com esse ID.");
+                return { sucesso: false };
             }
-    
-            const { salt, hash } = hashPassword(senha);
-            console.log("Hash e salt gerados:", { hash, salt });
-    
-            const query = 'INSERT INTO tb_usuario (NOME, LOGIN, SENHA, SALT, NIVEL_ACESSO) VALUES (?, ?, ?, ?, ?)';
-            const [results] = await pool.execute(query, [nome, login, hash, salt, nivelAcesso]);
-            console.log('Usuário registrado com sucesso! ID:', results.insertId);
-            
-            return { sucesso: true, id: results.insertId };
-    
-        } catch (err) {
-            console.error('Erro ao criar usuário:', err); // imprime tudo
-            return { erro: "Erro ao criar usuário", detalhe: err.message }; // envia erro ao front
+        } catch (erro) {
+            console.error("Erro ao excluir usuário no banco:", erro);
+            throw new Error(`[Model:Usuario] Erro ao atualizar usuário: ${erro.message}`);
         }
     }
-    
-    
-    
 
-    atualizarUsuario(id, nome, login, senha, nivelAcesso) {
-        return new Promise((resolve, reject) => {
-            if (!id) {
-                const erro = new Error('ID do usuário não fornecido');
-                console.error(erro.message);
-                return reject(erro);
-            }
-    
-            const query = 'UPDATE tb_usuario SET nome = ?, login = ?, senha = ?, nivel_acesso = ? WHERE id = ?';
-            
-            connection.query(query, [nome, login, senha, nivelAcesso, id], (err, results) => {
-                if (err) {
-                    console.error('Erro ao atualizar usuário:', err);
-                    return reject(err);
-                }
-                
-                if (results.affectedRows === 0) {
-                    const msg = `Nenhum usuário encontrado com o ID ${id}`;
-                    console.log(msg);
-                    return resolve({ success: false, message: msg });
-                }
-                
-                console.log('Usuário atualizado com sucesso!');
-                resolve({ success: true, affectedRows: results.affectedRows });
-            });
-        });
-    }
+    async atualizarUsuario(id, dados) {
+        try {
+          let query = '';
+          let params = [];
+      
+          if (dados.senha) {
+            const { salt, hash } = hashPassword(dados.senha);
+            query = `UPDATE tb_usuario SET NOME = ?, LOGIN = ?, SENHA = ?, SALT = ?, NIVEL_ACESSO = ? WHERE ID_USUARIO_PK = ?`;
+            params = [dados.nome, dados.login, hash, salt, dados.nivelAcesso, id];
+          } else {
+            query = `UPDATE tb_usuario SET NOME = ?, LOGIN = ?, NIVEL_ACESSO = ? WHERE ID_USUARIO_PK = ?`;
+            params = [dados.nome, dados.login, dados.nivelAcesso, id];
+          }
+      
+          const [resultado] = await pool.execute(query, params);
+          console.log("Resultado do UPDATE:", resultado);
 
-    deletarUsuario(id) {
-        return new Promise((resolve, reject) => {
-            if (!id) {
-                const erro = new Error('ID do usuário não fornecido para deleção');
-                console.error(erro.message);
-                return reject(erro);
-            }
-    
-            const query = 'DELETE FROM tb_usuario WHERE id = ?';
-            
-            connection.query(query, [id], (err, results) => {
-                if (err) {
-                    console.error('Erro ao deletar usuário:', err);
-                    return reject(err);
-                }
-                
-                if (results.affectedRows === 0) {
-                    const msg = `Nenhum usuário encontrado com o ID ${id}`;
-                    console.log(msg);
-                    return resolve({ success: false, message: msg });
-                }
-                
-                console.log('Usuário deletado com sucesso!');
-                resolve({ success: true, affectedRows: results.affectedRows });
-            });
-        });
-    }
-
+      
+          if (resultado.affectedRows === 0) {
+            return { sucesso: false, mensagem: "Usuário não encontrado." };
+          }
+      
+          return { sucesso: true };
+        } catch (erro) {
+          console.error("Erro no model ao atualizar:", erro);
+          throw new Error(`[Model:Usuario] Erro ao atualizar usuário: ${erro.message}`);
+        }
+      }      
 }
+
+
 
 module.exports = Usuario;
