@@ -58,8 +58,8 @@
                 
             </div>
         </div>
-        <!-- Seção do formulário de cadastro de clientes -->
 
+        <!-- Seção do formulário de cadastro de clientes -->
         <div class="secao-cadastro">
             <div class="container-cad-clientes">
                 <div class="frm_titulo">
@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <div class="container-salvar">
-                            <button>
+                            <button id="btn-salvar-cliente" type="button" onclick="abrirPopUpClientes()">
                                 Salvar
                             </button>
                         </div>
@@ -143,26 +143,16 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="secao-cadastro">
-                        
-                        <div class="container-enviar-pedido">
 
-                            <button id="cancelar" class="btn_cancelar" type="reset">Cancelar</button>
-                            <button class="btn_emitir" type="button" onclick="abrirPopUp()">Emitir</button>
-                        
-                        </div>
-                    </form>
-                    <!-- PopUp de confirmação do cadastro de pedidos -->
-                    <div id="popUp" class="popUp">
-                        <div class="popUp-container">
-                            <p>Você está prestes a emitir um pedido. <strong>Tem certeza que deseja cadastrar esse pedido?</strong></p>
-                            <button id="close_popUp" class="btn_cancelar" onclick="fecharPopUp()">Cancelar</button>
-                            <button id="open_popUp" class="btn_salvar" type="submit">Salvar</button> <!-- type="submit" correto -->
-                        </div>
-                    </div>
-                
+        <!-- PopUp de confirmação do cadastro de pedidos -->
+        <div id="popUpClientes" class="popUpClientes">
+            <div class="container-clientes-popUp">
+                <p>Você está prestes a cadastrar um cliente. <strong>Deseja continuar?</strong></p>
+                <button id="close_popUpClientes" class="btn_cancelarClientes" onclick="fecharPopUpClientes()">Cancelar</button>
+                <button id="salvarClientes" class="btn_salvarClientes" type="submit">Salvar</button> <!-- type="submit" correto -->
             </div>
         </div>
+
     </main>
     <!-- Carregar jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -171,5 +161,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="javascript/script.js"></script>
     <script src="javascript/mascaras.js"></script>
+    <script src="javascript/popUp.js"></script>
 </body>
 </html>
