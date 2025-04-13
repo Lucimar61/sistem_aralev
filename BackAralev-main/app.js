@@ -63,11 +63,10 @@ function verifyJWT(req, res, next) {
 
 // Rotas principais
 app.use('/api', usuarioRoutes);
-app.use('/pedidos', pedidoRoutes);
-app.use('/estoque', estoqueRoutes);
+app.use('/api/pedidos', pedidoRoutes);
 app.use('/api/itens', itemRoutes);
 app.use('/api/estoque', estoqueRoutes);
-app.use('/api', pessoaRoutes);
+app.use('/api/pessoas', pessoaRoutes);
 
 // Acesso ao sistema (estático) protegido por JWT
 app.use('/sistema', verifyJWT, express.static(path.join(__dirname, 'sistema_aralev-master')));
