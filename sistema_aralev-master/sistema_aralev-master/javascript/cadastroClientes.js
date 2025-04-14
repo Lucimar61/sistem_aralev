@@ -1,4 +1,13 @@
+import { API_URL } from './api.js';
+
 document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('jwtToken');  // Corrigido para 'jwtToken'
+
+if (!token) {
+    alert("Sessão expirada. Faça login novamente.");
+    window.location.href = "login.html";
+    return;
+}
     inicializarMascaras();
     inicializarEventos();
     carregarClientes();
@@ -7,11 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Máscaras para os campos
 function inicializarMascaras() {
     $('input[name="num_celular"]').mask('(00) 0 0000-0000');
-    
     $('input[name="cpf_ou_cnpj"]').mask('000.000.000-00', {reverse: true});
-    
     $('input[name="CEP"]').mask('00000-000');
-    
     $('input[name="UF"]').mask('AA');
 }
 
@@ -30,46 +36,55 @@ function inicializarEventos() {
 
 async function carregarClientes() {
     try {
-        const response = await fetch('http://localhost:8080/api/pessoas', {
+        const token = localStorage.getItem('jwtToken');
+        console.log('Token JWT:', token); // Verifique se o token existe
+        
+        if (!token) {
+            throw new Error('Token de autenticação não encontrado. Faça login novamente.');
+        }
+
+        const response = await fetch(`${API_URL}/api/pessoas`, {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'x-access-token': token // Verifique se o nome do cabeçalho está correto (pode ser 'Authorization' em alguns casos)
             }
         });
         
         if (!response.ok) {
-            throw new Error('Erro ao carregar clientes');
+            const errorData = await response.json();
+            console.error('Erro na API:', errorData);
+            throw new Error(errorData.message || 'Erro ao carregar clientes');
         }
         
-        const clientes = await response.json();
-        preencherTabelaClientes(clientes);
+        const { data } = await response.json();
+        preencherTabelaClientes(data);
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao carregar clientes: ' + error.message);
+        alert(error.message); // Mostra mensagens de erro específicas
     }
 }
 
 function preencherTabelaClientes(clientes) {
-    const tbody = document.getElementById('tabale-clientes');
+    const tbody = document.getElementById('table-clientes');
     tbody.innerHTML = '';
     
     clientes.forEach(cliente => {
         const tr = document.createElement('tr');
         
         tr.innerHTML = `
-            <td>${cliente.idPessoa}</td>
-            <td>${cliente.nome}</td>
-            <td>${cliente.celular}</td>
-            <td>${formatarDocumento(cliente.cpfCnpj)}</td>
-            <td>${cliente.rua}</td>
-            <td>${cliente.numero}</td>
-            <td>${cliente.cep || 'N/A'}</td>
-            <td>${cliente.cidade}</td>
-            <td>${cliente.uf}</td>
+            <td>${cliente.ID_PESSOA_PK}</td>
+            <td>${cliente.NOME}</td>
+            <td>${formatarTelefone(cliente.CELULAR)}</td>
+            <td>${formatarDocumento(cliente.CPF_CNPJ)}</td>
+            <td>${cliente.RUA}</td>
+            <td>${cliente.NUMERO}</td>
+            <td>N/A</td> <!-- CEP não existe no seu banco -->
+            <td>${cliente.CIDADE}</td>
+            <td>${cliente.UF}</td>
             <td class="acoes">
-                <button class="btn-editar" onclick="editarCliente(${cliente.idPessoa})">
+                <button class="btn-editar" onclick="editarCliente(${cliente.ID_PESSOA_PK})">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn-excluir" onclick="excluirCliente(${cliente.idPessoa})">
+                <button class="btn-excluir" onclick="excluirCliente(${cliente.ID_PESSOA_PK})">
                     <i class="fas fa-trash"></i>
                 </button>
             </td>
@@ -91,6 +106,18 @@ function formatarDocumento(doc) {
     return doc;
 }
 
+function formatarTelefone(telefone) {
+    if (!telefone) return '';
+    const numeros = telefone.replace(/\D/g, '');
+    
+    if (numeros.length === 11) {
+        return numeros.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, '($1) $2 $3-$4');
+    } else if (numeros.length === 10) {
+        return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    }
+    return telefone;
+}
+
 async function salvarCliente() {
     fecharPopUpClientes();
     
@@ -101,18 +128,17 @@ async function salvarCliente() {
         cpfCnpj: $(form.cpf_ou_cnpj).cleanVal(),
         rua: form.nome_rua.value,
         numero: form.numero_casa.value,
-        bairro: 'N/A', 
+        bairro: 'N/A', // Seu banco não tem bairro
         cidade: form.cidade.value,
-        uf: form.UF.value.toUpperCase(),
-        cep: $(form.CEP).cleanVal() 
+        uf: form.UF.value.toUpperCase()
     };
     
     try {
-        const response = await fetch('http://localhost:8080/api/pessoas', {
+        const response = await fetch(`${API_URL}/api/pessoas`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'x-access-token': localStorage.getItem('token')
             },
             body: JSON.stringify(formData)
         });
@@ -120,12 +146,12 @@ async function salvarCliente() {
         const resultado = await response.json();
         
         if (!response.ok) {
-            throw new Error(resultado.erro || 'Erro ao salvar cliente');
+            throw new Error(resultado.message || 'Erro ao salvar cliente');
         }
         
         alert('Cliente cadastrado com sucesso!');
         form.reset();
-        carregarClientes(); 
+        carregarClientes();
     } catch (error) {
         console.error('Erro:', error);
         alert('Erro ao salvar cliente: ' + error.message);
@@ -134,9 +160,9 @@ async function salvarCliente() {
 
 async function editarCliente(id) {
     try {
-        const response = await fetch(`http://localhost:8080/api/pessoas/${id}`, {
+        const response = await fetch(`${API_URL}/api/pessoas/${id}`, {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'x-access-token': localStorage.getItem('token')
             }
         });
         
@@ -144,8 +170,8 @@ async function editarCliente(id) {
             throw new Error('Erro ao carregar dados do cliente');
         }
         
-        const cliente = await response.json();
-        preencherFormularioEdicao(cliente);
+        const { data } = await response.json();
+        preencherFormularioEdicao(data);
     } catch (error) {
         console.error('Erro:', error);
         alert('Erro ao editar cliente: ' + error.message);
@@ -155,13 +181,13 @@ async function editarCliente(id) {
 function preencherFormularioEdicao(cliente) {
     const form = document.querySelector('form');
     
-    form.nome_cliente.value = cliente.nome;
-    form.num_celular.value = cliente.celular ? formatarTelefone(cliente.celular) : '';
-    form.cpf_ou_cnpj.value = formatarDocumento(cliente.cpfCnpj);
-    form.nome_rua.value = cliente.rua;
-    form.numero_casa.value = cliente.numero;
-    form.cidade.value = cliente.cidade;
-    form.UF.value = cliente.uf;
+    form.nome_cliente.value = cliente.NOME;
+    form.num_celular.value = cliente.CELULAR ? formatarTelefone(cliente.CELULAR) : '';
+    form.cpf_ou_cnpj.value = formatarDocumento(cliente.CPF_CNPJ);
+    form.nome_rua.value = cliente.RUA;
+    form.numero_casa.value = cliente.NUMERO;
+    form.cidade.value = cliente.CIDADE;
+    form.UF.value = cliente.UF;
     
     const btnSalvar = document.getElementById('btn-salvar-cliente');
     btnSalvar.textContent = 'Atualizar';
@@ -169,7 +195,7 @@ function preencherFormularioEdicao(cliente) {
         abrirPopUpClientes('atualizar');
     };
     
-    form.dataset.idEdicao = cliente.idPessoa;
+    form.dataset.idEdicao = cliente.ID_PESSOA_PK;
 }
 
 async function atualizarCliente() {
@@ -186,16 +212,15 @@ async function atualizarCliente() {
         numero: form.numero_casa.value,
         bairro: 'N/A',
         cidade: form.cidade.value,
-        uf: form.UF.value.toUpperCase(),
-        cep: $(form.CEP).cleanVal()
+        uf: form.UF.value.toUpperCase()
     };
     
     try {
-        const response = await fetch(`http://localhost:8080/api/pessoas/${id}`, {
+        const response = await fetch(`${API_URL}/api/pessoas/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'x-access-token': localStorage.getItem('token')
             },
             body: JSON.stringify(formData)
         });
@@ -203,12 +228,12 @@ async function atualizarCliente() {
         const resultado = await response.json();
         
         if (!response.ok) {
-            throw new Error(resultado.erro || 'Erro ao atualizar cliente');
+            throw new Error(resultado.message || 'Erro ao atualizar cliente');
         }
         
         alert('Cliente atualizado com sucesso!');
         resetarFormulario();
-        carregarClientes(); 
+        carregarClientes();
     } catch (error) {
         console.error('Erro:', error);
         alert('Erro ao atualizar cliente: ' + error.message);
@@ -221,10 +246,10 @@ async function excluirCliente(id) {
     }
     
     try {
-        const response = await fetch(`http://localhost:8080/api/pessoas/${id}`, {
+        const response = await fetch(`${API_URL}/api/pessoas/${id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'x-access-token': localStorage.getItem('token')
             }
         });
         
@@ -233,23 +258,11 @@ async function excluirCliente(id) {
         }
         
         alert('Cliente excluído com sucesso!');
-        carregarClientes(); // Atualiza a tabela
+        carregarClientes();
     } catch (error) {
         console.error('Erro:', error);
         alert('Erro ao excluir cliente: ' + error.message);
     }
-}
-
-function formatarTelefone(telefone) {
-    if (!telefone) return '';
-    const numeros = telefone.replace(/\D/g, '');
-    
-    if (numeros.length === 11) {
-        return numeros.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, '($1) $2 $3-$4');
-    } else if (numeros.length === 10) {
-        return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-    }
-    return telefone;
 }
 
 function resetarFormulario() {
@@ -285,3 +298,9 @@ function abrirPopUpClientes(modo = 'cadastrar') {
 function fecharPopUpClientes() {
     document.getElementById('popUpClientes').style.display = 'none';
 }
+
+// Exportar funções para uso global
+window.editarCliente = editarCliente;
+window.excluirCliente = excluirCliente;
+window.abrirPopUpClientes = abrirPopUpClientes;
+window.fecharPopUpClientes = fecharPopUpClientes;
