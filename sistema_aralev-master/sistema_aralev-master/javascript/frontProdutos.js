@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { API_URL } from './api.js';
 
 document.getElementById("cad_produtos").addEventListener("click", async function (event) {
@@ -77,7 +76,6 @@ function getToken() {
     return token;
 }
 
-=======
 document.addEventListener('DOMContentLoaded', function() {
     const tabelaEstoque = document.getElementById('tabela-estoqueProdutos');
     const btnBuscar = document.getElementById('btnBuscar');
@@ -197,4 +195,3 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Abrir popup para ${tipo}`);
     };
 });
->>>>>>> 4e80c21118271f8ac28866f467648085283ef962
