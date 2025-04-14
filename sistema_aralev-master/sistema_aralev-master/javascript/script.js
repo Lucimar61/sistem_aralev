@@ -14,6 +14,8 @@ function adicionarEventosSidebar() {
 // Executa a função após carregar a sidebar
 //document.addEventListener("DOMContentLoaded", destacarPaginaAtual);
 
+
+
 // Exibindo pop up na tela de cadastro de produtos
 function abrirPopUp() {
     document.getElementById("popUp").style.display = "block";
@@ -392,36 +394,6 @@ function adicionarProduto() {
 }
 
 
-
-/* PopUp de confirmações */
-document.addEventListener("DOMContentLoaded", function () {
-    const popUp = document.getElementById("popUp");
-    const btnSalvar = document.querySelector(".btn_salvar"); // Botão principal
-    const btnFechar = document.getElementById("close_popUp");
-    const btnConfirmar = document.getElementById("open_popUp"); // Botão de confirmação no pop-up
-
-    // Função para abrir o pop-up
-    function abrirPopUp(event) {
-        event.preventDefault(); // Evita o envio do formulário antes da confirmação
-        popUp.style.display = "flex";
-    }
-
-    // Função para fechar o pop-up
-    function fecharPopUp() {
-        popUp.style.display = "none";
-    }
-
-    // Evento para abrir o pop-up ao clicar no botão "Salvar"
-    btnSalvar.addEventListener("click", abrirPopUp);
-
-    // Evento para fechar o pop-up ao clicar no botão "Cancelar"
-    btnFechar.addEventListener("click", fecharPopUp);
-
-    // Evento para confirmar o cadastro e enviar o formulário
-    btnConfirmar.addEventListener("click", function () {
-        document.querySelector("form").submit();
-    });
-});
 
 // Função para editar o acesso dos usuários
 function editarLinha(botao) {
