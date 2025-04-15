@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.ok && data?.sucesso) {
                     alert("Produto cadastrado com sucesso!");
                     document.getElementById("popUp").style.display = "none";
+                    carregarItens(); // Recarrega a lista de produtos
                 } else {
                     alert(data?.mensagem || "Erro ao cadastrar o produto.");
                 }
@@ -70,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabelaEstoque = document.getElementById('tabela-estoqueProdutos');
     const btnBuscar = document.getElementById('btnBuscar');
     const btnRemover = document.getElementById('remover');
+    const btnAtualizar = document.querySelector('.btn_editar');
+    const btnNovo = document.querySelector('.btn_salvar');
     let token = localStorage.getItem('jwtToken');
 
     async function carregarItens(filtro = '', valor = '') {
@@ -124,44 +127,68 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (btnRemover) {
-        btnRemover.addEventListener('click', async function () {
+        btnRemover.addEventListener('click', async function() {
             const checkboxes = document.querySelectorAll('.checkbox-item:checked');
-
+            
             if (checkboxes.length === 0) {
                 alert('Selecione pelo menos um item para remover');
                 return;
             }
-
-            if (!confirm(`Deseja realmente remover ${checkboxes.length} item(ns)?`)) return;
-
+            
+            if (!confirm(`Deseja realmente remover ${checkboxes.length} item(ns)?`)) {
+                return;
+            }
+            
             try {
                 const ids = Array.from(checkboxes).map(cb => cb.getAttribute('data-id'));
+                
                 for (const id of ids) {
-                    const response = await fetch(`${API_URL}/itens/${id}`, {
+                    const response = await fetch(`${API_URL}/api/itens/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'x-access-token': token
                         }
                     });
-
-                    if (!response.ok) throw new Error(`Erro ao remover item ${id}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Erro ao remover item ${id}`);
+                    }
                 }
-
+                
                 alert('Itens removidos com sucesso!');
                 carregarItens(); // Recarrega a tabela
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro ao remover itens');
+                alert('Erro ao remover itens com estoque positivo');
             }
         });
     }
 
-    carregarItens();
+    if (btnAtualizar) {
+        btnAtualizar.addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('.checkbox-item:checked');
+            if (checkboxes.length !== 1) {
+                alert('Selecione um único item para atualizar.');
+                return;
+            }
 
-    window.abrirPopUp = function(tipo) {
-        console.log(`Abrir popup para ${tipo}`);
-        // Aqui você pode implementar abrir modal etc.
-    };
+            const idProduto = checkboxes[0].getAttribute('data-id');
+            abrirPopUp('atualizar', idProduto);
+        });
+    }
+
+    if (btnNovo) {
+        btnNovo.addEventListener('click', function() {
+            abrirPopUp('novo');
+        });
+    }
+
+    function abrirPopUp(tipo, idProduto = null) {
+        console.log(`Abrir popup para ${tipo} com ID: ${idProduto}`);
+        // Aqui você pode implementar abrir modal, editar ou cadastrar o produto.
+    }
+
+    carregarItens();
 });
 
 function getToken() {

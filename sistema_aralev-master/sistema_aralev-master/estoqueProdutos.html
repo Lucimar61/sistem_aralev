@@ -75,9 +75,14 @@
                         <button id="btnBuscar">Buscar</button>
                     </div>
                     <div class="btn-estoque">
+                        <!-- Botão Excluir -->
                         <button id="remover" class="btn_remover" type="reset">Excluir</button>
-                        <button class="btn_editar"  onclick="abrirPopUp()">Atualizar</button>
-                        <button class="btn_salvar"  onclick="abrirPopUp()">Novo</button>
+                    
+                        <!-- Botão Atualizar (passando o ID do produto) -->
+                        <button class="btn_editar" onclick="abrirPopUp('atualizar', 5)">Atualizar</button>
+                    
+                        <!-- Botão Novo -->
+                        <button class="btn_salvar" onclick="abrirPopUp('novo')">Novo</button>
                     </div>
                 </div>
                 
