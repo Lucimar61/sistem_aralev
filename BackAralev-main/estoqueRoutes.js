@@ -21,16 +21,14 @@ const validarMovimentacao = (req, res, next) => {
         });
     }
     
-    if (quantidade <= 0) {
         return res.status(400).json({
             success: false,
             message: 'Quantidade deve ser maior que zero'
         });
-    }
+  
     
     next();
 };
-
 router.post('/movimentacao', validarMovimentacao, async (req, res) => {
     const connection = await pool.getConnection();
     try {
