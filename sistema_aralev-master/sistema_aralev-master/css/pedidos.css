@@ -80,3 +80,21 @@
     margin-bottom: 0;
 }
 
+/* MODELO DE EXPORTAÇÃO DE PDF */
+#exportarPDF table {
+    page-break-inside: auto;
+    width: 100%;
+  }
+
+  #exportarPDF tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  #exportarPDF thead {
+    display: table-header-group; /* repete o cabeçalho nas páginas */
+  }
+
+  #exportarPDF tfoot {
+    display: table-footer-group;
+  }
