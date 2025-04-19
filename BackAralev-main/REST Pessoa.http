@@ -1,0 +1,31 @@
+### Configurações globais
+@baseUrl = http://localhost:8080/api/pessoas
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQ0NTg0NDMxLCJleHAiOjE3NDQ2Mjc2MzF9.KYFq2z1CV7ukpuQ3-3_ZMGv4LietzYmGqbbGHzE8YJQ
+@contentType = application/json
+
+### Criar pessoa
+POST {{baseUrl}}/
+Content-Type: {{contentType}}
+x-access-token: {{token}}
+
+{
+  "nome": "João Silva",
+  "celular": "31987654321",
+  "cpfCnpj": "12345678901",
+  "rua": "Rua das Flores",
+  "numero": "100",
+  "bairro": "Centro",
+  "cidade": "Belo Horizonte",
+  "uf": "MG"
+}
+
+### Listar pessoas
+GET {{baseUrl}}/
+Content-Type: {{contentType}}
+x-access-token: {{token}}
+
+### Buscar pessoa por ID
+@personId = 1
+GET {{baseUrl}}/{{personId}}
+Content-Type: {{contentType}}
+x-access-token: {{token}}

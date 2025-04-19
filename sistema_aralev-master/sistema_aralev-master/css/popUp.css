@@ -19,11 +19,13 @@
     width: 500px;
 }
 
-.popUp-container p {
+.popUp-container p,
+.container-clientes-popUp p {
     margin-bottom: 20px;
 }
 
-.btn_cancelar, .btn_salvar {
+.btn_cancelar, .btn_salvar,
+.btn_cancelarClientes, .btn_salvarClientes  {
     width: 100px;
     margin: 5px;
     padding: 10px 15px;
@@ -32,15 +34,19 @@
     cursor: pointer;
 }
 
-.btn_cancelar {
+.btn_cancelar,
+.btn_cancelarClientes {
     background: red;
     color: white;
 }
 
-.btn_salvar {
+.btn_salvar,
+.btn_salvarClientes {
     background: #00CF3B;
     color: white;
 }
+
+
 
 /* estilos pop up exportar relatório */
 /* Estilo para o fundo escurecido */
@@ -89,4 +95,28 @@
 .container-expotar h2 {
     text-align: left;
     font-size: 16px;
+}
+
+/*  Tela clientes */
+
+.popUpClientes {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.container-clientes-popUp {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
 }

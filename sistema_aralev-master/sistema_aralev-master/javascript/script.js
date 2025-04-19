@@ -13,6 +13,8 @@ function adicionarEventosSidebar() {
 // Executa a função após carregar a sidebar
 //document.addEventListener("DOMContentLoaded", destacarPaginaAtual);
 
+
+
 // Exibindo pop up na tela de cadastro de produtos
 function abrirPopUp() {
     document.getElementById("popUp").style.display = "block";
@@ -237,6 +239,7 @@ function adicionarProduto() {
     });
 }
 
+<<<<<<< HEAD
 /* PopUp de confirmações */
 // =========================================================================
 document.addEventListener("DOMContentLoaded", function () {
@@ -268,4 +271,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+=======
+
+
+// Função para editar o acesso dos usuários
+function editarLinha(botao) {
+    let linha = botao.closest('tr');
+    let editando = linha.dataset.editando === "true";
+>>>>>>> branch-lucimar-v2
 
