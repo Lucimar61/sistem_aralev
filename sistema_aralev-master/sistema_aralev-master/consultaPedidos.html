@@ -18,6 +18,8 @@
     <title>Buscar Pedidos</title>
 </head>
 <body>
+
+    
     <!-- Insere a sidebar na página -->
     <script>
         fetch('sidebar.html')
@@ -152,7 +154,7 @@
                             </tr>
                         </thead>
                         <tbody id="tabela-pedidos">
-                           
+                        
                         </tbody>
                     </table>
                 </div>       
@@ -178,19 +180,21 @@
                             </select>
                             <input type="text" id="buscar_pedidos" name="buscar_pedidos" placeholder="Digite sua busca...">
                         </div>
-                       <div class="export">
+                    <div class="export">
                             <p>Escolha o formato para exportar os dados:</p>
                             <button onclick="exportarTabela('xlsx')">Exportar como XLSX</button>
                             <button onclick="exportarTabela('pdf')">Exportar como PDF</button>
-                       </div>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
         
     </main>
-    
+
     <script src="javascript/script.js"></script>
     <script src="javascript/pedidos.js"></script>
+
+
 </body>
 </html>
