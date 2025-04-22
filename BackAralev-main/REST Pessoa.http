@@ -1,6 +1,6 @@
 ### Configurações globais
 @baseUrl = http://localhost:8080/api/pessoas
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQ0NTg0NDMxLCJleHAiOjE3NDQ2Mjc2MzF9.KYFq2z1CV7ukpuQ3-3_ZMGv4LietzYmGqbbGHzE8YJQ
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6MSwiaWF0IjoxNzQ1MzYwNDU5LCJleHAiOjE3NDU0MDM2NTl9.QC5GninjSrpPYYn02Nv3gNCKAR3YhWojeV0TdGTN1Js
 @contentType = application/json
 
 ### Criar pessoa
@@ -9,11 +9,11 @@ Content-Type: {{contentType}}
 x-access-token: {{token}}
 
 {
-  "nome": "João Silva",
-  "celular": "31987654321",
-  "cpfCnpj": "12345678901",
+  "nome": "Caua Teste",
+  "celular": "22213141123",
+  "cpfCnpj": "2412412141",
   "rua": "Rua das Flores",
-  "numero": "100",
+  "numero": "235",
   "bairro": "Centro",
   "cidade": "Belo Horizonte",
   "uf": "MG"
@@ -25,7 +25,28 @@ Content-Type: {{contentType}}
 x-access-token: {{token}}
 
 ### Buscar pessoa por ID
-@personId = 1
+@personId = 3
 GET {{baseUrl}}/{{personId}}
+Content-Type: {{contentType}}
+x-access-token: {{token}}
+
+
+### PUT Pessoa - Altera pessoa (requer token)
+PUT {{baseUrl}}/{{personId}}
+Content-Type: {{contentType}}
+x-access-token: {{token}}
+{
+    "NOME": "Luan Teste",
+    "CELULAR": "31877747983",
+    "CPF_CNPJ": "90854233213",
+    "RUA": "Rua dos testes",
+    "NUMERO": "210",
+    "BAIRRO": "Iguaçu",
+    "CIDADE": "Ipatinga",
+    "UF": "MG"
+}
+
+### DELETE USUÁRIOS - Deletar usuários (requer token)
+DELETE {{baseUrl}}/{{personId}}
 Content-Type: {{contentType}}
 x-access-token: {{token}}

@@ -4,7 +4,8 @@ const { pool } = require('./database');
 const { verifyJWT } = require('./src/models/login');
 
 // Rota para criar uma nova pessoa
-router.post('/', verifyJWT, async (req, res) => {
+// router.post('/', verifyJWT, async (req, res) => {
+    router.post('/', async (req, res) => {
     const connection = await pool.getConnection();
     try {
         const { nome, celular, cpfCnpj, rua, numero, bairro, cidade, uf } = req.body;
@@ -49,7 +50,8 @@ router.post('/', verifyJWT, async (req, res) => {
 });
 
 // Rota para listar todas as pessoas
-router.get('/', verifyJWT, async (req, res) => {
+// router.get('/', verifyJWT, async (req, res) => {
+    router.get('/', async (req, res) => {
     const connection = await pool.getConnection();
     try {
         const [rows] = await connection.execute(
@@ -73,7 +75,8 @@ router.get('/', verifyJWT, async (req, res) => {
 });
 
 // Rota para buscar uma pessoa por ID
-router.get('/:id', verifyJWT, async (req, res) => {
+// router.get('/:id', verifyJWT, async (req, res) => {
+    router.get('/:id', async (req, res) => {
     const connection = await pool.getConnection();
     try {
         const [rows] = await connection.execute(
@@ -105,7 +108,8 @@ router.get('/:id', verifyJWT, async (req, res) => {
 });
 
 // Rota para atualizar uma pessoa
-router.put('/:id', verifyJWT, async (req, res) => {
+// router.put('/:id', verifyJWT, async (req, res) => {
+    router.put('/:id', async (req, res) => {
     const connection = await pool.getConnection();
     try {
         const { nome, celular, cpfCnpj, rua, numero, bairro, cidade, uf } = req.body;
@@ -156,7 +160,8 @@ router.put('/:id', verifyJWT, async (req, res) => {
 });
 
 // Rota para excluir uma pessoa
-router.delete('/:id', verifyJWT, async (req, res) => {
+//router.delete('/:id', verifyJWT, async (req, res) => {
+    router.delete('/:id', async (req, res) => {
     const connection = await pool.getConnection();
     try {
         const [result] = await connection.execute(

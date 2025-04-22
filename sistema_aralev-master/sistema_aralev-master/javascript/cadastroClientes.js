@@ -1,17 +1,27 @@
 import { API_URL } from './api.js';
+const token = getToken();
+
 
 document.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('jwtToken');  // Corrigido para 'jwtToken'
+    // Corrigido para 'jwtToken'
 
 if (!token) {
     alert("Sessão expirada. Faça login novamente.");
-    window.location.href = "login.html";
+    window.location.href = "";
     return;
 }
     inicializarMascaras();
     inicializarEventos();
     carregarClientes();
 });
+
+function getToken() {
+    const token = localStorage.getItem("jwtToken");
+    if (!token) {
+        alert("Sessão expirada. Faça login novamente.");
+    }
+    return token;
+}
 
 // Máscaras para os campos
 function inicializarMascaras() {
@@ -282,18 +292,38 @@ function resetarFormulario() {
 
 function abrirPopUpClientes(modo = 'cadastrar') {
     const popup = document.getElementById('popUpClientes');
-    const btnSalvar = document.getElementById('salvarClientes');
-    
+
+    const antigoBtn = document.getElementById('salvarClientes');
+    const novoBtn = antigoBtn.cloneNode(true); // clona sem eventos
+    novoBtn.id = 'salvarClientes';
+    antigoBtn.parentNode.replaceChild(novoBtn, antigoBtn);
+
+    // atualiza texto e ação conforme o modo
     if (modo === 'atualizar') {
-        btnSalvar.onclick = atualizarCliente;
+        novoBtn.onclick = atualizarCliente;
         popup.querySelector('p').textContent = 'Você está prestes a atualizar um cliente. Deseja continuar?';
     } else {
-        btnSalvar.onclick = salvarCliente;
+        novoBtn.onclick = salvarCliente;
         popup.querySelector('p').textContent = 'Você está prestes a cadastrar um cliente. Deseja continuar?';
     }
-    
+
     popup.style.display = 'flex';
 }
+
+// function abrirPopUpClientes(modo = 'cadastrar') {
+//     const popup = document.getElementById('popUpClientes');
+//     const btnSalvar = document.getElementById('salvarClientes');
+    
+//     if (modo === 'atualizar') {
+//         btnSalvar.onclick = atualizarCliente;
+//         popup.querySelector('p').textContent = 'Você está prestes a atualizar um cliente. Deseja continuar?';
+//     } else {
+//         btnSalvar.onclick = salvarCliente;
+//         popup.querySelector('p').textContent = 'Você está prestes a cadastrar um cliente. Deseja continuar?';
+//     }
+    
+//     popup.style.display = 'flex';
+// }
 
 function fecharPopUpClientes() {
     document.getElementById('popUpClientes').style.display = 'none';
