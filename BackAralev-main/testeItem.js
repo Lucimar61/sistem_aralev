@@ -5,7 +5,7 @@ async function testarItem() {
         // Criar um novo item
         const novoItem = new Item(
             null,               // idProduto (gerado automaticamente pelo banco)
-            'Caneta Azul',      // nome
+            'Calha',      // nome
             100,                // quantidade
             1.00,               // precoCusto
             2.50,               // precoVenda
