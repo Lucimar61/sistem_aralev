@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 if (!token) {
     alert("Sessão expirada. Faça login novamente.");
-    window.location.href = "";
+    window.location.href = "index.html";
     return;
 }
     inicializarMascaras();
