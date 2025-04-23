@@ -27,7 +27,7 @@ function getToken() {
 function inicializarMascaras() {
     $('input[name="num_celular"]').mask('(00) 0 0000-0000');
     $('input[name="cpf_ou_cnpj"]').mask('000.000.000-00', {reverse: true});
-    $('input[name="CEP"]').mask('00000-000');
+    $('input[name="cep"]').mask('00000-000');
     $('input[name="UF"]').mask('AA');
 }
 
@@ -86,8 +86,8 @@ function preencherTabelaClientes(clientes) {
             <td>${formatarTelefone(cliente.CELULAR)}</td>
             <td>${formatarDocumento(cliente.CPF_CNPJ)}</td>
             <td>${cliente.RUA}</td>
-            <td>${cliente.NUMERO}</td>
-            <td>N/A</td> <!-- CEP não existe no seu banco -->
+            <td>${cliente.CEP ? cliente.CEP : 'N/A'}</td> <!-- Verifica e substitui 'null' por 'N/A' -->
+            <td>${cliente.NUMERO}</td>            
             <td>${cliente.CIDADE}</td>
             <td>${cliente.UF}</td>
             <td class="acoes">
@@ -103,6 +103,8 @@ function preencherTabelaClientes(clientes) {
         tbody.appendChild(tr);
     });
 }
+
+
 
 function formatarDocumento(doc) {
     if (!doc) return '';
@@ -140,7 +142,8 @@ async function salvarCliente() {
         numero: form.numero_casa.value,
         bairro: 'N/A', // Seu banco não tem bairro
         cidade: form.cidade.value,
-        uf: form.UF.value.toUpperCase()
+        uf: form.UF.value.toUpperCase(),
+        cep: $(form.cep).cleanVal()  // Limpa o valor do CEP
     };
     
     try {
@@ -148,7 +151,7 @@ async function salvarCliente() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token')
+                'x-access-token': localStorage.getItem('jwtToken')
             },
             body: JSON.stringify(formData)
         });

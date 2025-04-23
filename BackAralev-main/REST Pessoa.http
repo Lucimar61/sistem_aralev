@@ -13,6 +13,7 @@ x-access-token: {{token}}
   "celular": "22213141123",
   "cpfCnpj": "2412412141",
   "rua": "Rua das Flores",
+  "cep": "12345678",
   "numero": "235",
   "bairro": "Centro",
   "cidade": "Belo Horizonte",
@@ -32,18 +33,19 @@ x-access-token: {{token}}
 
 
 ### PUT Pessoa - Altera pessoa (requer token)
-PUT {{baseUrl}}/{{personId}}
+PUT {{baseUrl}}/21
 Content-Type: {{contentType}}
-x-access-token: {{token}}
+
 {
-    "NOME": "Luan Teste",
-    "CELULAR": "31877747983",
-    "CPF_CNPJ": "90854233213",
-    "RUA": "Rua dos testes",
-    "NUMERO": "210",
-    "BAIRRO": "Iguaçu",
-    "CIDADE": "Ipatinga",
-    "UF": "MG"
+  "nome": "Caua Teste",
+  "celular": "22213141123",
+  "cpfCnpj": "2412412141",
+  "rua": "Rua das Flores",
+  "cep": "12345678",
+  "numero": "235",
+  "bairro": "Centro",
+  "cidade": "Belo Horizonte",
+  "uf": "MG"
 }
 
 ### DELETE USUÁRIOS - Deletar usuários (requer token)

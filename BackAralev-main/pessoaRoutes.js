@@ -1,28 +1,60 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('./database');
-const { verifyJWT } = require('./src/models/login');
 
-// Rota para criar uma nova pessoa
-// router.post('/', verifyJWT, async (req, res) => {
-    router.post('/', async (req, res) => {
+// Função para normalizar os dados recebidos
+function normalizarPessoa(pessoa) {
+    const normalizar = (v) => (v === undefined || v === '' ? null : v);
+    return {
+        nome: normalizar(pessoa.nome),
+        celular: normalizar(pessoa.celular),
+        cpfCnpj: normalizar(pessoa.cpfCnpj),
+        rua: normalizar(pessoa.rua),
+        cep: normalizar(pessoa.cep),
+        numero: pessoa.numero && !isNaN(pessoa.numero) ? parseInt(pessoa.numero) : null,
+        bairro: normalizar(pessoa.bairro),
+        cidade: normalizar(pessoa.cidade),
+        uf: normalizar(pessoa.uf)
+    };
+}
+
+// Criar nova pessoa
+router.post('/', async (req, res) => {
     const connection = await pool.getConnection();
     try {
-        const { nome, celular, cpfCnpj, rua, numero, bairro, cidade, uf } = req.body;
-        
+        const pessoa = normalizarPessoa(req.body);
+
+        console.log('Valores recebidos:', pessoa);
+
         const [result] = await connection.execute(
             `INSERT INTO tb_pessoa 
-             (NOME, CELULAR, CPF_CNPJ, RUA, NUMERO, BAIRRO, CIDADE, UF)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [nome, celular, cpfCnpj, rua, numero, bairro, cidade, uf]
+             (NOME, CELULAR, CPF_CNPJ, RUA, CEP, NUMERO, BAIRRO, CIDADE, UF)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                pessoa.nome,
+                pessoa.celular,
+                pessoa.cpfCnpj,
+                pessoa.rua,
+                pessoa.cep,
+                pessoa.numero,
+                pessoa.bairro,
+                pessoa.cidade,
+                pessoa.uf
+            ]
         );
 
         const novaPessoa = {
             id: result.insertId,
-            nome,
-            celular,
-            cpfCnpj,
-            endereco: { rua, numero, bairro, cidade, uf }
+            nome: pessoa.nome,
+            celular: pessoa.celular,
+            cpfCnpj: pessoa.cpfCnpj,
+            endereco: {
+                rua: pessoa.rua,
+                numero: pessoa.numero,
+                bairro: pessoa.bairro,
+                cidade: pessoa.cidade,
+                uf: pessoa.uf
+            }
         };
 
         res.status(201).json({
@@ -31,7 +63,6 @@ const { verifyJWT } = require('./src/models/login');
         });
     } catch (error) {
         console.error('Erro ao criar pessoa:', error);
-        
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
                 success: false,
@@ -49,9 +80,8 @@ const { verifyJWT } = require('./src/models/login');
     }
 });
 
-// Rota para listar todas as pessoas
-// router.get('/', verifyJWT, async (req, res) => {
-    router.get('/', async (req, res) => {
+// Listar todas as pessoas
+router.get('/', async (req, res) => {
     const connection = await pool.getConnection();
     try {
         const [rows] = await connection.execute(
@@ -74,9 +104,8 @@ const { verifyJWT } = require('./src/models/login');
     }
 });
 
-// Rota para buscar uma pessoa por ID
-// router.get('/:id', verifyJWT, async (req, res) => {
-    router.get('/:id', async (req, res) => {
+// Buscar pessoa por ID
+router.get('/:id', async (req, res) => {
     const connection = await pool.getConnection();
     try {
         const [rows] = await connection.execute(
@@ -107,25 +136,36 @@ const { verifyJWT } = require('./src/models/login');
     }
 });
 
-// Rota para atualizar uma pessoa
-// router.put('/:id', verifyJWT, async (req, res) => {
-    router.put('/:id', async (req, res) => {
+// Atualizar pessoa
+router.put('/:id', async (req, res) => {
     const connection = await pool.getConnection();
     try {
-        const { nome, celular, cpfCnpj, rua, numero, bairro, cidade, uf } = req.body;
-        
+        const pessoa = normalizarPessoa(req.body);
+
         const [result] = await connection.execute(
             `UPDATE tb_pessoa SET
                 NOME = ?,
                 CELULAR = ?,
                 CPF_CNPJ = ?,
                 RUA = ?,
+                CEP = ?,
                 NUMERO = ?,
                 BAIRRO = ?,
                 CIDADE = ?,
                 UF = ?
              WHERE ID_PESSOA_PK = ?`,
-            [nome, celular, cpfCnpj, rua, numero, bairro, cidade, uf, req.params.id]
+            [
+                pessoa.nome,
+                pessoa.celular,
+                pessoa.cpfCnpj,
+                pessoa.rua,
+                pessoa.cep,
+                pessoa.numero,
+                pessoa.bairro,
+                pessoa.cidade,
+                pessoa.uf,
+                req.params.id
+            ]
         );
 
         if (result.affectedRows === 0) {
@@ -141,7 +181,6 @@ const { verifyJWT } = require('./src/models/login');
         });
     } catch (error) {
         console.error('Erro ao atualizar pessoa:', error);
-        
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({
                 success: false,
@@ -159,9 +198,8 @@ const { verifyJWT } = require('./src/models/login');
     }
 });
 
-// Rota para excluir uma pessoa
-//router.delete('/:id', verifyJWT, async (req, res) => {
-    router.delete('/:id', async (req, res) => {
+// Excluir pessoa
+router.delete('/:id', async (req, res) => {
     const connection = await pool.getConnection();
     try {
         const [result] = await connection.execute(
