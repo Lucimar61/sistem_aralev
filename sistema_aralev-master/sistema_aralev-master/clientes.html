@@ -42,6 +42,10 @@
                         <div class="perfil-descricao">
                             <p>Admin</p>
                             <p>Desenvolvedor</p>
+                            <div class="submenu">
+                                <a href="#">Configurações</a>
+                                <a href="#" onclick="logout()">Sair</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,7 +105,7 @@
                             </div>
                             <div class="campo-cad">
                                 <label>CEP</label>
-                                <input type="text" name="CEP" placeholder="Ex.: 35920-000" required>
+                                <input type="text" name="cep" placeholder="Ex.: 35920-000" required>
                             </div>
                             <div class="campo-cad">
                                 <label>Cidade</label>
@@ -129,8 +133,8 @@
                                 <th>Telefone</th>
                                 <th>CPF/CNPJ</th>
                                 <th>Rua</th>
-                                <th>Número</th>
                                 <th>CEP</th>
+                                <th>Numero</th>
                                 <th>Cidade</th>
                                 <th>UF</th>
                                 <th>Ações</th>
@@ -149,7 +153,7 @@
             <div class="container-clientes-popUp">
                 <p>Você está prestes a cadastrar um cliente. <strong>Deseja continuar?</strong></p>
                 <button id="close_popUpClientes" class="btn_cancelarClientes" onclick="fecharPopUpClientes()">Cancelar</button>
-                <button id="salvarClientes" class="btn_salvarClientes" type="submit">Salvar</button> <!-- type="submit" correto -->
+                <button id="salvarClientes" class="btn_salvarClientes" type="button">Salvar</button>
             </div>
         </div>
 

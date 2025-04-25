@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/popUp.css">
+    <link rel="stylesheet" href="css/pedidos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -45,6 +46,10 @@
                         <div class="perfil-descricao">
                             <p>Admin</p>
                             <p>Desenvolvedor</p>
+                            <div class="submenu">
+                                <a href="#">Configurações</a>
+                                <a href="#" onclick="logout()">Sair</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -81,7 +86,7 @@
                 
                 <!-- Tabela de pedidos -->
                 <div class="tabela-container">
-                    <table>
+                    <table id="tabelaPrincipal">
                         <thead>
                             <tr>
                                 <th class="checkbox-check">
@@ -89,67 +94,67 @@
                                 </th>
                                 <th>
                                     <h3>ID</h3>
-                                    <input type="text" name="busca_id">
+                                    <!-- <input type="text" name="busca_id"> -->
                                 </th>
                                 <th>
                                     <h3>Nome</h3>
-                                    <input type="text" name="busca_nome">
+                                    <!-- <input type="text" name="busca_nome"> -->
                                 </th>
                                 <th>
                                     <h3>CPF/CNPJ</h3>
-                                    <input type="text" name="busca_CPF">
+                                    <!-- <input type="text" name="busca_CPF"> -->
                                 </th>
                                 <th>
                                     <h3>Celular</h3>
-                                    <input type="text" name="busca_celular">
+                                    <!-- <input type="text" name="busca_celular"> -->
                                 </th>
                                 <th>
                                     <h3>Rua</h3>
-                                    <input type="text" name="busca_rua">
+                                    <!-- <input type="text" name="busca_rua"> -->
                                 </th>
                                 <th>
                                     <h3>Número</h3>
-                                    <input type="text" name="busca_numero">
+                                    <!-- <input type="text" name="busca_numero"> -->
                                 </th>
                                 <th>
                                     <h3>UF</h3>
-                                    <input type="text" name="busca_uf">
+                                    <!-- <input type="text" name="busca_uf"> -->
                                 </th>
                                 <th>
                                     <h3>Cidade</h3>
-                                    <input type="text" name="busca_cidade">
+                                    <!-- <input type="text" name="busca_cidade"> -->
                                 </th>
                                 <th>
                                     <h3>Produto</h3>
-                                    <input type="text" name="busca_produto">
+                                    <!-- <input type="text" name="busca_produto"> -->
                                 </th>
                                 <th>
                                     <h3>Quantidade</h3>
-                                    <input type="text" name="busca_quantidade">
+                                    <!-- <input type="text" name="busca_quantidade"> -->
                                 </th>
                                 <th>
                                     <h3>Desconto</h3>
-                                    <input type="text" name="busca_desconto">
+                                    <!-- <input type="text" name="busca_desconto"> -->
                                 </th>
                                 <th>
                                     <h3>Subtotal</h3>
-                                    <input type="text" name="busca_subtotal">
+                                    <!-- <input type="text" name="busca_subtotal"> -->
                                 </th>
                                 <th>
                                     <h3>Forma PGTO</h3>
-                                    <input type="text" name="busca_forma_pgto">
+                                    <!-- <input type="text" name="busca_forma_pgto"> -->
                                 </th>
                                 <th>
                                     <h3>Parcelas</h3>
-                                    <input type="text" name="busca_parcelas">
+                                    <!-- <input type="text" name="busca_parcelas"> -->
                                 </th>
                                 <th>
                                     <h3>Total</h3>
-                                    <input type="text" name="busca_total">
+                                    <!-- <input type="text" name="busca_total"> -->
                                 </th>
                                 <th>
                                     <h3>Data Vencimento</h3>
-                                    <input type="text" name="busca_data_venc">
+                                    <!-- <input type="text" name="busca_data_venc"> -->
                                 </th>
                             </tr>
                         </thead>
@@ -157,6 +162,12 @@
                         
                         </tbody>
                     </table>
+
+                    <!-- Área oculta para exportação -->
+                    <div id="exportarPDF" style="display: none;">
+                        <h2 style="text-align: center; margin-bottom: 20px;">Relatório de Pedidos</h2>
+                        <table id="tabela-exportar" style="width: 100%; border-collapse: collapse;"></table>
+                    </div>
                 </div>       
                 
                 <!-- Estrutura da Pop-up -->

@@ -11,8 +11,32 @@
    --cor-azul-principal: #005DB5;
 }
 
+.layout {
+    display: flex;
+}
+
+/* Sidebar ocupa largura fixa */
+#sidebar-container {
+    width: 250px;
+    background-color: #333; /* exemplo */
+    color: white;
+}
+
+/* Conteúdo ao lado da sidebar */
+.conteudo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* main com padding opcional */
+main {
+    padding: 20px;
+    flex: 1;
+}
 body {
     display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
@@ -24,7 +48,7 @@ body {
 
 main {
     flex: 1;
-    width: 100%;
+    width: 90%;
 }
 
 /* Seção cabeçalho */
@@ -52,6 +76,7 @@ header,
     width: 95%;
     margin: 0 auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
@@ -74,10 +99,49 @@ header,
 }
 
 .perfil {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 10px;
     color: #fff;
+    cursor: pointer;
+}
+
+.perfil-descricao {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+}
+
+.submenu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--cor-azul-principal);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 10px;
+    z-index: 10;
+    min-width: 120px;
+}
+
+.submenu a {
+    text-decoration: none;
+    color: #fff;
+    padding: 5px 0;
+    transition: background 0.2s;
+}
+
+.submenu a:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+/* Mostrar submenu ao passar o mouse */
+.perfil:hover .submenu {
+    display: flex;
 }
 
 /* Seção Indicadores */
@@ -229,6 +293,8 @@ header,
 .secao-cadastro {
     height: 85%;
     flex: 1;
+    width: auto;
+
 }
 
 .container_frm_cadastro {
@@ -397,9 +463,9 @@ form::-webkit-scrollbar-track {
     text-align: center;
 }
 
-/* Estilizando o campo de filtro de busca dos pedidos */
+ /* Estilizando o campo de filtro de busca dos pedidos */
 
-.frm_pedidos {
+ .frm_pedidos {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -443,7 +509,7 @@ tbody {
     position: relative;
 }
 tbody tr td {
-    padding: 15px;
+    padding: 12px;
 }
 tbody tr:nth-of-type(odd) {
     background-color: #D9D9D9;
@@ -451,11 +517,11 @@ tbody tr:nth-of-type(odd) {
 
 .checkbox {
     position: relative;
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     appearance: none;
     border: 2px solid #333;
-    border-radius: 50%;
+    border-radius: 20%;
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
@@ -463,7 +529,9 @@ tbody tr:nth-of-type(odd) {
 
 table thead th {
     text-align: center; /* Centraliza o conteúdo */
-    padding: 15px; /* Reduz o padding para não afetar o alinhamento */
+    padding: 10px; /* Reduz o padding para não afetar o alinhamento */
+    font-size: 10px;
+    background-color: #D9D9D9;
 }
 
 

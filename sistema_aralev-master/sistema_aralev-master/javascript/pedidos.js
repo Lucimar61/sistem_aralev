@@ -27,42 +27,82 @@ function exportarParaXLSX() {
     XLSX.writeFile(wb, 'relatorio_pedidos.xlsx'); // Salva o arquivo
 }
 
-// Função para exportar a tabela como CSV
-/*
-function exportarParaCSV() {
-    var tabela = document.querySelector('table'); // Seleciona a tabela
-    var linhas = tabela.querySelectorAll('tr');
-    var csv = [];
-
-    for (var i = 0; i < linhas.length; i++) {
-        var cols = linhas[i].querySelectorAll('td, th');
-        var dados = [];
-        for (var j = 0; j < cols.length; j++) {
-            dados.push(cols[j].innerText);
-        }
-        csv.push(dados.join(','));
-    }
-
-    var csv_string = csv.join('\n');
-    var filename = 'relatorio_pedidos.csv';
-    var link = document.createElement('a');
-    link.style.display = 'none';
-    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-} */
 
 // Função para exportar a tabela como PDF
+// function exportarParaPDF() {
+//     var elemento = document.querySelector('table'); // Seleciona a tabela
+//     var opt = {
+//         margin: 1,
+//         filename: 'relatorio_pedidos.pdf',
+//         image: { type: 'jpeg', quality: 0.98 },
+//         html2canvas: { scale: 2 },
+//         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+//     };
+//     html2pdf().from(elemento).set(opt).save();
+// }
+
 function exportarParaPDF() {
-    var elemento = document.querySelector('table'); // Seleciona a tabela
+    clonarTabelaParaExportacao();
+
+    const elemento = document.querySelector('#exportarPDF');
+
+    if (!elemento) {
+        console.error('Elemento #exportarPDF não encontrado!');
+        return;
+    }
+
+    // Mostrar temporariamente para permitir a renderização
+    elemento.style.display = 'block';
+
+    // Forçar reflow para garantir que a tabela foi renderizada
+    elemento.offsetHeight;  // Força o reflow do DOM
+
     var opt = {
-        margin: 1,
-        filename: 'relatorio_pedidos.pdf',
+        margin: [0.3, 0.3, 0.3, 0.3],
+        filename: 'relatorio_pedidos',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+        pagebreak: { 
+            mode: ['avoid-all', 'css', 'legacy'],
+            before: '#quebrar-aqui',
+            after: 'tr', // quebra depois de cada linha se necessário
+         }
     };
-    html2pdf().from(elemento).set(opt).save();
+
+    html2pdf().from(elemento).set(opt).save().then(() => {
+        // Esconder novamente após a exportação
+        elemento.style.display = 'none';
+    });
+}
+
+function clonarTabelaParaExportacao() {
+    const tabelaOriginal = document.querySelector('#tabelaPrincipal');
+    
+    // Verifique se a tabela existe antes de tentar clonar
+    if (!tabelaOriginal) {
+        console.error('Tabela não encontrada!');
+        return;
+    }
+    
+    const tabelaClone = tabelaOriginal.cloneNode(true);
+    const tabelaExport = document.querySelector('#tabela-exportar');
+
+    tabelaExport.innerHTML = ''; // Limpa antes
+    tabelaExport.appendChild(tabelaClone);
+
+    // Certifique-se de que os dados estão sendo copiados corretamente
+    console.log(tabelaExport.innerHTML);  // Verifique se o conteúdo está correto
+
+    // Estilização direta nas células
+    const linhas = tabelaExport.querySelectorAll('tr');
+    linhas.forEach(linha => {
+        linha.querySelectorAll('th, td').forEach(celula => {
+            celula.style.border = '1px solid #000';
+            celula.style.padding = '8px';
+            celula.style.textAlign = 'left';
+            celula.style.fontSize = '12px';
+        });
+    });
+
 }

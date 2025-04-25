@@ -1,3 +1,8 @@
+// Desconectando do site
+function logout() {
+    localStorage.removeItem('token');
+    window.location.href = 'index.html';
+}
 
 // Função para adicionar eventos ao botão da sidebar
 function adicionarEventosSidebar() {

@@ -1,11 +1,13 @@
 import { API_URL } from './api.js';
+const token = getToken();
+
 
 document.addEventListener('DOMContentLoaded', function() {
-    const token = localStorage.getItem('jwtToken');  // Corrigido para 'jwtToken'
+    // Corrigido para 'jwtToken'
 
 if (!token) {
     alert("Sessão expirada. Faça login novamente.");
-    window.location.href = "login.html";
+    window.location.href = "";
     return;
 }
     inicializarMascaras();
@@ -13,11 +15,19 @@ if (!token) {
     carregarClientes();
 });
 
+function getToken() {
+    const token = localStorage.getItem("jwtToken");
+    if (!token) {
+        alert("Sessão expirada. Faça login novamente.");
+    }
+    return token;
+}
+
 // Máscaras para os campos
 function inicializarMascaras() {
     $('input[name="num_celular"]').mask('(00) 0 0000-0000');
     $('input[name="cpf_ou_cnpj"]').mask('000.000.000-00', {reverse: true});
-    $('input[name="CEP"]').mask('00000-000');
+    $('input[name="cep"]').mask('00000-000');
     $('input[name="UF"]').mask('AA');
 }
 
@@ -76,8 +86,8 @@ function preencherTabelaClientes(clientes) {
             <td>${formatarTelefone(cliente.CELULAR)}</td>
             <td>${formatarDocumento(cliente.CPF_CNPJ)}</td>
             <td>${cliente.RUA}</td>
-            <td>${cliente.NUMERO}</td>
-            <td>N/A</td> <!-- CEP não existe no seu banco -->
+            <td>${cliente.CEP ? cliente.CEP : 'N/A'}</td> <!-- Verifica e substitui 'null' por 'N/A' -->
+            <td>${cliente.NUMERO}</td>            
             <td>${cliente.CIDADE}</td>
             <td>${cliente.UF}</td>
             <td class="acoes">
@@ -93,6 +103,8 @@ function preencherTabelaClientes(clientes) {
         tbody.appendChild(tr);
     });
 }
+
+
 
 function formatarDocumento(doc) {
     if (!doc) return '';
@@ -130,7 +142,8 @@ async function salvarCliente() {
         numero: form.numero_casa.value,
         bairro: 'N/A', // Seu banco não tem bairro
         cidade: form.cidade.value,
-        uf: form.UF.value.toUpperCase()
+        uf: form.UF.value.toUpperCase(),
+        cep: $(form.cep).cleanVal()  // Limpa o valor do CEP
     };
     
     try {
@@ -138,7 +151,7 @@ async function salvarCliente() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-access-token': localStorage.getItem('token')
+                'x-access-token': localStorage.getItem('jwtToken')
             },
             body: JSON.stringify(formData)
         });
@@ -282,18 +295,38 @@ function resetarFormulario() {
 
 function abrirPopUpClientes(modo = 'cadastrar') {
     const popup = document.getElementById('popUpClientes');
-    const btnSalvar = document.getElementById('salvarClientes');
-    
+
+    const antigoBtn = document.getElementById('salvarClientes');
+    const novoBtn = antigoBtn.cloneNode(true); // clona sem eventos
+    novoBtn.id = 'salvarClientes';
+    antigoBtn.parentNode.replaceChild(novoBtn, antigoBtn);
+
+    // atualiza texto e ação conforme o modo
     if (modo === 'atualizar') {
-        btnSalvar.onclick = atualizarCliente;
+        novoBtn.onclick = atualizarCliente;
         popup.querySelector('p').textContent = 'Você está prestes a atualizar um cliente. Deseja continuar?';
     } else {
-        btnSalvar.onclick = salvarCliente;
+        novoBtn.onclick = salvarCliente;
         popup.querySelector('p').textContent = 'Você está prestes a cadastrar um cliente. Deseja continuar?';
     }
-    
+
     popup.style.display = 'flex';
 }
+
+// function abrirPopUpClientes(modo = 'cadastrar') {
+//     const popup = document.getElementById('popUpClientes');
+//     const btnSalvar = document.getElementById('salvarClientes');
+    
+//     if (modo === 'atualizar') {
+//         btnSalvar.onclick = atualizarCliente;
+//         popup.querySelector('p').textContent = 'Você está prestes a atualizar um cliente. Deseja continuar?';
+//     } else {
+//         btnSalvar.onclick = salvarCliente;
+//         popup.querySelector('p').textContent = 'Você está prestes a cadastrar um cliente. Deseja continuar?';
+//     }
+    
+//     popup.style.display = 'flex';
+// }
 
 function fecharPopUpClientes() {
     document.getElementById('popUpClientes').style.display = 'none';
