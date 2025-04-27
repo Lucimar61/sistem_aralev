@@ -1,3 +1,9 @@
+// Header
+
+import { createHeader } from "./header.js";
+
+document.body.prepend(createHeader());
+
 // Desconectando do site
 function logout() {
     localStorage.removeItem('token');

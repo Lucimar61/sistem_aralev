@@ -16,6 +16,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+export function adicionarEventosSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open_btn');
+    const openBtnIcon = document.getElementById('open_btn_icon');
+    const sidebarContent = document.getElementById('sidebar_content');
+    const config = document.getElementById('config');
+
+    if (!sidebar || !openBtn || !openBtnIcon || !sidebarContent || !config) {
+        console.error('Algum elemento da sidebar não foi encontrado.');
+        return;
+    }
+
+    openBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('expandido'); // Vamos usar essa classe para controlar a expansão
+    });
+}
+
 // document.addEventListener("DOMContentLoaded", () => {
 //     const openBtn = document.getElementById("open_btn");
 //     const sidebar = document.getElementById("sidebar_content");

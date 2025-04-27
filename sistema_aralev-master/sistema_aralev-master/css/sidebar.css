@@ -185,23 +185,24 @@ ul li.active {
 }
 
 /* Estilo da sidebar aberta */
-#sidebar.open-sidebar {
-    min-width: 17%;
+#sidebar.expandido {
+    width: 250px; /* tamanho expandido */
 }
 
-#sidebar.open-sidebar .item-description {
+
+#sidebar.expandido .item-description {
     width: 150px;
     height: auto;
     transition: opacity 0.4s ease-in-out, width 0.4s ease-in-out;
 }
 
 /* Quando a sidebar for aberta, os textos reaparecem gradualmente */
-#sidebar.open-sidebar .item-description {
+#sidebar.expandido .item-description {
     opacity: 1;
     width: 150px; /* Ajuste conforme necessário */
 }
 
-#sidebar.open-sidebar .side-item a {
+#sidebar.expandido .side-item a {
     justify-content: flex-start;
     gap: 12px;
 }
