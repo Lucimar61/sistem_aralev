@@ -184,6 +184,22 @@
     <!-- Carregar jQuery Mask Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="javascript/pedidos.js"></script>
+    <script>
+        // Configuração segura de event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Garante que os elementos existem antes de adicionar eventos
+            const btnEmitir = document.querySelector('.btn_emitir');
+            const btnConfirmar = document.querySelector('#popUp .btn_salvar');
+            
+            if (btnEmitir) {
+                btnEmitir.addEventListener('click', validarPedido);
+            }
+            
+            if (btnConfirmar) {
+                btnConfirmar.addEventListener('click', confirmarPedido);
+            }
+        });
+    </script>
 </body>
 </html>
 

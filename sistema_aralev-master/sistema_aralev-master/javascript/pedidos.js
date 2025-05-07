@@ -2,13 +2,29 @@ let produtosDisponiveis = [];
 let clientesDisponiveis = [];
 
 document.addEventListener('DOMContentLoaded', function() {
-    inicializarMascaras();
-    inicializarEventos();
-    carregarClientes();
-    carregarProdutos();
+    setTimeout(() => {
+        inicializarAplicacao();
+    }, 100);
 });
 
+async function inicializarAplicacao() {
+    try {
+        await Promise.all([
+            carregarClientes(),
+            carregarProdutos()
+        ]);
+        inicializarMascaras();
+        inicializarEventos();
+    } catch (error) {
+        console.error('Erro na inicialização:', error);
+        mostrarErro('Erro ao carregar dados iniciais');
+    }
+}
+
 function inicializarMascaras() {
+    const $ = window.jQuery;
+    if (!$) return;
+
     $('input[name="num_celular"]').mask('(00) 0 0000-0000');
     $('input[name="cpf_ou_cnpj"]').mask('000.000.000-00', {reverse: true});
     $('input[name="CEP"]').mask('00000-000');
@@ -17,12 +33,10 @@ function inicializarMascaras() {
 }
 
 function inicializarEventos() {
-    document.querySelector('.add_produto').addEventListener('click', adicionarProduto);
+    document.querySelector('.add_produto')?.addEventListener('click', adicionarProduto);
     
     document.addEventListener('input', function(e) {
-        if (e.target.classList.contains('quantidade-produto') || 
-            e.target.classList.contains('desconto-produto') ||
-            e.target.classList.contains('select-produto')) {
+        if (e.target.matches('.quantidade-produto, .desconto-produto, .select-produto')) {
             calcularSubtotal(e.target);
         }
     });
@@ -43,18 +57,21 @@ async function carregarClientes() {
         configurarAutocompleteClientes();
     } catch (error) {
         console.error('Erro ao carregar clientes:', error);
-        alert('Erro ao carregar clientes: ' + error.message);
+        throw error;
     }
 }
 
 function configurarAutocompleteClientes() {
     const inputCliente = document.querySelector('input[name="nome_cliente"]');
     const datalist = document.getElementById('clientes-list');
+    
+    if (!inputCliente || !datalist) return;
+    
     datalist.innerHTML = '';
     
     clientesDisponiveis.forEach(cliente => {
         const option = document.createElement('option');
-        option.value = cliente.NOME; // Corrigido para usar NOME (maiúsculo)
+        option.value = cliente.NOME;
         option.dataset.id = cliente.ID_PESSOA_PK;
         option.dataset.cpf = cliente.CPF_CNPJ;
         option.dataset.celular = cliente.CELULAR;
@@ -71,14 +88,24 @@ function configurarAutocompleteClientes() {
 }
 
 function preencherDadosCliente(option) {
-    document.querySelector('input[name="cpf_ou_cnpj"]').value = formatarDocumento(option.dataset.cpf);
-    document.querySelector('input[name="num_celular"]').value = formatarTelefone(option.dataset.celular);
-    
-    const endereco = option.dataset.endereco.split(', ');
-    document.querySelector('input[name="nome_rua"]').value = endereco[0];
-    document.querySelector('input[name="numero_casa"]').value = endereco[1];
-    document.querySelector('input[name="cidade"]').value = endereco[2].split('/')[0];
-    document.querySelector('input[name="UF"]').value = endereco[2].split('/')[1];
+    const campos = {
+        'cpf_ou_cnpj': formatarDocumento(option.dataset.cpf),
+        'num_celular': formatarTelefone(option.dataset.celular)
+    };
+
+    const endereco = option.dataset.endereco?.split(', ') || [];
+    if (endereco.length >= 3) {
+        campos['nome_rua'] = endereco[0];
+        campos['numero_casa'] = endereco[1];
+        const cidadeUf = endereco[2].split('/');
+        campos['cidade'] = cidadeUf[0];
+        campos['UF'] = cidadeUf[1];
+    }
+
+    Object.entries(campos).forEach(([name, value]) => {
+        const input = document.querySelector(`input[name="${name}"]`);
+        if (input) input.value = value;
+    });
 }
 
 async function carregarProdutos() {
@@ -96,20 +123,18 @@ async function carregarProdutos() {
         atualizarSelectProdutos();
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
-        alert('Erro ao carregar produtos: ' + error.message);
+        throw error;
     }
 }
 
 function atualizarSelectProdutos() {
-    const selects = document.querySelectorAll('.select-produto');
-    
-    selects.forEach(select => {
+    document.querySelectorAll('.select-produto').forEach(select => {
         select.innerHTML = '<option value="">Selecione um produto</option>';
-        
+        console.log('Produto recebido:', produtosDisponiveis);
         produtosDisponiveis.forEach(produto => {
             const option = document.createElement('option');
-            option.value = produto.ID_PRODUTO_PK;
-            option.textContent = `${produto.NOME} (${produto.precoVenda.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})})`;
+            option.value = produto.idProduto;
+            option.textContent = `${produto.nome} (${formatarMoeda(produto.precoVenda)})`;
             option.dataset.preco = produto.precoVenda;
             select.appendChild(option);
         });
@@ -118,6 +143,8 @@ function atualizarSelectProdutos() {
 
 function adicionarProduto() {
     const container = document.getElementById('produtos-container');
+    if (!container) return;
+
     const novoProduto = document.createElement('div');
     novoProduto.className = 'info-produtos';
     novoProduto.innerHTML = `
@@ -126,8 +153,8 @@ function adicionarProduto() {
             <select name="produto[]" class="select-produto" required>
                 <option value="">Selecione um produto</option>
                 ${produtosDisponiveis.map(produto => `
-                    <option value="${produto.ID_PRODUTO_PK}" data-preco="${produto.precoVenda}">
-                        ${produto.NOME} (${produto.precoVenda.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})})
+                    <option value="${produto.idProduto}" data-preco="${produto.precoVenda}">
+                        ${produto.NOME} (${formatarMoeda(produto.precoVenda)})
                     </option>
                 `).join('')}
             </select>
@@ -154,22 +181,27 @@ function adicionarProduto() {
 }
 
 function removerProduto(botao) {
-    botao.closest('.info-produtos').remove();
+    botao.closest('.info-produtos')?.remove();
     calcularTotalPedido();
 }
 
 function calcularSubtotal(elemento) {
     const linha = elemento.closest('.info-produtos');
+    if (!linha) return;
+
     const select = linha.querySelector('.select-produto');
-    const quantidade = parseFloat(linha.querySelector('.quantidade-produto').value) || 0;
-    const desconto = parseFloat(linha.querySelector('.desconto-produto').value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
-    const precoUnitario = select.value ? parseFloat(select.options[select.selectedIndex].dataset.preco) : 0;
+    const quantidadeInput = linha.querySelector('.quantidade-produto');
+    const descontoInput = linha.querySelector('.desconto-produto');
+    const subtotalInput = linha.querySelector('.subtotal-produto');
+
+    if (!select || !quantidadeInput || !descontoInput || !subtotalInput) return;
+
+    const quantidade = parseFloat(quantidadeInput.value) || 0;
+    const desconto = parseFloat(descontoInput.value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
+    const precoUnitario = select.value ? parseFloat(select.selectedOptions[0]?.dataset.preco) : 0;
     
     const subtotal = (quantidade * precoUnitario) - desconto;
-    linha.querySelector('.subtotal-produto').value = subtotal.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    });
+    subtotalInput.value = formatarMoeda(subtotal);
     
     calcularTotalPedido();
 }
@@ -181,16 +213,16 @@ function calcularTotalPedido() {
         total += valor;
     });
     
-    document.querySelector('input[name="total"]').value = total.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    });
+    const totalInput = document.querySelector('input[name="total"]');
+    if (totalInput) {
+        totalInput.value = formatarMoeda(total);
+    }
 }
 
 function validarPedido() {
-    const cliente = document.querySelector('input[name="nome_cliente"]').value;
+    const cliente = document.querySelector('input[name="nome_cliente"]')?.value;
     if (!cliente) {
-        alert('Selecione um cliente');
+        mostrarErro('Selecione um cliente');
         return;
     }
 
@@ -200,7 +232,7 @@ function validarPedido() {
     });
 
     if (!temProdutosValidos) {
-        alert('Adicione pelo menos um produto');
+        mostrarErro('Adicione pelo menos um produto');
         return;
     }
 
@@ -208,125 +240,111 @@ function validarPedido() {
 }
 
 function abrirPopUp() {
-    document.getElementById('popUp').style.display = 'flex';
+    const popUp = document.getElementById('popUp');
+    if (popUp) popUp.style.display = 'flex';
 }
 
 function fecharPopUp() {
-    document.getElementById('popUp').style.display = 'none';
+    const popUp = document.getElementById('popUp');
+    if (popUp) popUp.style.display = 'none';
 }
 
 async function confirmarPedido() {
+    const popUp = document.getElementById('popUp');
+    const btnConfirmar = popUp?.querySelector('.btn_salvar');
+    
     try {
-        await emitirPedido();
-        fecharPopUp();
+        if (btnConfirmar) {
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+        }
+        
+        const resultado = await emitirPedido();
+        mostrarSucesso(`Pedido criado com sucesso!`);
+        
+        const form = document.getElementById('formPedido');
+        if (form) form.reset();
+        
     } catch (error) {
         console.error('Erro ao confirmar pedido:', error);
+        mostrarErro(error.message);
+    } finally {
+        if (btnConfirmar) {
+            btnConfirmar.disabled = false;
+            btnConfirmar.textContent = 'Confirmar';
+        }
+        if (popUp) popUp.style.display = 'none';
     }
 }
 
 async function emitirPedido() {
-    const form = document.querySelector('#formPedido');
-    const clienteOption = document.querySelector(`#clientes-list option[value="${form.nome_cliente.value}"]`);
-    
-    if (!clienteOption) {
-        throw new Error('Selecione um cliente válido');
-    }
-
-    const idCliente = clienteOption.dataset.id;
-    const formaPgto = form.forma_pagamento.value;
-    const parcelas = form.parcelas.value || 1;
-    const vencimento = form.vencimento.value || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-    
-    // Coletar itens do pedido
-    const itens = [];
-    let todosItensValidos = true;
-    
-    document.querySelectorAll('.info-produtos').forEach(linha => {
-        const select = linha.querySelector('.select-produto');
-        const quantidade = parseFloat(linha.querySelector('.quantidade-produto').value);
-        const desconto = parseFloat(linha.querySelector('.desconto-produto').value.replace(/[^\d,]/g, '').replace(',', '.')) || 0;
-        
-        if (!select.value || isNaN(quantidade) || quantidade <= 0) {
-            todosItensValidos = false;
-            return;
-        }
-        
-        const precoUnitario = parseFloat(select.options[select.selectedIndex].dataset.preco);
-        itens.push({
-            idProduto: select.value,
-            quantidade: quantidade,
-            desconto: desconto,
-            precoUnitario: precoUnitario
-        });
-    });
-    
-    if (!todosItensValidos || itens.length === 0) {
-        throw new Error('Preencha todos os produtos corretamente');
-    }
-    
-    // Calcular totais
-    const subtotal = itens.reduce((sum, item) => sum + (item.quantidade * item.precoUnitario), 0);
-    const totalDescontos = itens.reduce((sum, item) => sum + item.desconto, 0);
-    const total = subtotal - totalDescontos;
-    
-    // Criar pedido no banco
-    const response = await fetch('http://localhost:8080/api/pedidos', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-            idPessoa: idCliente,
-            listaItens: itens,
-            formaPgto: formaPgto,
-            parcelas: parcelas,
-            vencimento: vencimento,
-            subtotal: subtotal,
-            totalDescontos: totalDescontos,
-            total: total,
-            status: 'Aberto'
-        })
-    });
-    
-    if (!response.ok) {
-        const erro = await response.json();
-        throw new Error(erro.message || 'Erro ao registrar pedido');
-    }
-    
-    const resultado = await response.json();
-    
-    // Atualizar estoque
-    for (const item of itens) {
-        await atualizarEstoque(item.idProduto, item.quantidade);
-    }
-    
-    alert(`Pedido #${resultado.idPedido} criado com sucesso!`);
-    form.reset();
-}
-
-async function atualizarEstoque(idProduto, quantidade) {
     try {
-        const response = await fetch('http://localhost:8080/api/estoque/movimentacao', {
+        // 1. Verifica se o token existe
+        const token = localStorage.getItem('token');
+        // if (!token) {
+        //     throw new Error('Usuário não autenticado. Faça login novamente.');
+        // }
+
+        // 2. Valida o formulário
+        const form = document.getElementById('formPedido');
+        if (!form) throw new Error('Formulário não encontrado.');
+
+        // 3. Prepara os dados do pedido
+        const clienteInput = form.querySelector('input[name="nome_cliente"]');
+        const clienteOption = document.querySelector(`#clientes-list option[value="${clienteInput.value}"]`);
+        // if (!clienteOption) throw new Error('Selecione um cliente válido.');
+
+        const itens = Array.from(document.querySelectorAll('.info-produtos'))
+            .map(linha => {
+                const select = linha.querySelector('.select-produto');
+                console.log('Select Recebido:', select);
+                return {
+                    idProduto: select.value,
+                    quantidade: parseFloat(linha.querySelector('.quantidade-produto').value),
+                    precoUnitario: parseFloat(select.selectedOptions[0].dataset.preco)
+                };
+            })
+            .filter(item => item.idProduto && !isNaN(item.quantidade) && item.quantidade > 0);
+
+        if (itens.length === 0) throw new Error('Adicione pelo menos um produto válido.');
+
+        // 4. Faz a chamada à API
+        const response = await fetch('http://localhost:8080/api/pedidos', {  
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                tipoMovimentacao: 'SAIDA',
-                quantidade: quantidade,
-                idProduto: idProduto,
-                localizacao: 'Venda'
+                idPessoa: clienteOption.dataset.id,
+                listaItens: itens,
+                formaPgto: form.querySelector('select[name="forma_pagamento"]').value,
+                parcelas: parseInt(form.querySelector('input[name="parcelas"]').value) || 1
             })
         });
-        
-        if (!response.ok) {
-            throw new Error('Falha ao atualizar estoque');
+
+        // 5. Verifica se a resposta é JSON (evita o erro "Unexpected token '<'")
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const errorText = await response.text();
+            console.error('Resposta não-JSON do servidor:', errorText);
+            throw new Error('Resposta inválida do servidor. Tente novamente.');
         }
+
+        const resultado = await response.json();
+
+        // 6. Verifica se houve erro na API (mesmo com status 200)
+        if (!response.ok || resultado.error) {
+            throw new Error(resultado.message || 'Erro ao registrar pedido.');
+        }
+
+        // 7. Sucesso!
+        alert(`Pedido criado com sucesso!`);
+        form.reset();
+
     } catch (error) {
-        console.error('Erro ao atualizar estoque:', error);
-        throw error;
+        console.error('Erro no emitir pedido:', error);
+        alert('Erro: ' + error.message);
     }
 }
 
@@ -354,4 +372,22 @@ function formatarTelefone(telefone) {
     return telefone;
 }
 
-//testeLuan
+function formatarMoeda(valor) {
+    return parseFloat(valor || 0).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+}
+
+function mostrarErro(mensagem) {
+    alert(mensagem); 
+}
+
+function mostrarSucesso(mensagem) {
+    alert(mensagem); 
+}
+
+window.removerProduto = removerProduto;
+window.validarPedido = validarPedido;
+window.confirmarPedido = confirmarPedido;
+window.fecharPopUp = fecharPopUp;
