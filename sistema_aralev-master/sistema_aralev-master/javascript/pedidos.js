@@ -295,16 +295,23 @@ async function emitirPedido() {
         // if (!clienteOption) throw new Error('Selecione um cliente válido.');
 
         const itens = Array.from(document.querySelectorAll('.info-produtos'))
-            .map(linha => {
-                const select = linha.querySelector('.select-produto');
-                console.log('Select Recebido:', select);
-                return {
-                    idProduto: select.value,
-                    quantidade: parseFloat(linha.querySelector('.quantidade-produto').value),
-                    precoUnitario: parseFloat(select.selectedOptions[0].dataset.preco)
-                };
-            })
-            .filter(item => item.idProduto && !isNaN(item.quantidade) && item.quantidade > 0);
+        .map(linha => {
+            const select = linha.querySelector('.select-produto');
+            const quantidadeInput = linha.querySelector('.quantidade-produto');
+    
+            if (!select || !quantidadeInput || !select.selectedOptions[0]) {
+                console.warn('Elemento select ou quantidade não encontrado ou inválido em uma linha.');
+                return null; // Ignora essa linha
+            }
+    
+            return {
+                idProduto: select.value,
+                quantidade: parseFloat(quantidadeInput.value),
+                precoUnitario: parseFloat(select.selectedOptions[0].dataset.preco)
+            };
+        })
+        .filter(item => item && item.idProduto && !isNaN(item.quantidade) && item.quantidade > 0);
+    
 
         if (itens.length === 0) throw new Error('Adicione pelo menos um produto válido.');
 
@@ -391,3 +398,5 @@ window.removerProduto = removerProduto;
 window.validarPedido = validarPedido;
 window.confirmarPedido = confirmarPedido;
 window.fecharPopUp = fecharPopUp;
+
+//olá
